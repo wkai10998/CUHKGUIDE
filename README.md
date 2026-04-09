@@ -1,4 +1,4 @@
-# Flask 申请助手（课程作业）
+# Flask 课程项目：港中文申请一站式助手
 
 ## 快速启动
 
@@ -9,45 +9,63 @@ cd /Users/wkai/Desktop/FlaskProject
 
 访问：
 - http://127.0.0.1:5000/
-- http://127.0.0.1:5000/qa
+- http://127.0.0.1:5000/programs
+- http://127.0.0.1:5000/guide
+- http://127.0.0.1:5000/faq
+- http://127.0.0.1:5000/assistant
 
-## 功能
-- 网申地图：首页阶段卡片
-- 操作步骤：图文步骤页 + 材料清单 + 步骤评论
-- 交流区：Q&A 列表/详情 + 评论
-- 用户体验：右上角头像 Hover 菜单（Session）
-- 状态记忆：最近浏览阶段（Cookie）
-- 稳定性：404/500 错误页
+## 页面结构（课程版）
+- 首页：申请时间路线图
+- 专业速查：项目信息筛选
+- 操作步骤：阶段 -> 步骤 -> 评论
+- 常见问题：FAQ 列表、详情、评论
+- 智能助手：RAG 思路演示（检索 + 回答 + 来源）
+
+## 技术知识点对应
+- Flask 路由：`GET` 渲染页面、`POST` 提交交互
+- Jinja2：`extends`、`include`、`block`、`for/if`
+- Tailwind：响应式布局（`md:` / `lg:`）
+- JavaScript：关键词筛选、步骤“标记完成”交互
+- Session：昵称、头像色、步骤完成状态
+- 数据层：
+  - `content/*.json` 管理静态内容
+  - SQLite 存评论（后续可迁移 Supabase）
 
 ## 目录结构
 
 ```text
 FlaskProject/
 ├── app.py
-├── requirements.txt
+├── content/
+│   ├── stages.json
+│   ├── guide_steps.json
+│   ├── programs.json
+│   └── faq.json
 ├── data/
 │   └── app.db
-├── docs/
-│   ├── presentation_notes.md
-│   └── team_split.md
-├── scripts/
-│   └── init_db.py
 ├── static/
 │   ├── css/app.css
-│   ├── js/qa.js
+│   ├── js/
+│   │   ├── programs.js
+│   │   ├── faq.js
+│   │   └── guide.js
 │   └── images/guides/*.svg
-└── templates/
-    ├── base.html
-    ├── index.html
-    ├── guide.html
-    ├── qa_list.html
-    ├── qa_detail.html
-    └── errors/
-        ├── 404.html
-        └── 500.html
+├── templates/
+│   ├── base.html
+│   ├── header.html
+│   ├── footer.html
+│   ├── index.html
+│   ├── programs.html
+│   ├── guide_list.html
+│   ├── guide.html
+│   ├── faq.html
+│   ├── faq_detail.html
+│   ├── assistant.html
+│   └── errors/
+│       ├── 404.html
+│       └── 500.html
+├── utils/
+│   └── content_loader.py
+└── tests/
+    └── test_course_structure.py
 ```
-
-## 数据说明
-- 示例流程数据：在 `app.py` 的 `STAGES` 与 `GUIDE_DATA`
-- 示例问答数据：在 `app.py` 的 `QUESTIONS`
-- 评论数据：SQLite（`data/app.db`）

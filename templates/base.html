@@ -10,11 +10,11 @@
         extend: {
           colors: {
             brand: {
-              50: "#f0f9ff",
-              100: "#e0f2fe",
-              500: "#0ea5e9",
-              600: "#0284c7",
-              700: "#0369a1"
+              50: "#eff6ff",
+              100: "#dbeafe",
+              500: "#3b82f6",
+              600: "#2563eb",
+              700: "#1d4ed8"
             }
           }
         }
@@ -22,81 +22,10 @@
     };
   </script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-  <title>{% block title %}中大硕士申请助手{% endblock %}</title>
+  <title>{{ title or "港中文申请一站式助手" }}</title>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
-  <header class="bg-white border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="{{ url_for('index') }}" class="text-lg font-semibold text-brand-700">中大硕士申请助手</a>
-
-      <div class="flex items-center gap-5">
-        <nav class="flex items-center gap-5 text-sm">
-          <a
-            href="{{ url_for('index') }}"
-            class="{% if request.path == '/' %}text-brand-700 font-semibold{% else %}text-slate-600 hover:text-brand-700{% endif %}"
-          >首页</a>
-
-          <div class="relative group">
-            <a
-              href="{{ url_for('guide_list') }}"
-              class="{% if request.path.startswith('/guide') %}text-brand-700 font-semibold{% else %}text-slate-600 hover:text-brand-700{% endif %}"
-            >操作步骤</a>
-
-            <div class="hidden group-hover:block group-focus-within:block absolute left-0 mt-2 w-64 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
-              <p class="px-3 py-2 text-xs text-slate-500">快速跳转阶段</p>
-              {% for stage in stage_nav_items %}
-                <a
-                  href="{{ url_for('guide', stage_slug=stage.slug) }}"
-                  class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                >{{ stage.month }} · {{ stage.title }}</a>
-              {% endfor %}
-            </div>
-          </div>
-
-          <a
-            href="{{ url_for('qa_list') }}"
-            class="{% if request.path.startswith('/qa') %}text-brand-700 font-semibold{% else %}text-slate-600 hover:text-brand-700{% endif %}"
-          >交流区</a>
-        </nav>
-
-        <div class="relative group">
-          <button class="w-9 h-9 rounded-full text-white text-sm font-semibold {{ avatar_colors[current_user.avatar_seed] }}">
-            {{ current_user.initial }}
-          </button>
-
-          <div class="hidden group-hover:block group-focus-within:block absolute right-0 mt-2 w-72 bg-white border border-slate-200 rounded-xl shadow-lg p-4 z-50">
-            <p class="text-sm font-medium text-slate-900">当前用户：{{ current_user.name }}</p>
-            <p class="text-xs text-slate-500 mt-1">可在这里修改昵称和头像色</p>
-
-            <form action="{{ url_for('update_profile') }}" method="post" class="mt-3 space-y-3">
-              <input
-                type="text"
-                name="user_name"
-                value="{{ current_user.name if current_user.name != '游客' else '' }}"
-                placeholder="输入昵称（默认游客）"
-                maxlength="20"
-                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              >
-
-              <select name="avatar_seed" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                {% for seed in ['sky', 'emerald', 'amber', 'rose', 'violet'] %}
-                  <option value="{{ seed }}" {% if current_user.avatar_seed == seed %}selected{% endif %}>头像色：{{ seed }}</option>
-                {% endfor %}
-              </select>
-
-              <div class="flex gap-2">
-                <button type="submit" class="flex-1 rounded-lg bg-brand-600 text-white py-2 text-sm">保存</button>
-              </div>
-            </form>
-
-            <form action="{{ url_for('reset_profile') }}" method="post" class="mt-2">
-              <button type="submit" class="w-full rounded-lg border border-slate-300 py-2 text-sm text-slate-700">恢复默认</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  {% include "header.html" %}
 
   <main class="max-w-6xl mx-auto px-4 py-8">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -111,15 +40,10 @@
       {% endif %}
     {% endwith %}
 
-    {% block content %}{% endblock %}
+    {% block body %}{% endblock %}
   </main>
 
-  <footer class="border-t border-slate-200 bg-white mt-10">
-    <div class="max-w-6xl mx-auto px-4 py-5 text-xs text-slate-500">
-      作业重点：网申地图、操作步骤、交流区。加分项可后续扩展。
-    </div>
-  </footer>
-
+  {% include "footer.html" %}
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

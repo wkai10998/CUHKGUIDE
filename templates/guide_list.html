@@ -1,30 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}操作步骤 - 中大硕士申请助手{% endblock %}
+{% set title = "操作步骤 - 港中文申请一站式助手" %}
 
-{% block content %}
-  <section class="mb-8">
-    <h1 class="text-3xl font-bold text-slate-900">操作步骤</h1>
-    <p class="mt-2 text-slate-600">按阶段查看网申操作清单，点击任意阶段进入详细步骤。</p>
-  </section>
+{% block body %}
+<section>
+  <h1 class="text-2xl font-bold text-slate-900">操作步骤</h1>
+  <p class="text-slate-600 mt-2">按阶段进入详细步骤页，每个步骤都包含教程、材料清单和评论区。</p>
 
-  <section class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-    <div class="hidden md:grid md:grid-cols-12 bg-slate-50 border-b border-slate-200 px-4 py-3 text-xs font-semibold text-slate-500">
-      <div class="md:col-span-2">时间段</div>
-      <div class="md:col-span-7">阶段名称</div>
-      <div class="md:col-span-3">操作</div>
-    </div>
-
-    <div class="divide-y divide-slate-200">
-      {% for stage in stages %}
-        <div class="grid grid-cols-1 md:grid-cols-12 px-4 py-4 items-center gap-3">
-          <div class="md:col-span-2 text-sm text-brand-700 font-medium">{{ stage.month }}</div>
-          <div class="md:col-span-7 text-slate-900 font-medium">{{ stage.title }}</div>
-          <div class="md:col-span-3">
-            <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-block rounded-lg border border-brand-200 text-brand-700 px-3 py-1.5 text-sm hover:bg-brand-50">进入步骤</a>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
+  <div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    {% for stage in stages %}
+      <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <p class="text-xs text-slate-400">{{ stage.month }}</p>
+        <h2 class="mt-2 text-lg font-semibold text-slate-900">{{ stage.title }}</h2>
+        <p class="mt-2 text-sm text-slate-600 leading-6">{{ stage.description }}</p>
+        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-block mt-4 rounded-lg border border-brand-200 text-brand-700 px-3 py-1.5 text-sm hover:bg-brand-50">进入阶段</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}
