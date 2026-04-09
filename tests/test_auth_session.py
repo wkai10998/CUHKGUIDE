@@ -43,10 +43,10 @@ class AuthSessionTestCase(unittest.TestCase):
         response = self.client.post(
             "/faq/1/comment",
             data={"content": "test comment"},
-            follow_redirects=True,
+            follow_redirects=False,
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("请先登录后发表评论", response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/faq/1?open_login=1&auth_tab=login", response.location)
 
     def test_update_profile_persists_to_supabase(self):
         with self.client.session_transaction() as session:
@@ -95,6 +95,26 @@ class AuthSessionTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("更新资料失败", response.get_data(as_text=True))
+
+    def test_auth_login_error_redirects_with_modal_flag(self):
+        with patch.object(app_module, "is_supabase_comments_enabled", return_value=True):
+            response = self.client.post(
+                "/auth/login",
+                data={"email": "", "password": ""},
+                headers={"Referer": "http://localhost/guide/prep?step=1"},
+            )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/guide/prep?step=1&open_login=1&auth_tab=login", response.location)
+
+    def test_auth_register_error_redirects_with_register_tab(self):
+        with patch.object(app_module, "is_supabase_comments_enabled", return_value=True):
+            response = self.client.post(
+                "/auth/register",
+                data={"name": "", "email": "bad", "password": "123"},
+                headers={"Referer": "http://localhost/programs"},
+            )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/programs?open_login=1&auth_tab=register", response.location)
 
 
 if __name__ == "__main__":

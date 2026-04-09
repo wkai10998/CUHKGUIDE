@@ -1,0 +1,23 @@
+<section id="roadmap" class="mt-14 md:mt-16">
+  <div class="text-center mb-10">
+    <h2 class="text-4xl cuhk-display text-ink-900">申请时间线</h2>
+    <p class="mt-3 text-sm md:text-base cuhk-muted">把握每一个关键节点，从容应对。</p>
+  </div>
+
+  <div class="cuhk-timeline-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    {% for stage in stages %}
+      {% set badge_style = 'is-accent' if loop.index == 2 else 'is-primary' %}
+      <article class="cuhk-card-soft cuhk-lift pt-0 overflow-hidden">
+        <div class="px-6 pt-5">
+          <span class="cuhk-step-badge {{ badge_style }}">{{ "%02d"|format(loop.index) }}</span>
+        </div>
+        <div class="px-6 pb-6 pt-5">
+          <p class="text-2xl cuhk-guide-title text-brand-700">{{ stage.month }}</p>
+          <h3 class="mt-1 text-lg font-semibold text-ink-900">{{ stage.title }}</h3>
+          <p class="mt-3 text-sm leading-7 text-ink-700">{{ stage.description }}</p>
+          <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-block mt-4 text-sm font-semibold text-brand-700 hover:text-brand-600">进入阶段 →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import urllib.parse
 from datetime import datetime
 
 from flask import (
@@ -38,6 +39,61 @@ AVATAR_COLORS = {
     "rose": "bg-rose-500",
     "violet": "bg-violet-500",
 }
+
+
+def _clean_redirect_target(raw_url: str, default_endpoint: str = "index") -> str:
+    target = raw_url.strip()
+    if not target:
+        return url_for(default_endpoint)
+
+    parsed = urllib.parse.urlparse(target)
+    if target.startswith("//"):
+        return url_for(default_endpoint)
+    if parsed.scheme or parsed.netloc:
+        # Allow absolute referrer URLs from the same host only.
+        if parsed.scheme in {"http", "https"} and parsed.netloc == request.host:
+            parsed = urllib.parse.ParseResult(
+                scheme="",
+                netloc="",
+                path=parsed.path or "/",
+                params=parsed.params,
+                query=parsed.query,
+                fragment=parsed.fragment,
+            )
+        else:
+            return url_for(default_endpoint)
+
+    query_items = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    query_items = [(key, value) for key, value in query_items if key != "open_login"]
+    cleaned_query = urllib.parse.urlencode(query_items)
+
+    return urllib.parse.urlunparse(
+        ("", "", parsed.path or "/", parsed.params, cleaned_query, parsed.fragment)
+    )
+
+
+def _resolve_next_url(default_endpoint: str = "index") -> str:
+    candidate = (
+        request.form.get("next", "").strip()
+        or request.args.get("next", "").strip()
+        or (request.referrer or "").strip()
+    )
+    return _clean_redirect_target(candidate, default_endpoint=default_endpoint)
+
+
+def _with_open_login_flag(target_url: str, auth_tab: str = "login") -> str:
+    parsed = urllib.parse.urlparse(target_url)
+    query_items = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    query_items = [
+        (key, value) for key, value in query_items if key not in {"open_login", "auth_tab"}
+    ]
+    query_items.append(("open_login", "1"))
+    query_items.append(("auth_tab", "register" if auth_tab == "register" else "login"))
+    updated_query = urllib.parse.urlencode(query_items)
+
+    return urllib.parse.urlunparse(
+        (parsed.scheme, parsed.netloc, parsed.path, parsed.params, updated_query, parsed.fragment)
+    )
 
 
 def get_current_user() -> dict[str, object]:
@@ -348,30 +404,34 @@ def login_page() -> str:
 # ----------------------------
 @app.route("/auth/login", methods=["POST"])
 def auth_login():
+    next_url = _resolve_next_url(default_endpoint="index")
+    if next_url == url_for("login_page"):
+        next_url = url_for("index")
+
     if not is_supabase_comments_enabled():
         flash("登录服务未配置 Supabase，请联系管理员。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url))
 
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
     if not email or not password:
         flash("请输入邮箱和密码。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url))
 
     try:
         user = get_user_by_email_from_supabase(email)
     except RuntimeError as err:
         flash(str(err), "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url))
 
     if not user:
         flash("账号不存在，请先注册。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url))
 
     stored_hash = str(user.get("password_hash", ""))
     if not stored_hash or not check_password_hash(stored_hash, password):
         flash("邮箱或密码错误。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url))
 
     user_id = str(user.get("id", "")).strip()
     user_name = str(user.get("name", "用户")).strip()[:20] or "用户"
@@ -385,14 +445,18 @@ def auth_login():
     session["avatar_seed"] = avatar_seed
 
     flash("登录成功。", "success")
-    return redirect(url_for("index"))
+    return redirect(next_url)
 
 
 @app.route("/auth/register", methods=["POST"])
 def auth_register():
+    next_url = _resolve_next_url(default_endpoint="index")
+    if next_url == url_for("login_page"):
+        next_url = url_for("index")
+
     if not is_supabase_comments_enabled():
         flash("注册服务未配置 Supabase，请联系管理员。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     name = request.form.get("name", "").strip()[:20]
     email = request.form.get("email", "").strip().lower()
@@ -403,22 +467,22 @@ def auth_register():
         avatar_seed = "sky"
     if not name:
         flash("请输入昵称。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     if "@" not in email or "." not in email:
         flash("请输入有效邮箱。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     if len(password) < 6:
         flash("密码至少 6 位。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     try:
         created_user = create_user_in_supabase(name, email, password, avatar_seed)
     except ValueError as err:
         flash(str(err), "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     except RuntimeError as err:
         flash(str(err), "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     session["user_id"] = str(created_user.get("id", "")).strip()
     session["user_name"] = str(created_user.get("name", name)).strip()[:20] or name
@@ -428,7 +492,7 @@ def auth_register():
         session["avatar_seed"] = "sky"
 
     flash("注册成功并已登录。", "success")
-    return redirect(url_for("index"))
+    return redirect(next_url)
 
 
 @app.route("/auth/logout", methods=["POST"])
@@ -446,7 +510,7 @@ def update_profile():
     current_user = get_current_user()
     if not current_user["is_authenticated"]:
         flash("请先登录后再修改资料。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(_resolve_next_url(default_endpoint="index")))
 
     name = request.form.get("user_name", "").strip()[:20]
     avatar_seed = request.form.get("avatar_seed", "sky").strip()
@@ -475,7 +539,7 @@ def update_profile():
 def reset_profile():
     if not get_current_user()["is_authenticated"]:
         flash("请先登录后再修改资料。", "error")
-        return redirect(url_for("login_page"))
+        return redirect(_with_open_login_flag(_resolve_next_url(default_endpoint="index")))
 
     current_email = session.get("user_email", "")
     current_id = session.get("user_id", "")
@@ -514,13 +578,18 @@ def guide_comment(stage_slug: str):
 
     page_key = f"{stage_slug}:{valid_step['id']}"
 
+    target_url = url_for("guide", stage_slug=stage_slug, step=valid_step["id"])
+
     try:
         create_comment("guide", page_key, request.form.get("content", ""))
         flash("评论已发布", "success")
     except ValueError as err:
-        flash(str(err), "error")
+        message = str(err)
+        flash(message, "error")
+        if "请先登录后发表评论" in message:
+            target_url = _with_open_login_flag(target_url)
 
-    return redirect(url_for("guide", stage_slug=stage_slug, step=valid_step["id"]))
+    return redirect(target_url)
 
 
 @app.route("/guide/<stage_slug>/step/<int:step_id>/complete", methods=["POST"])
@@ -562,13 +631,18 @@ def faq_comment(faq_id: int):
     if not faq:
         abort(404)
 
+    target_url = url_for("faq_detail", faq_id=faq_id)
+
     try:
         create_comment("faq", str(faq_id), request.form.get("content", ""))
         flash("评论已发布", "success")
     except ValueError as err:
-        flash(str(err), "error")
+        message = str(err)
+        flash(message, "error")
+        if "请先登录后发表评论" in message:
+            target_url = _with_open_login_flag(target_url)
 
-    return redirect(url_for("faq_detail", faq_id=faq_id))
+    return redirect(target_url)
 
 
 # ----------------------------
