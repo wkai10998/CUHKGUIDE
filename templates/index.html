@@ -3,34 +3,7 @@
 {% set title = "首页 - 港中文申请一站式助手" %}
 
 {% block body %}
-<section class="text-center py-16 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100">
-  <h1 class="text-3xl md:text-4xl font-bold text-slate-900">港中文申请一站式助手</h1>
-  <p class="mt-3 text-slate-600">从准备到提交，用一个路线图把申请流程讲清楚。</p>
-  <a href="#roadmap" class="inline-block mt-6 rounded-xl bg-brand-600 text-white px-6 py-3 hover:bg-brand-700 transition">查看时间规划路线图</a>
-</section>
-
-{% if last_stage %}
-<section class="mt-6 rounded-xl border border-brand-100 bg-brand-50 p-4">
-  <p class="text-sm text-brand-700">你上次浏览到：
-    <a class="font-semibold underline" href="{{ url_for('guide', stage_slug=last_stage) }}">{{ last_stage }}</a>
-  </p>
-</section>
-{% endif %}
-
-<section id="roadmap" class="py-10">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-2xl font-semibold text-slate-900">申请路线图</h2>
-    <a href="{{ url_for('guide_list') }}" class="text-sm text-brand-700 hover:text-brand-600">进入操作步骤 →</a>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-    {% for stage in stages %}
-      <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="group p-5 border border-slate-200 rounded-xl bg-white hover:shadow-md transition">
-        <div class="text-xs text-slate-400">{{ stage.month }}</div>
-        <div class="mt-2 text-lg font-semibold text-slate-900 group-hover:text-brand-700">{{ stage.title }}</div>
-        <p class="mt-2 text-sm text-slate-600 leading-6">{{ stage.description }}</p>
-      </a>
-    {% endfor %}
-  </div>
-</section>
+{% include "components/home/hero_section.html" %}
+{% include "components/home/timeline_section.html" %}
+{% include "components/home/cta_section.html" %}
 {% endblock %}
