@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -10,12 +13,38 @@
         extend: {
           colors: {
             brand: {
-              50: "#eff6ff",
-              100: "#dbeafe",
-              500: "#3b82f6",
-              600: "#2563eb",
-              700: "#1d4ed8"
+              50: "#faf7fc",
+              100: "#f2ebf7",
+              200: "#e4d4ef",
+              300: "#c7aadf",
+              500: "#7a1f80",
+              600: "#6b1a73",
+              700: "#57115f",
+              800: "#3e0c45"
+            },
+            accent: {
+              100: "#f8eed0",
+              200: "#f0d98a",
+              500: "#a57a1c",
+              600: "#8d6511"
+            },
+            paper: {
+              25: "#fcfbf8",
+              50: "#f7f4ef",
+              100: "#f1ece3"
+            },
+            ink: {
+              900: "#1f1729",
+              700: "#4b4257"
             }
+          },
+          fontFamily: {
+            sans: ["Noto Sans SC", "PingFang SC", "Microsoft YaHei", "sans-serif"],
+            serif: ["Noto Serif SC", "Songti SC", "STSong", "serif"]
+          },
+          boxShadow: {
+            "soft-card": "0 10px 30px -18px rgba(43, 18, 54, 0.35)",
+            "float-card": "0 18px 40px -24px rgba(62, 12, 69, 0.35)"
           }
         }
       }
@@ -24,15 +53,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   <title>{{ title or "港中文申请一站式助手" }}</title>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body class="bg-paper-50 text-ink-900 min-h-screen font-sans">
   {% include "header.html" %}
 
-  <main class="max-w-6xl mx-auto px-4 py-8">
+  <main class="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-10">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="mb-6 space-y-2">
           {% for category, message in messages %}
-            <div class="rounded-lg px-4 py-3 text-sm {% if category == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-rose-50 text-rose-700 border border-rose-200{% endif %}">
+            <div class="rounded-xl px-4 py-3 text-sm shadow-soft-card {% if category == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-rose-50 text-rose-700 border border-rose-200{% endif %}">
               {{ message }}
             </div>
           {% endfor %}
