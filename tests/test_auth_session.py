@@ -48,6 +48,54 @@ class AuthSessionTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("请先登录后发表评论", response.get_data(as_text=True))
 
+    def test_update_profile_persists_to_supabase(self):
+        with self.client.session_transaction() as session:
+            session["user_id"] = "11111111-1111-1111-1111-111111111111"
+            session["user_name"] = "Alice"
+            session["user_email"] = "alice@example.com"
+            session["avatar_seed"] = "sky"
+
+        with patch.object(
+            app_module,
+            "update_user_profile_in_supabase",
+            return_value={"name": "Alice New", "avatar_seed": "rose"},
+        ) as update_profile:
+            response = self.client.post(
+                "/profile",
+                data={"user_name": "Alice New", "avatar_seed": "rose"},
+            )
+
+        self.assertEqual(response.status_code, 302)
+        update_profile.assert_called_once_with(
+            "11111111-1111-1111-1111-111111111111",
+            "Alice New",
+            "rose",
+        )
+        with self.client.session_transaction() as session:
+            self.assertEqual(session.get("user_name"), "Alice New")
+            self.assertEqual(session.get("avatar_seed"), "rose")
+
+    def test_update_profile_shows_error_when_supabase_fails(self):
+        with self.client.session_transaction() as session:
+            session["user_id"] = "11111111-1111-1111-1111-111111111111"
+            session["user_name"] = "Alice"
+            session["user_email"] = "alice@example.com"
+            session["avatar_seed"] = "sky"
+
+        with patch.object(
+            app_module,
+            "update_user_profile_in_supabase",
+            side_effect=RuntimeError("更新资料失败"),
+        ):
+            response = self.client.post(
+                "/profile",
+                data={"user_name": "Alice New", "avatar_seed": "rose"},
+                follow_redirects=True,
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("更新资料失败", response.get_data(as_text=True))
+
 
 if __name__ == "__main__":
     unittest.main()

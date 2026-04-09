@@ -89,7 +89,8 @@ FlaskProject/
 │       └── 500.html
 ├── utils/
 │   ├── __init__.py
-│   └── content_loader.py
+│   ├── content_loader.py
+│   └── supabase_client.py
 └── tests/
     ├── test_auth_session.py
     ├── test_course_structure.py
@@ -104,6 +105,7 @@ FlaskProject/
 
 #### 1) 项目结构（Flask + Jinja2 标准教学结构）
 - 单入口：`app.py`（集中管理路由、业务逻辑、Session）
+- 数据访问层：`utils/supabase_client.py`（统一处理 Supabase users/comments 读写）
 - 模板：`templates/`（`base.html` + `header.html` + `footer.html` + 各页面）
 - 静态资源：`static/css`、`static/js`
 - 内容数据：`content/*.json`（阶段、步骤、专业、FAQ）
