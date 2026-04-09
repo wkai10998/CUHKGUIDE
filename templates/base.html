@@ -72,9 +72,9 @@
     {% block body %}{% endblock %}
   </main>
 
-  {% include "login_modal.html" %}
+  {% include "components/auth/login_modal.html" %}
   {% include "footer.html" %}
-  <script src="{{ url_for('static', filename='js/login_modal.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/components/login_modal.js') }}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -68,6 +68,8 @@ FlaskProject/
 ├── static/
 │   ├── css/app.css
 │   ├── js/
+│   │   ├── components/
+│   │   │   └── login_modal.js
 │   │   ├── programs.js
 │   │   ├── faq.js
 │   │   └── guide.js
@@ -76,6 +78,13 @@ FlaskProject/
 │   ├── base.html
 │   ├── header.html
 │   ├── footer.html
+│   ├── components/
+│   │   ├── auth/
+│   │   │   └── login_modal.html
+│   │   └── home/
+│   │       ├── hero_section.html
+│   │       ├── timeline_section.html
+│   │       └── cta_section.html
 │   ├── index.html
 │   ├── programs.html
 │   ├── guide_list.html
@@ -106,7 +115,7 @@ FlaskProject/
 #### 1) 项目结构（Flask + Jinja2 标准教学结构）
 - 单入口：`app.py`（集中管理路由、业务逻辑、Session）
 - 数据访问层：`utils/supabase_client.py`（统一处理 Supabase users/comments 读写）
-- 模板：`templates/`（`base.html` + `header.html` + `footer.html` + 各页面）
+- 模板：`templates/`（`base.html` 只负责 include 与 block；页面按 `components/` 组织）
 - 静态资源：`static/css`、`static/js`
 - 内容数据：`content/*.json`（阶段、步骤、专业、FAQ）
 - 数据库：Supabase（用户与评论持久化）
@@ -152,6 +161,12 @@ FlaskProject/
 - 公共组件：`header.html`、`footer.html`
 - 页面模板通过 `{% extends %}` + `{% block %}` 复用结构
 - 导航、登录态、用户信息通过模板上下文统一注入
+
+### 模板分层规范（已落地）
+- `base.html`：只保留全局骨架与 include，不写具体业务页面内容
+- `templates/components/home/`：首页分段组件（hero/timeline/cta）
+- `templates/components/auth/`：认证相关组件（如登录弹窗）
+- 页面模板（如 `index.html`）只负责组合组件，不堆叠大段 HTML
 
 ### Part4：JavaScript 交互
 
