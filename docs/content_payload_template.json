@@ -1,0 +1,39 @@
+{
+  "owner": "同学姓名",
+  "stages": [
+    {
+      "slug": "apply",
+      "title": "注册账号 / 网申开始",
+      "month_range": "10-11月",
+      "description": "阶段说明",
+      "steps": [
+        {
+          "id": 1,
+          "title": "步骤标题",
+          "image": "guides/register.svg",
+          "tutorial": [
+            "操作说明1",
+            "操作说明2",
+            "操作说明3"
+          ],
+          "notes": [
+            "注意事项1",
+            "注意事项2"
+          ],
+          "materials": [
+            "材料1",
+            "材料2"
+          ]
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": 101,
+      "title": "问题标题",
+      "category": "材料",
+      "answer": "标准答案（2-4句）"
+    }
+  ]
+}

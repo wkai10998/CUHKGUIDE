@@ -1,0 +1,17 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Program selection illustration">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ECFEFF"/>
+      <stop offset="1" stop-color="#F8FAFC"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg2)"/>
+  <rect x="220" y="105" width="760" height="465" rx="24" fill="white" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="270" y="175" width="660" height="72" rx="14" fill="#E0F2FE"/>
+  <rect x="270" y="272" width="660" height="72" rx="14" fill="#F0FDFA"/>
+  <rect x="270" y="369" width="660" height="72" rx="14" fill="#ECFEFF"/>
+  <circle cx="300" cy="211" r="10" fill="#0284C7"/>
+  <circle cx="300" cy="308" r="10" fill="#0D9488"/>
+  <circle cx="300" cy="405" r="10" fill="#0891B2"/>
+  <text x="600" y="510" text-anchor="middle" fill="#0F172A" font-size="42" font-family="Arial, sans-serif" font-weight="700">Step 2: Select Program</text>
+</svg>

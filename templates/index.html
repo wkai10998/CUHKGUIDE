@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - 中大硕士申请助手{% endblock %}
+
+{% block content %}
+  <section class="text-center py-16">
+    <h1 class="text-3xl font-bold mb-4">中大硕士申请助手</h1>
+    <p class="text-slate-500 mb-6">一站式梳理申请流程</p>
+    <a href="#roadmap" class="inline-block bg-brand-600 text-white px-6 py-3 rounded-xl hover:bg-brand-700 transition">
+      查看申请路线
+    </a>
+  </section>
+
+  {% if last_stage %}
+    <section class="mb-8 rounded-xl border border-brand-100 bg-brand-50 p-4">
+      <p class="text-sm text-brand-700">上次浏览到阶段：
+        <a class="font-semibold underline" href="{{ url_for('guide', stage_slug=last_stage) }}">{{ last_stage }}</a>
+      </p>
+    </section>
+  {% endif %}
+
+  <section id="roadmap" class="py-8">
+    <h2 class="text-xl font-semibold mb-6">申请路线图</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for stage in stages %}
+        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="p-4 border border-slate-200 rounded-xl bg-white hover:shadow transition">
+          <div class="text-sm text-slate-400">{{ stage.month }}</div>
+          <div class="font-medium">{{ stage.title }}</div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="py-12">
+    <h2 class="text-xl font-semibold mb-4">有问题？</h2>
+    <a href="{{ url_for('qa_list') }}" class="text-brand-700 hover:text-brand-600">进入问答支持 →</a>
+  </section>
+{% endblock %}
