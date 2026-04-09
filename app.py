@@ -19,8 +19,17 @@ from flask import (
     session,
     url_for,
 )
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from utils.content_loader import get_faqs, get_guides, get_programs, get_stages
+
+try:
+    from dotenv import load_dotenv
+except ImportError:  # optional dependency in development
+    load_dotenv = None
+
+if load_dotenv is not None:
+    load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
@@ -30,6 +39,7 @@ SUPABASE_KEY = (
     or os.environ.get("SUPABASE_ANON_KEY", "").strip()
 )
 SUPABASE_COMMENTS_TABLE = os.environ.get("SUPABASE_COMMENTS_TABLE", "comments").strip() or "comments"
+SUPABASE_USERS_TABLE = os.environ.get("SUPABASE_USERS_TABLE", "users").strip() or "users"
 SUPABASE_TIMEOUT_SECONDS = 8
 
 AVATAR_COLORS = {
@@ -41,13 +51,18 @@ AVATAR_COLORS = {
 }
 
 
-def get_current_user() -> dict[str, str]:
+def get_current_user() -> dict[str, object]:
+    user_id = session.get("user_id", "")
+    email = session.get("user_email", "")
     name = session.get("user_name", "游客")
     avatar_seed = session.get("avatar_seed", "sky")
     if avatar_seed not in AVATAR_COLORS:
         avatar_seed = "sky"
 
     return {
+        "id": user_id,
+        "email": email,
+        "is_authenticated": bool(user_id),
         "name": name,
         "avatar_seed": avatar_seed,
         "initial": (name[:1] if name else "游"),
@@ -87,7 +102,7 @@ def list_comments_from_supabase(page_type: str, page_key: str) -> list[dict[str,
         raise RuntimeError("Supabase comments is not configured")
 
     query = (
-        "select=id,user_name,avatar_seed,content,created_at"
+        "select=id,user_id,user_name,avatar_seed,content,created_at"
         f"&page_type=eq.{urllib.parse.quote(page_type, safe='')}"
         f"&page_key=eq.{urllib.parse.quote(page_key, safe='')}"
         "&order=id.desc"
@@ -98,8 +113,13 @@ def list_comments_from_supabase(page_type: str, page_key: str) -> list[dict[str,
     try:
         with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
             data = json.loads(response.read().decode("utf-8"))
-    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as err:
-        raise RuntimeError("failed to fetch comments from Supabase") from err
+    except urllib.error.HTTPError as err:
+        error_text = err.read().decode("utf-8", errors="ignore")
+        if "comments.user_id does not exist" in error_text:
+            raise RuntimeError("Supabase comments 表缺少 user_id 字段，请执行 docs/supabase_comments.sql。") from err
+        raise RuntimeError("读取评论失败，请检查 Supabase comments 表配置。") from err
+    except (urllib.error.URLError, json.JSONDecodeError) as err:
+        raise RuntimeError("读取评论失败，请检查网络与 Supabase 配置。") from err
 
     if not isinstance(data, list):
         raise RuntimeError("Supabase comments response is invalid")
@@ -111,6 +131,7 @@ def list_comments_from_supabase(page_type: str, page_key: str) -> list[dict[str,
         normalized.append(
             {
                 "id": row.get("id", 0),
+                "user_id": row.get("user_id", ""),
                 "user_name": row.get("user_name", "游客"),
                 "avatar_seed": row.get("avatar_seed", "sky"),
                 "content": row.get("content", ""),
@@ -123,6 +144,7 @@ def list_comments_from_supabase(page_type: str, page_key: str) -> list[dict[str,
 def create_comment_in_supabase(
     page_type: str,
     page_key: str,
+    user_id: str,
     user_name: str,
     avatar_seed: str,
     content: str,
@@ -134,6 +156,7 @@ def create_comment_in_supabase(
     payload = {
         "page_type": page_type,
         "page_key": page_key,
+        "user_id": user_id,
         "user_name": user_name,
         "avatar_seed": avatar_seed,
         "content": content,
@@ -149,8 +172,81 @@ def create_comment_in_supabase(
     try:
         with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
             response.read()
-    except (urllib.error.URLError, urllib.error.HTTPError) as err:
-        raise RuntimeError("failed to create comment in Supabase") from err
+    except urllib.error.HTTPError as err:
+        error_text = err.read().decode("utf-8", errors="ignore")
+        if "comments.user_id does not exist" in error_text:
+            raise RuntimeError("Supabase comments 表缺少 user_id 字段，请执行 docs/supabase_comments.sql。") from err
+        raise RuntimeError("评论写入失败，请检查 Supabase comments 表配置。") from err
+    except urllib.error.URLError as err:
+        raise RuntimeError("评论写入失败，请检查网络与 Supabase 配置。") from err
+
+
+def get_user_by_email_from_supabase(email: str) -> dict[str, object] | None:
+    if not is_supabase_comments_enabled():
+        raise RuntimeError("Supabase is not configured")
+
+    query = (
+        "select=id,name,email,password_hash,avatar_seed"
+        f"&email=eq.{urllib.parse.quote(email, safe='')}"
+        "&limit=1"
+    )
+    url = f"{SUPABASE_URL}/rest/v1/{SUPABASE_USERS_TABLE}?{query}"
+    request_obj = urllib.request.Request(url, headers=build_supabase_headers())
+
+    try:
+        with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as err:
+        error_text = err.read().decode("utf-8", errors="ignore")
+        if "Could not find the table 'public.users'" in error_text:
+            raise RuntimeError("Supabase 缺少 users 表，请执行 docs/supabase_comments.sql。") from err
+        raise RuntimeError("读取用户失败，请检查 Supabase users 表配置。") from err
+    except (urllib.error.URLError, json.JSONDecodeError) as err:
+        raise RuntimeError("读取用户失败，请检查网络与 Supabase 配置。") from err
+
+    if not isinstance(data, list):
+        raise RuntimeError("Supabase user response is invalid")
+    if not data:
+        return None
+
+    user = data[0]
+    if not isinstance(user, dict):
+        return None
+    return user
+
+
+def create_user_in_supabase(name: str, email: str, password: str, avatar_seed: str) -> dict[str, object]:
+    if not is_supabase_comments_enabled():
+        raise RuntimeError("Supabase is not configured")
+
+    payload = {
+        "name": name,
+        "email": email,
+        "password_hash": generate_password_hash(password),
+        "avatar_seed": avatar_seed,
+    }
+    headers = build_supabase_headers(include_json=True)
+    headers["Prefer"] = "return=representation"
+    body = json.dumps(payload).encode("utf-8")
+    url = f"{SUPABASE_URL}/rest/v1/{SUPABASE_USERS_TABLE}"
+    request_obj = urllib.request.Request(url, data=body, headers=headers, method="POST")
+
+    try:
+        with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as err:
+        error_text = err.read().decode("utf-8", errors="ignore")
+        if "Could not find the table 'public.users'" in error_text:
+            raise RuntimeError("Supabase 缺少 users 表，请执行 docs/supabase_comments.sql。") from err
+        if "duplicate key value" in error_text or "unique" in error_text:
+            raise ValueError("该邮箱已注册，请直接登录。") from err
+        raise RuntimeError("注册失败，请检查 Supabase users 表配置。") from err
+    except (urllib.error.URLError, json.JSONDecodeError) as err:
+        raise RuntimeError("注册失败，请检查网络与 Supabase 配置。") from err
+
+    if not isinstance(data, list) or not data or not isinstance(data[0], dict):
+        raise RuntimeError("Supabase register response is invalid")
+    return data[0]
 
 
 def list_comments(page_type: str, page_key: str) -> list[dict[str, object]]:
@@ -172,23 +268,27 @@ def create_comment(page_type: str, page_key: str, content: str) -> None:
     if len(text) > 500:
         raise ValueError("评论不能超过 500 字")
 
+    current_user = get_current_user()
+    if not current_user["is_authenticated"]:
+        raise ValueError("请先登录后发表评论")
+
     if not is_supabase_comments_enabled():
         raise ValueError("评论服务未配置 Supabase，请联系管理员设置环境变量。")
 
-    user = get_current_user()
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M")
     try:
         create_comment_in_supabase(
             page_type,
             page_key,
-            user["name"],
-            user["avatar_seed"],
+            str(current_user["id"]),
+            str(current_user["name"]),
+            str(current_user["avatar_seed"]),
             text,
             created_at,
         )
     except RuntimeError as err:
         app.logger.error("Supabase comments write failed: %s", err)
-        raise ValueError("评论服务暂时不可用，请稍后重试") from err
+        raise ValueError(str(err)) from err
 
 
 def find_faq_item(faq_id: int) -> dict[str, object] | None:
@@ -378,11 +478,115 @@ def assistant() -> str:
     )
 
 
+@app.route("/login")
+def login_page() -> str:
+    return render_template("login.html")
+
+
 # ----------------------------
 # 交互路由（POST）
 # ----------------------------
+@app.route("/auth/login", methods=["POST"])
+def auth_login():
+    if not is_supabase_comments_enabled():
+        flash("登录服务未配置 Supabase，请联系管理员。", "error")
+        return redirect(url_for("login_page"))
+
+    email = request.form.get("email", "").strip().lower()
+    password = request.form.get("password", "")
+    if not email or not password:
+        flash("请输入邮箱和密码。", "error")
+        return redirect(url_for("login_page"))
+
+    try:
+        user = get_user_by_email_from_supabase(email)
+    except RuntimeError as err:
+        flash(str(err), "error")
+        return redirect(url_for("login_page"))
+
+    if not user:
+        flash("账号不存在，请先注册。", "error")
+        return redirect(url_for("login_page"))
+
+    stored_hash = str(user.get("password_hash", ""))
+    if not stored_hash or not check_password_hash(stored_hash, password):
+        flash("邮箱或密码错误。", "error")
+        return redirect(url_for("login_page"))
+
+    user_id = str(user.get("id", "")).strip()
+    user_name = str(user.get("name", "用户")).strip()[:20] or "用户"
+    avatar_seed = str(user.get("avatar_seed", "sky")).strip()
+    if avatar_seed not in AVATAR_COLORS:
+        avatar_seed = "sky"
+
+    session["user_id"] = user_id
+    session["user_name"] = user_name
+    session["user_email"] = email
+    session["avatar_seed"] = avatar_seed
+
+    flash("登录成功。", "success")
+    return redirect(url_for("index"))
+
+
+@app.route("/auth/register", methods=["POST"])
+def auth_register():
+    if not is_supabase_comments_enabled():
+        flash("注册服务未配置 Supabase，请联系管理员。", "error")
+        return redirect(url_for("login_page"))
+
+    name = request.form.get("name", "").strip()[:20]
+    email = request.form.get("email", "").strip().lower()
+    password = request.form.get("password", "")
+    avatar_seed = request.form.get("avatar_seed", "sky").strip()
+
+    if avatar_seed not in AVATAR_COLORS:
+        avatar_seed = "sky"
+    if not name:
+        flash("请输入昵称。", "error")
+        return redirect(url_for("login_page"))
+    if "@" not in email or "." not in email:
+        flash("请输入有效邮箱。", "error")
+        return redirect(url_for("login_page"))
+    if len(password) < 6:
+        flash("密码至少 6 位。", "error")
+        return redirect(url_for("login_page"))
+
+    try:
+        created_user = create_user_in_supabase(name, email, password, avatar_seed)
+    except ValueError as err:
+        flash(str(err), "error")
+        return redirect(url_for("login_page"))
+    except RuntimeError as err:
+        flash(str(err), "error")
+        return redirect(url_for("login_page"))
+
+    session["user_id"] = str(created_user.get("id", "")).strip()
+    session["user_name"] = str(created_user.get("name", name)).strip()[:20] or name
+    session["user_email"] = str(created_user.get("email", email)).strip()
+    session["avatar_seed"] = str(created_user.get("avatar_seed", avatar_seed)).strip()
+    if session["avatar_seed"] not in AVATAR_COLORS:
+        session["avatar_seed"] = "sky"
+
+    flash("注册成功并已登录。", "success")
+    return redirect(url_for("index"))
+
+
+@app.route("/auth/logout", methods=["POST"])
+def auth_logout():
+    session.pop("user_id", None)
+    session.pop("user_email", None)
+    session.pop("user_name", None)
+    session.pop("avatar_seed", None)
+    flash("已退出登录。", "success")
+    return redirect(url_for("index"))
+
+
 @app.route("/profile", methods=["POST"])
 def update_profile():
+    if not get_current_user()["is_authenticated"]:
+        flash("请先登录后再修改资料。", "error")
+        return redirect(url_for("login_page"))
+
     name = request.form.get("user_name", "").strip()
     avatar_seed = request.form.get("avatar_seed", "sky").strip()
 
@@ -398,10 +602,22 @@ def update_profile():
 
 @app.route("/profile/reset", methods=["POST"])
 def reset_profile():
+    if not get_current_user()["is_authenticated"]:
+        flash("请先登录后再修改资料。", "error")
+        return redirect(url_for("login_page"))
+
+    current_email = session.get("user_email", "")
+    current_id = session.get("user_id", "")
     session.pop("user_name", None)
     session.pop("avatar_seed", None)
     session.pop("completed_steps", None)
-    flash("已恢复默认身份并清空步骤状态", "success")
+    if current_id:
+        session["user_id"] = current_id
+    if current_email:
+        session["user_email"] = current_email
+    session["user_name"] = "用户"
+    session["avatar_seed"] = "sky"
+    flash("已恢复默认资料并清空步骤状态", "success")
     return redirect(request.referrer or url_for("index"))
 
 

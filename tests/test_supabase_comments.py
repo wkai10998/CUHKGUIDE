@@ -9,6 +9,7 @@ class SupabaseCommentsTestCase(unittest.TestCase):
         expected_rows = [
             {
                 "id": 1,
+                "user_id": "11111111-1111-1111-1111-111111111111",
                 "user_name": "Alice",
                 "avatar_seed": "sky",
                 "content": "Test comment",
@@ -37,7 +38,13 @@ class SupabaseCommentsTestCase(unittest.TestCase):
             patch.object(
                 app_module,
                 "get_current_user",
-                return_value={"name": "Alice", "avatar_seed": "sky", "initial": "A"},
+                return_value={
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "name": "Alice",
+                    "avatar_seed": "sky",
+                    "initial": "A",
+                    "is_authenticated": True,
+                },
             ),
         ):
             app_module.create_comment("faq", "1", "New comment")
@@ -45,19 +52,24 @@ class SupabaseCommentsTestCase(unittest.TestCase):
         args = supabase_create.call_args.args
         self.assertEqual(args[0], "faq")
         self.assertEqual(args[1], "1")
-        self.assertEqual(args[2], "Alice")
-        self.assertEqual(args[3], "sky")
-        self.assertEqual(args[4], "New comment")
-        self.assertRegex(args[5], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+        self.assertEqual(args[2], "11111111-1111-1111-1111-111111111111")
+        self.assertEqual(args[3], "Alice")
+        self.assertEqual(args[4], "sky")
+        self.assertEqual(args[5], "New comment")
+        self.assertRegex(args[6], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
 
     def test_create_comment_raises_when_supabase_not_configured(self):
         with (
             patch.object(app_module, "is_supabase_comments_enabled", return_value=False),
-            patch.object(
-                app_module,
-                "get_current_user",
-                side_effect=AssertionError("should fail before reading request-bound user"),
-            ),
+            patch.object(app_module, "get_current_user", return_value={"is_authenticated": True}),
+        ):
+            with self.assertRaises(ValueError):
+                app_module.create_comment("faq", "1", "New comment")
+
+    def test_create_comment_requires_login(self):
+        with (
+            patch.object(app_module, "is_supabase_comments_enabled", return_value=True),
+            patch.object(app_module, "get_current_user", return_value={"is_authenticated": False}),
         ):
             with self.assertRaises(ValueError):
                 app_module.create_comment("faq", "1", "New comment")
