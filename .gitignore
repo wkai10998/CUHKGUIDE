@@ -5,7 +5,3 @@ __pycache__/
 .env
 .env.*
 !.env.example
-knowledge_base/raw/*
-!knowledge_base/raw/.gitkeep
-knowledge_base/processed/*
-!knowledge_base/processed/.gitkeep

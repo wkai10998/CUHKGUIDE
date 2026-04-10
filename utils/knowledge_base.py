@@ -1,8 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from utils.content_loader import get_faqs, get_guides, get_programs
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+RAG_TEXT_PATH = BASE_DIR / "content" / "rag_kb.txt"
+
+
+def _load_rag_text() -> str:
+    if not RAG_TEXT_PATH.exists():
+        return ""
+    text = RAG_TEXT_PATH.read_text(encoding="utf-8", errors="ignore")
+    return " ".join(text.split()).strip()
 
 
 def build_knowledge_chunks() -> list[dict[str, Any]]:
@@ -44,5 +55,16 @@ def build_knowledge_chunks() -> list[dict[str, Any]]:
                     "content": content,
                 }
             )
+
+    rag_text = _load_rag_text()
+    if rag_text:
+        chunks.append(
+            {
+                "source_type": "external",
+                "source": "外部知识库 · rag_kb.txt",
+                "link": "/assistant",
+                "content": rag_text,
+            }
+        )
 
     return chunks
