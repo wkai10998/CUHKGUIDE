@@ -199,6 +199,40 @@ body {
   border-color: rgba(122, 31, 128, 0.35);
 }
 
+.cuhk-flow {
+  isolation: isolate;
+}
+
+.timeline-flow-path {
+  fill: none;
+  stroke: rgba(114, 37, 182, 0.9);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 18 18;
+  filter: drop-shadow(0 2px 2px rgba(63, 14, 99, 0.25));
+}
+
+.cuhk-stage-card {
+  position: relative;
+  border: 4px solid #15131a;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 9px 9px 0 #101012;
+  min-height: 14rem;
+}
+
+.cuhk-stage-card-yellow {
+  background: linear-gradient(145deg, #ffd90a 0%, #f9ca12 100%);
+}
+
+.cuhk-stage-card-pink {
+  background: linear-gradient(145deg, #f48fb2 0%, #ef7fa8 100%);
+}
+
+.cuhk-stage-card-purple {
+  background: linear-gradient(145deg, #ad8df2 0%, #9a7de8 100%);
+}
+
 code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -206,6 +240,23 @@ code {
 @media (max-width: 1024px) {
   .cuhk-timeline-grid::before {
     display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .cuhk-stage-card[data-side="left"] {
+    margin-right: 2.5rem;
+  }
+
+  .cuhk-stage-card[data-side="right"] {
+    margin-left: 2.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .cuhk-stage-card {
+    box-shadow: 6px 6px 0 #101012;
+    min-height: auto;
   }
 }
 

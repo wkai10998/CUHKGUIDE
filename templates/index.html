@@ -3,7 +3,11 @@
 {% set title = "首页 - 港中文申请一站式助手" %}
 
 {% block body %}
-{% include "components/home/hero_section.html" %}
-{% include "components/home/timeline_section.html" %}
-{% include "components/home/cta_section.html" %}
+{% include "hero_section.html" %}
+{% include "timeline_section.html" %}
+{% include "cta_section.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/home_timeline.js') }}"></script>
 {% endblock %}

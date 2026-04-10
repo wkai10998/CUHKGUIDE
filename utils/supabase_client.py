@@ -19,11 +19,15 @@ def _get_config() -> dict[str, str]:
     )
     comments_table = os.environ.get("SUPABASE_COMMENTS_TABLE", "comments").strip() or "comments"
     users_table = os.environ.get("SUPABASE_USERS_TABLE", "users").strip() or "users"
+    rag_upsert_rpc = os.environ.get("SUPABASE_RAG_UPSERT_RPC", "upsert_rag_chunks").strip() or "upsert_rag_chunks"
+    rag_match_rpc = os.environ.get("SUPABASE_RAG_MATCH_RPC", "match_rag_chunks").strip() or "match_rag_chunks"
     return {
         "url": url,
         "key": key,
         "comments_table": comments_table,
         "users_table": users_table,
+        "rag_upsert_rpc": rag_upsert_rpc,
+        "rag_match_rpc": rag_match_rpc,
     }
 
 
@@ -43,6 +47,42 @@ def _build_headers(key: str, include_json: bool = False) -> dict[str, str]:
     if include_json:
         headers["Content-Type"] = "application/json"
     return headers
+
+
+def _post_rpc(rpc_name: str, payload: dict[str, object]) -> object:
+    config = _get_config()
+    if not is_supabase_enabled():
+        raise RuntimeError("Supabase is not configured")
+
+    url = f"{config['url']}/rest/v1/rpc/{rpc_name}"
+    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    headers = _build_headers(config["key"], include_json=True)
+    request_obj = urllib.request.Request(url, data=body, headers=headers, method="POST")
+
+    try:
+        with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
+            raw = response.read().decode("utf-8")
+    except urllib.error.HTTPError as err:
+        error_text = err.read().decode("utf-8", errors="ignore")
+        raise RuntimeError(error_text or f"Supabase RPC `{rpc_name}` 调用失败。") from err
+    except urllib.error.URLError as err:
+        raise RuntimeError(f"Supabase RPC `{rpc_name}` 调用失败，请检查网络配置。") from err
+
+    if not raw:
+        return None
+
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as err:
+        raise RuntimeError(f"Supabase RPC `{rpc_name}` 返回格式异常。") from err
+
+
+def _vector_literal(values: list[float]) -> str:
+    if not values:
+        raise ValueError("向量不能为空")
+    parts = [format(float(value), ".10f").rstrip("0").rstrip(".") for value in values]
+    normalized = [item if item else "0" for item in parts]
+    return "[" + ",".join(normalized) + "]"
 
 
 def list_comments(page_type: str, page_key: str) -> list[dict[str, object]]:
@@ -238,3 +278,63 @@ def update_user_profile(user_id: str, name: str, avatar_seed: str) -> dict[str, 
         return data[0]
 
     return {"id": user_id, "name": name, "avatar_seed": avatar_seed}
+
+
+def upsert_rag_chunks(rows: list[dict[str, object]]) -> int:
+    if not rows:
+        return 0
+
+    config = _get_config()
+    try:
+        result = _post_rpc(config["rag_upsert_rpc"], {"payload": rows})
+    except RuntimeError as err:
+        message = str(err)
+        if "upsert_rag_chunks" in message or "function" in message:
+            raise RuntimeError("Supabase 缺少 RAG RPC，请先执行 docs/supabase_rag.sql。") from err
+        raise RuntimeError(f"写入 RAG 向量失败：{message}") from err
+
+    if isinstance(result, int):
+        return result
+    if isinstance(result, float):
+        return int(result)
+    return len(rows)
+
+
+def match_rag_chunks(
+    query_embedding: list[float],
+    match_count: int = 4,
+    min_similarity: float = 0.45,
+) -> list[dict[str, object]]:
+    config = _get_config()
+    payload = {
+        "query_embedding": _vector_literal(query_embedding),
+        "match_count": max(1, int(match_count)),
+        "min_similarity": float(min_similarity),
+    }
+
+    try:
+        result = _post_rpc(config["rag_match_rpc"], payload)
+    except RuntimeError as err:
+        message = str(err)
+        if "match_rag_chunks" in message or "function" in message:
+            raise RuntimeError("Supabase 缺少 RAG 检索 RPC，请先执行 docs/supabase_rag.sql。") from err
+        raise RuntimeError(f"RAG 检索失败：{message}") from err
+
+    if not isinstance(result, list):
+        raise RuntimeError("RAG 检索结果格式异常。")
+
+    normalized: list[dict[str, object]] = []
+    for row in result:
+        if not isinstance(row, dict):
+            continue
+        normalized.append(
+            {
+                "chunk_uid": row.get("chunk_uid", ""),
+                "source": row.get("source", ""),
+                "link": row.get("link", ""),
+                "source_type": row.get("source_type", ""),
+                "content": row.get("content", ""),
+                "similarity": float(row.get("similarity", 0.0)),
+            }
+        )
+    return normalized

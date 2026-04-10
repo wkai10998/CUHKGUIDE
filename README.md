@@ -33,22 +33,46 @@ pip install -r requirements.txt
   - `content/*.json` 管理静态内容
   - Supabase `users` 存账号（邮箱 + 密码哈希）
   - Supabase `comments` 存评论（绑定 `user_id`）
+  - Supabase `rag_chunks` 存向量片段（用于 RAG 检索）
 
 ## Supabase 配置（用户 + 评论）
 
 1. 在 Supabase SQL Editor 执行 [supabase_comments.sql](/Users/wkai/Desktop/FlaskProject/docs/supabase_comments.sql)
-2. 复制 [.env.example](/Users/wkai/Desktop/FlaskProject/.env.example) 为 `.env`（项目会自动读取）
-3. 启动前设置：
+2. 在 Supabase SQL Editor 执行 [supabase_rag.sql](/Users/wkai/Desktop/FlaskProject/docs/supabase_rag.sql)
+3. 复制 [.env.example](/Users/wkai/Desktop/FlaskProject/.env.example) 为 `.env`（项目会自动读取）
+4. 启动前设置：
 
 ```bash
 export SUPABASE_URL="https://<project-ref>.supabase.co"
 export SUPABASE_SERVICE_ROLE_KEY="<your-service-role-key>"
+export ZHIPU_API_KEY="<your-zhipu-api-key>"
 ```
 
 可选变量：
 - `SUPABASE_ANON_KEY`：未提供 `SUPABASE_SERVICE_ROLE_KEY` 时可用
 - `SUPABASE_COMMENTS_TABLE`：默认 `comments`
 - `SUPABASE_USERS_TABLE`：默认 `users`
+- `ZHIPU_CHAT_MODEL`：例如 `glm-4.7-flash`
+- `ZHIPU_EMBEDDING_MODEL`：默认 `embedding-3`
+- `RAG_EMBEDDING_DIM`：默认 `1024`（必须与 `supabase_rag.sql` 一致）
+
+## RAG 初始化步骤（智能助手）
+
+1. 准备知识源：当前使用 `content/*.json`（FAQ/专业/步骤）自动构建知识片段  
+2. 执行向量入库脚本（会自动切片 + 调 embedding + 写入 Supabase）：
+
+```bash
+.venv/bin/python scripts/ingest_rag.py
+```
+
+3. 启动 Flask：
+
+```bash
+.venv/bin/python app.py
+```
+
+4. 打开 [http://127.0.0.1:5000/assistant](http://127.0.0.1:5000/assistant) 测试  
+5. 若智谱或向量检索异常，系统会自动回退到本地关键词检索，保证页面可用
 
 ## 目录结构
 
@@ -63,7 +87,10 @@ FlaskProject/
 ├── docs/
 │   ├── presentation_notes.md
 │   ├── team_split.md
-│   └── supabase_comments.sql
+│   ├── supabase_comments.sql
+│   └── supabase_rag.sql
+├── scripts/
+│   └── ingest_rag.py
 ├── static/
 │   ├── css/app.css
 │   ├── js/
@@ -77,13 +104,10 @@ FlaskProject/
 │   ├── base.html
 │   ├── header.html
 │   ├── footer.html
-│   ├── components/
-│   │   ├── auth/
-│   │   │   └── login_modal.html
-│   │   └── home/
-│   │       ├── hero_section.html
-│   │       ├── timeline_section.html
-│   │       └── cta_section.html
+│   ├── login_modal.html
+│   ├── hero_section.html
+│   ├── timeline_section.html
+│   ├── cta_section.html
 │   ├── index.html
 │   ├── programs.html
 │   ├── guide_list.html
@@ -98,8 +122,12 @@ FlaskProject/
 ├── utils/
 │   ├── __init__.py
 │   ├── content_loader.py
-│   └── supabase_client.py
+│   ├── knowledge_base.py
+│   ├── supabase_client.py
+│   ├── zhipu_client.py
+│   └── rag_pipeline.py
 └── tests/
+    ├── test_assistant_rag.py
     ├── test_auth_session.py
     ├── test_course_structure.py
     └── test_supabase_comments.py
@@ -114,7 +142,7 @@ FlaskProject/
 #### 1) 项目结构（Flask + Jinja2 标准教学结构）
 - 单入口：`app.py`（集中管理路由、业务逻辑、Session）
 - 数据访问层：`utils/supabase_client.py`（统一处理 Supabase users/comments 读写）
-- 模板：`templates/`（`base.html` 只负责 include 与 block；页面按 `components/` 组织）
+- 模板：`templates/`（`base.html` 只负责 include 与 block；片段模板平铺在同级目录）
 - 静态资源：`static/css`、`static/js`
 - 内容数据：`content/*.json`（阶段、步骤、专业、FAQ）
 - 数据库：Supabase（用户与评论持久化）
@@ -163,8 +191,8 @@ FlaskProject/
 
 ### 模板分层规范（已落地）
 - `base.html`：只保留全局骨架与 include，不写具体业务页面内容
-- `templates/components/home/`：首页分段组件（hero/timeline/cta）
-- `templates/components/auth/`：认证相关组件（如登录弹窗）
+- `templates/hero_section.html`、`templates/timeline_section.html`、`templates/cta_section.html`：首页分段片段
+- `templates/login_modal.html`：认证相关弹窗片段
 - 页面模板（如 `index.html`）只负责组合组件，不堆叠大段 HTML
 
 ### Part4：JavaScript 交互

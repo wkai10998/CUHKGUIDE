@@ -2,6 +2,7 @@ import re
 import unittest
 
 from app import app
+from utils.content_loader import get_stages
 
 
 class CourseStructureTestCase(unittest.TestCase):
@@ -60,6 +61,22 @@ class CourseStructureTestCase(unittest.TestCase):
             last_index = current_index
 
         self.assertNotIn(">文件清单</a>", nav_html)
+
+    def test_home_timeline_uses_svg_connector_with_all_stages(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        html = response.get_data(as_text=True)
+
+        self.assertIn('id="timeline-connector-layer"', html)
+        self.assertIn("static/js/home_timeline.js", html)
+
+        expected_count = len(get_stages())
+        actual_count = html.count('data-stage-card="')
+        self.assertEqual(
+            actual_count,
+            expected_count,
+            msg=f"expected {expected_count} stage cards in timeline, got {actual_count}",
+        )
 
 
 if __name__ == "__main__":

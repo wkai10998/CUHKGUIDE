@@ -1,0 +1,191 @@
+from __future__ import annotations
+
+import hashlib
+import os
+from typing import Any
+
+from utils import supabase_client, zhipu_client
+from utils.knowledge_base import build_knowledge_chunks
+
+DEFAULT_CHUNK_SIZE = 420
+DEFAULT_CHUNK_OVERLAP = 80
+
+
+def _get_int_env(name: str, fallback: int) -> int:
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return fallback
+    try:
+        return int(raw)
+    except ValueError:
+        return fallback
+
+
+def _get_float_env(name: str, fallback: float) -> float:
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return fallback
+    try:
+        return float(raw)
+    except ValueError:
+        return fallback
+
+
+def is_rag_runtime_ready() -> bool:
+    return supabase_client.is_supabase_enabled() and zhipu_client.is_zhipu_enabled()
+
+
+def split_text(text: str, chunk_size: int, overlap: int) -> list[str]:
+    content = " ".join(text.split())
+    if not content:
+        return []
+
+    normalized_chunk_size = max(1, int(chunk_size))
+    normalized_overlap = max(0, min(int(overlap), normalized_chunk_size - 1))
+    if len(content) <= normalized_chunk_size:
+        return [content]
+
+    step = max(1, normalized_chunk_size - normalized_overlap)
+    chunks: list[str] = []
+    start = 0
+    while start < len(content):
+        end = min(len(content), start + normalized_chunk_size)
+        piece = content[start:end].strip()
+        if piece:
+            chunks.append(piece)
+        if end >= len(content):
+            break
+        start += step
+    return chunks
+
+
+def build_rag_records(chunk_size: int | None = None, overlap: int | None = None) -> list[dict[str, Any]]:
+    normalized_chunk_size = chunk_size or _get_int_env("RAG_CHUNK_SIZE", DEFAULT_CHUNK_SIZE)
+    normalized_overlap = overlap if overlap is not None else _get_int_env("RAG_CHUNK_OVERLAP", DEFAULT_CHUNK_OVERLAP)
+
+    records: list[dict[str, Any]] = []
+    for chunk in build_knowledge_chunks():
+        text = str(chunk.get("content", "")).strip()
+        if not text:
+            continue
+        pieces = split_text(text, normalized_chunk_size, normalized_overlap)
+        for piece_index, piece in enumerate(pieces):
+            uid_seed = (
+                f"{chunk.get('source_type', 'general')}|{chunk.get('source', '')}|"
+                f"{chunk.get('link', '')}|{piece_index}|{piece}"
+            )
+            chunk_uid = hashlib.sha1(uid_seed.encode("utf-8")).hexdigest()
+            records.append(
+                {
+                    "chunk_uid": chunk_uid,
+                    "source": str(chunk.get("source", "未知来源")),
+                    "link": str(chunk.get("link", "/")),
+                    "source_type": str(chunk.get("source_type", "general")),
+                    "content": piece,
+                    "metadata": {"piece_index": piece_index},
+                }
+            )
+    return records
+
+
+def _embedding_literal(values: list[float]) -> str:
+    parts = [format(float(value), ".10f").rstrip("0").rstrip(".") for value in values]
+    normalized = [item if item else "0" for item in parts]
+    return "[" + ",".join(normalized) + "]"
+
+
+def ingest_knowledge_base(
+    chunk_size: int | None = None,
+    overlap: int | None = None,
+    batch_size: int = 32,
+) -> dict[str, int]:
+    if not is_rag_runtime_ready():
+        raise RuntimeError("请先配置 SUPABASE_* 和 ZHIPU_API_KEY，再执行向量入库。")
+
+    records = build_rag_records(chunk_size=chunk_size, overlap=overlap)
+    if not records:
+        return {"records": 0, "upserted": 0}
+
+    embedding_dim = _get_int_env("RAG_EMBEDDING_DIM", 1024)
+    safe_batch_size = max(1, min(64, int(batch_size)))
+
+    upserted = 0
+    for index in range(0, len(records), safe_batch_size):
+        batch = records[index : index + safe_batch_size]
+        batch_text = [str(item["content"]) for item in batch]
+        vectors = zhipu_client.create_embeddings(batch_text, dimensions=embedding_dim)
+
+        payload: list[dict[str, object]] = []
+        for item, vector in zip(batch, vectors):
+            payload.append(
+                {
+                    "chunk_uid": item["chunk_uid"],
+                    "source": item["source"],
+                    "link": item["link"],
+                    "source_type": item["source_type"],
+                    "content": item["content"],
+                    "metadata": item["metadata"],
+                    "embedding": _embedding_literal(vector),
+                }
+            )
+        upserted += supabase_client.upsert_rag_chunks(payload)
+
+    return {"records": len(records), "upserted": upserted}
+
+
+def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
+    prompt = question.strip()
+    if len(prompt) < 2:
+        return "问题太短了，请补充更具体的需求，例如“推荐信要提前多久联系老师？”。", []
+
+    if not is_rag_runtime_ready():
+        raise RuntimeError("RAG 运行依赖未配置完成。")
+
+    embedding_dim = _get_int_env("RAG_EMBEDDING_DIM", 1024)
+    top_k = _get_int_env("RAG_TOP_K", 4)
+    min_similarity = _get_float_env("RAG_MIN_SIMILARITY", 0.45)
+
+    query_vector = zhipu_client.create_embeddings([prompt], dimensions=embedding_dim)[0]
+    matches = supabase_client.match_rag_chunks(
+        query_embedding=query_vector,
+        match_count=top_k,
+        min_similarity=min_similarity,
+    )
+
+    if not matches:
+        return (
+            "我没有在当前知识库检索到直接证据。你可以补充更具体关键词（专业名、材料名、时间点）后再试。",
+            [],
+        )
+
+    context_lines: list[str] = []
+    sources: list[dict[str, str]] = []
+    seen_source: set[str] = set()
+    for index, item in enumerate(matches, start=1):
+        source = str(item.get("source", "未知来源"))
+        link = str(item.get("link", "/assistant"))
+        content = str(item.get("content", "")).strip()
+        similarity = float(item.get("similarity", 0.0))
+        context_lines.append(
+            f"[{index}] 来源: {source}\n"
+            f"链接: {link}\n"
+            f"相关度: {similarity:.3f}\n"
+            f"片段: {content}"
+        )
+        source_key = f"{source}|{link}"
+        if source_key not in seen_source:
+            sources.append({"source": source, "link": link})
+            seen_source.add(source_key)
+
+    system_prompt = (
+        "你是港中文申请助手。请只基于给定上下文回答。"
+        "如果上下文不足，明确说“未检索到证据”，不要编造。"
+    )
+    user_prompt = (
+        f"用户问题：{prompt}\n\n"
+        "检索上下文：\n"
+        f"{chr(10).join(context_lines)}\n\n"
+        "请输出：1) 结论 2) 关键依据 3) 风险提示（如信息可能变更）。"
+    )
+    answer = zhipu_client.generate_answer(system_prompt=system_prompt, user_prompt=user_prompt)
+    return answer, sources[:3]
