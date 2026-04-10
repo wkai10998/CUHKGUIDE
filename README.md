@@ -31,6 +31,7 @@ pip install -r requirements.txt
 - Session：登录状态、用户信息、步骤完成状态
 - 数据层：
   - `content/*.json` 管理静态内容
+  - `knowledge_base/raw/*` 管理外部 RAG 知识文件（pdf/txt/docx/json/csv/md）
   - Supabase `users` 存账号（邮箱 + 密码哈希）
   - Supabase `comments` 存评论（绑定 `user_id`）
   - Supabase `rag_chunks` 存向量片段（用于 RAG 检索）
@@ -58,11 +59,18 @@ export ZHIPU_API_KEY="<your-zhipu-api-key>"
 
 ## RAG 初始化步骤（智能助手）
 
-1. 准备知识源：当前使用 `content/*.json`（FAQ/专业/步骤）自动构建知识片段  
+1. 把外部知识文件放进 `knowledge_base/raw/`  
+支持：`pdf`、`txt`、`docx`、`json`、`csv`、`md`  
 2. 执行向量入库脚本（会自动切片 + 调 embedding + 写入 Supabase）：
 
 ```bash
 .venv/bin/python scripts/ingest_rag.py
+```
+
+如需把 `content/*.json` 业务数据也一起入库：
+
+```bash
+.venv/bin/python scripts/ingest_rag.py --include-app-content
 ```
 
 3. 启动 Flask：
@@ -84,6 +92,11 @@ FlaskProject/
 │   ├── guide_steps.json
 │   ├── programs.json
 │   └── faq.json
+├── knowledge_base/
+│   ├── raw/
+│   │   └── .gitkeep
+│   └── processed/
+│       └── .gitkeep
 ├── docs/
 │   ├── presentation_notes.md
 │   ├── team_split.md
@@ -122,6 +135,7 @@ FlaskProject/
 ├── utils/
 │   ├── __init__.py
 │   ├── content_loader.py
+│   ├── knowledge_files.py
 │   ├── knowledge_base.py
 │   ├── supabase_client.py
 │   ├── zhipu_client.py
@@ -130,6 +144,8 @@ FlaskProject/
     ├── test_assistant_rag.py
     ├── test_auth_session.py
     ├── test_course_structure.py
+    ├── test_knowledge_files.py
+    ├── test_rag_pipeline.py
     └── test_supabase_comments.py
 ```
 

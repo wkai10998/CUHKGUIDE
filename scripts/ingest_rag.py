@@ -21,6 +21,17 @@ def main() -> int:
     parser.add_argument("--chunk-size", type=int, default=None, help="切片长度（按字符）。")
     parser.add_argument("--overlap", type=int, default=None, help="切片重叠长度。")
     parser.add_argument("--batch-size", type=int, default=32, help="embedding 批量大小（<=64）。")
+    parser.add_argument(
+        "--include-app-content",
+        action="store_true",
+        help="同时把 content/*.json 业务内容也写入向量库（默认不包含）。",
+    )
+    parser.add_argument(
+        "--kb-dir",
+        type=str,
+        default=None,
+        help="外部知识库目录（默认 knowledge_base/raw）。",
+    )
     args = parser.parse_args()
 
     if load_dotenv is not None:
@@ -30,6 +41,9 @@ def main() -> int:
         chunk_size=args.chunk_size,
         overlap=args.overlap,
         batch_size=args.batch_size,
+        include_app_content=args.include_app_content,
+        include_external_content=True,
+        kb_dir=args.kb_dir,
     )
     print(f"RAG ingest 完成：生成切片 {result['records']} 条，写入/更新 {result['upserted']} 条。")
     return 0

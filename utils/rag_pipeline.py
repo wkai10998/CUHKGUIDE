@@ -5,6 +5,7 @@ import os
 from typing import Any
 
 from utils import supabase_client, zhipu_client
+from utils.knowledge_files import load_external_knowledge_documents
 from utils.knowledge_base import build_knowledge_chunks
 
 DEFAULT_CHUNK_SIZE = 420
@@ -29,6 +30,13 @@ def _get_float_env(name: str, fallback: float) -> float:
         return float(raw)
     except ValueError:
         return fallback
+
+
+def _get_bool_env(name: str, fallback: bool) -> bool:
+    raw = os.environ.get(name, "").strip().lower()
+    if not raw:
+        return fallback
+    return raw in {"1", "true", "yes", "y", "on"}
 
 
 def is_rag_runtime_ready() -> bool:
@@ -59,12 +67,47 @@ def split_text(text: str, chunk_size: int, overlap: int) -> list[str]:
     return chunks
 
 
-def build_rag_records(chunk_size: int | None = None, overlap: int | None = None) -> list[dict[str, Any]]:
+def _collect_knowledge_sources(
+    include_app_content: bool,
+    include_external_content: bool,
+    kb_dir: str | None = None,
+) -> list[dict[str, Any]]:
+    sources: list[dict[str, Any]] = []
+    if include_app_content:
+        sources.extend(build_knowledge_chunks())
+    if include_external_content:
+        sources.extend(load_external_knowledge_documents(base_dir=kb_dir))
+    return sources
+
+
+def build_rag_records(
+    chunk_size: int | None = None,
+    overlap: int | None = None,
+    include_app_content: bool | None = None,
+    include_external_content: bool | None = None,
+    kb_dir: str | None = None,
+) -> list[dict[str, Any]]:
     normalized_chunk_size = chunk_size or _get_int_env("RAG_CHUNK_SIZE", DEFAULT_CHUNK_SIZE)
     normalized_overlap = overlap if overlap is not None else _get_int_env("RAG_CHUNK_OVERLAP", DEFAULT_CHUNK_OVERLAP)
+    resolved_kb_dir = kb_dir or os.environ.get("RAG_KB_DIR", "").strip() or None
+    use_app_content = (
+        include_app_content
+        if include_app_content is not None
+        else _get_bool_env("RAG_INCLUDE_APP_CONTENT", False)
+    )
+    use_external_content = (
+        include_external_content
+        if include_external_content is not None
+        else _get_bool_env("RAG_INCLUDE_EXTERNAL_CONTENT", True)
+    )
+    source_chunks = _collect_knowledge_sources(
+        include_app_content=use_app_content,
+        include_external_content=use_external_content,
+        kb_dir=resolved_kb_dir,
+    )
 
     records: list[dict[str, Any]] = []
-    for chunk in build_knowledge_chunks():
+    for chunk in source_chunks:
         text = str(chunk.get("content", "")).strip()
         if not text:
             continue
@@ -98,11 +141,20 @@ def ingest_knowledge_base(
     chunk_size: int | None = None,
     overlap: int | None = None,
     batch_size: int = 32,
+    include_app_content: bool | None = None,
+    include_external_content: bool | None = None,
+    kb_dir: str | None = None,
 ) -> dict[str, int]:
     if not is_rag_runtime_ready():
         raise RuntimeError("请先配置 SUPABASE_* 和 ZHIPU_API_KEY，再执行向量入库。")
 
-    records = build_rag_records(chunk_size=chunk_size, overlap=overlap)
+    records = build_rag_records(
+        chunk_size=chunk_size,
+        overlap=overlap,
+        include_app_content=include_app_content,
+        include_external_content=include_external_content,
+        kb_dir=kb_dir,
+    )
     if not records:
         return {"records": 0, "upserted": 0}
 
