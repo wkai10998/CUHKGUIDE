@@ -39,23 +39,38 @@
     for (let i = 0; i < cards.length - 1; i += 1) {
       const currentRect = cards[i].getBoundingClientRect();
       const nextRect = cards[i + 1].getBoundingClientRect();
+      const rowWrap = Math.abs(nextRect.top - currentRect.top) > currentRect.height * 0.75;
+
+      if (rowWrap) {
+        const startX = currentRect.left - rootRect.left + currentRect.width / 2;
+        const startY = currentRect.bottom - rootRect.top - 8;
+        const endX = nextRect.left - rootRect.left + nextRect.width / 2;
+        const endY = nextRect.top - rootRect.top + 8;
+        const controlY = startY + (endY - startY) * 0.5;
+        const pathData = `M ${startX} ${startY} C ${startX} ${controlY}, ${endX} ${controlY}, ${endX} ${endY}`;
+
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", pathData);
+        path.setAttribute("class", "timeline-flow-path");
+        svg.appendChild(path);
+        continue;
+      }
 
       const currentCenterX = currentRect.left + currentRect.width / 2;
       const nextCenterX = nextRect.left + nextRect.width / 2;
       const toRight = nextCenterX >= currentCenterX;
 
       const startX = toRight
-        ? currentRect.right - rootRect.left - 12
-        : currentRect.left - rootRect.left + 12;
+        ? currentRect.right - rootRect.left - 10
+        : currentRect.left - rootRect.left + 10;
       const startY = currentRect.top - rootRect.top + currentRect.height / 2;
-
       const endX = toRight
-        ? nextRect.left - rootRect.left + 12
-        : nextRect.right - rootRect.left - 12;
+        ? nextRect.left - rootRect.left + 10
+        : nextRect.right - rootRect.left - 10;
       const endY = nextRect.top - rootRect.top + nextRect.height / 2;
 
       const baseOffset = Math.abs(endX - startX) * 0.5;
-      const controlOffset = Math.max(72, Math.min(180, baseOffset));
+      const controlOffset = Math.max(48, Math.min(120, baseOffset));
       const direction = toRight ? 1 : -1;
 
       const control1X = startX + controlOffset * direction;

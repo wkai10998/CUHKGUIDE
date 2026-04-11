@@ -1,8 +1,53 @@
-在这里放你的外部补充知识内容（纯文本）。
-例如：
-1. 官方链接与更新时间
-2. 申请材料补充说明
-3. 时间节点提醒与风险提示
+【港中文申请补充知识库（来自产品内容文档）】
 
-每次更新此文件后，重新执行：
-.venv/bin/python scripts/ingest_rag.py
+一、官方入口与时间
+1) 研究生院官网：https://www.gs.cuhk.edu.hk/admissions
+2) 在线申请系统：https://www.gradsch.cuhk.edu.hk/OnlineApp/login_email.aspx
+3) 2025-26 学年申请通常从 2025 年 9 月 1 日起开放。
+
+二、申请费用（按项目）
+1) 常规项目：HK$300
+2) 商学院部分项目：HK$400
+3) MBA：HK$800
+4) 费用一般不可退还、不可转让。
+
+三、英语与考试要求（通用参考）
+1) IELTS (Academic) >= 6.5
+2) TOEFL iBT >= 79
+3) GMAT Verbal >= 21
+4) 不接受 CET-6
+5) 不接受 TOEFL MyBest Score
+6) 接受 IELTS for UKVI (Academic)
+7) TOEFL 送分代码：0812（The Chinese University of Hong Kong）
+
+四、常见材料清单（项目可能有差异）
+1) Academic Certificates / 学位证与毕业证
+2) Official Academic Transcripts / 官方成绩单
+3) Grading Scale Explanation / 评分标准说明
+4) English Language Test Reports / 语言成绩单
+5) GMAT/GRE 成绩（如项目要求）
+6) ID Card / Passport / 身份证或护照
+7) Recommendation Letters / 推荐信（常见 2 封）
+8) Personal Statement / 个人陈述
+9) Curriculum Vitae / 简历
+10) Internship Certificates / 实习证明
+11) Awards & Certifications / 获奖与资格证书
+
+五、术语速查
+1) TL = Timeline（申请时间线）
+2) BG = Background（申请背景）
+3) GPA = Grade Point Average（平均绩点）
+4) PS = Personal Statement（个人陈述）
+5) CV = Curriculum Vitae（简历）
+6) RL = Recommendation Letter（推荐信）
+7) Conditional Offer = 有条件录取
+8) Unconditional Offer = 无条件录取
+9) Deposit = 留位费
+10) Priority Round = 优先轮
+11) Clearing Round = 补录轮
+
+六、流程提醒
+1) 优先轮（Priority Round）通常机会更大，建议尽量早申。
+2) 提交前需重点核对姓名拼写、证件号、材料一致性。
+3) 录取后要关注留位费截止日期和签证材料办理时间。
+4) 自 2025-26 起，内地学历通常需在开学前完成学历验证（如学信网/CSCSE）。

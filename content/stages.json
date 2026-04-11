@@ -1,44 +1,44 @@
 [
   {
     "slug": "prep",
-    "title": "申请前准备",
-    "month": "7-8月",
-    "month_range": "7月至8月",
-    "description": "明确目标专业，整理时间线，避免在正式网申阶段手忙脚乱。"
+    "title": "申请前准备（2.1+2.2）",
+    "month": "申请季前",
+    "month_range": "申请季前",
+    "description": "整合官网规则、材料清单与术语解释，先把申请标准和口径统一。"
   },
   {
     "slug": "docs",
-    "title": "文书材料准备",
-    "month": "9-10月",
-    "month_range": "9月至10月",
-    "description": "集中完成个人陈述、推荐信、成绩单等核心材料。"
+    "title": "网申阶段（2.3）",
+    "month": "9-12月",
+    "month_range": "9月至12月",
+    "description": "按系统页面顺序完成 Step 1-11，从注册到缴费提交。"
   },
   {
     "slug": "apply",
-    "title": "账号注册与系统熟悉",
-    "month": "10-11月",
-    "month_range": "10月至11月",
-    "description": "提前注册网申系统，熟悉页面结构与上传规范。"
+    "title": "申请材料寄送（2.4）",
+    "month": "10-12月",
+    "month_range": "10月至12月",
+    "description": "按项目要求准备并寄送纸质材料，确保在截止日前送达。"
   },
   {
     "slug": "fill",
-    "title": "申请信息填写",
-    "month": "11-12月",
-    "month_range": "11月至12月",
-    "description": "按模块准确填写教育背景、经历、语言成绩等信息。"
+    "title": "申请积极信号（2.5）",
+    "month": "提交后",
+    "month_range": "提交后至放榜前",
+    "description": "识别系统状态和三锁信号，及时采取补件或跟进动作。"
   },
   {
     "slug": "submit",
-    "title": "提交与缴费",
-    "month": "12-1月",
-    "month_range": "12月至次年1月",
-    "description": "最终核对全部字段与附件，完成支付并提交申请。"
+    "title": "缴纳留位费（2.6）",
+    "month": "收到Offer后",
+    "month_range": "收到 Offer 后 2-4 周",
+    "description": "按 Offer 要求完成留位费缴纳和凭证上传，锁定入学名额。"
   },
   {
     "slug": "wait",
-    "title": "结果跟进",
-    "month": "2月+",
-    "month_range": "2月及以后",
-    "description": "跟进申请状态，准备面试与后续补件。"
+    "title": "入学前准备（2.7）",
+    "month": "开学前",
+    "month_range": "开学前 1-2 个月",
+    "description": "办理签证与证件、住宿与开户、学历验证等入学事项。"
   }
 ]

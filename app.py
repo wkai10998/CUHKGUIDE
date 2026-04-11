@@ -326,7 +326,6 @@ def guide(stage_slug: str):
     page_key = f"{stage_slug}:{current_step['id']}"
     completed_steps = get_completed_steps()
     is_completed = page_key in completed_steps
-    comments = list_comments("guide", page_key)
 
     response = make_response(
         render_template(
@@ -334,7 +333,6 @@ def guide(stage_slug: str):
             stage_slug=stage_slug,
             stage=stage,
             current_step=current_step,
-            comments=comments,
             page_key=page_key,
             is_completed=is_completed,
             completed_steps=completed_steps,
@@ -343,6 +341,22 @@ def guide(stage_slug: str):
     )
     response.set_cookie("last_stage", stage_slug, max_age=60 * 60 * 24 * 14)
     return response
+
+
+@app.route("/guide/<stage_slug>/step/<int:step_id>/comments")
+def guide_comments_api(stage_slug: str, step_id: int):
+    guides = get_guides()
+    stage = guides.get(stage_slug)
+    if not stage:
+        abort(404)
+
+    valid_step = next((step for step in stage["steps"] if step["id"] == step_id), None)
+    if valid_step is None:
+        abort(404)
+
+    page_key = f"{stage_slug}:{step_id}"
+    comments = list_comments("guide", page_key)
+    return jsonify({"comments": comments})
 
 
 @app.route("/faq")

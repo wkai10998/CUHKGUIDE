@@ -1,30 +1,28 @@
-<section id="roadmap" class="mt-14 md:mt-16">
-  <div class="text-center mb-10">
-    <h2 class="text-4xl cuhk-display text-ink-900">申请时间线</h2>
-    <p class="mt-3 text-sm md:text-base cuhk-muted">把握每一个关键节点，从容应对。</p>
+<section id="roadmap" class="mt-10 md:mt-12">
+  <div class="text-center mb-6 md:mb-7">
+    <h2 class="text-3xl md:text-4xl cuhk-display text-ink-900">申请时间线</h2>
+    <p class="mt-2 text-sm md:text-base cuhk-muted">把握每一个关键节点，从容应对。</p>
   </div>
 
-  <div id="timeline-flow" class="cuhk-flow relative px-1 md:px-3 py-2">
+  <div id="timeline-flow" class="cuhk-flow relative px-1 md:px-2 py-1">
     <svg
       id="timeline-connector-layer"
       class="hidden md:block absolute inset-0 w-full h-full pointer-events-none"
       aria-hidden="true"
     ></svg>
 
-    <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-y-12">
+    <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-4">
     {% for stage in stages %}
       {% set card_theme = loop.cycle('cuhk-stage-card-yellow', 'cuhk-stage-card-pink', 'cuhk-stage-card-purple') %}
-      {% set side = 'left' if loop.index is odd else 'right' %}
       <article
         data-stage-card="{{ loop.index0 }}"
-        data-side="{{ side }}"
         class="cuhk-stage-card {{ card_theme }}"
       >
-        <p class="text-sm font-extrabold tracking-wide uppercase opacity-70">Stage {{ "%02d"|format(loop.index) }}</p>
-        <h3 class="mt-2 text-3xl md:text-4xl cuhk-guide-title leading-tight text-ink-900">{{ stage.title }}</h3>
-        <p class="mt-3 text-base font-semibold text-ink-900/85">{{ stage.month }}</p>
-        <p class="mt-3 text-sm md:text-base leading-7 text-ink-900/90">{{ stage.description }}</p>
-        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-5 rounded-xl border-2 border-black/70 bg-white/80 px-4 py-2 text-sm font-semibold text-ink-900 hover:bg-white transition">进入阶段 →</a>
+        <p class="text-[11px] md:text-xs font-extrabold tracking-wide uppercase opacity-70">Stage {{ "%02d"|format(loop.index) }}</p>
+        <h3 class="mt-1.5 text-2xl md:text-3xl cuhk-guide-title leading-tight text-ink-900">{{ stage.title }}</h3>
+        <p class="mt-2 text-sm md:text-base font-semibold text-ink-900/85">{{ stage.month }}</p>
+        <p class="mt-2 text-xs md:text-sm leading-6 text-ink-900/90">{{ stage.description }}</p>
+        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-auto pt-3 rounded-lg border-2 border-black/70 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-ink-900 hover:bg-white transition">进入阶段 →</a>
       </article>
     {% endfor %}
     </div>
