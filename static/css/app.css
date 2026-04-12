@@ -196,6 +196,125 @@ body {
   align-items: stretch;
 }
 
+.tocu-open-main {
+  width: 100%;
+  margin: 0;
+}
+
+.tocu-open-page {
+  width: 100%;
+  min-height: calc(100vh - 9.6rem);
+  padding: clamp(0.8rem, 2vw, 1.5rem) clamp(1rem, 4.8vw, 4rem) clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.tocu-open-head {
+  position: relative;
+  max-width: 58rem;
+}
+
+.tocu-open-title {
+  margin-top: 0.85rem;
+  font-family: "Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", serif;
+  font-size: clamp(2rem, 4.3vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  color: #231336;
+}
+
+.tocu-open-desc {
+  margin-top: 0.9rem;
+  font-size: clamp(0.95rem, 1.35vw, 1.08rem);
+  line-height: 1.85;
+  color: #655b72;
+  max-width: 36rem;
+}
+
+.tocu-open-desc-wide {
+  max-width: 44rem;
+}
+
+.tocu-open-toolbar {
+  margin-top: 1.35rem;
+}
+
+.tocu-open-search {
+  width: min(40rem, 100%);
+  border-radius: 0.95rem;
+  border: 1px solid rgba(107, 81, 129, 0.2);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(250, 245, 254, 0.82));
+  padding: 0.78rem 1rem;
+  font-size: 0.9rem;
+  color: #27183b;
+  box-shadow: 0 16px 24px -28px rgba(52, 28, 76, 0.65);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tocu-open-search:focus {
+  outline: none;
+  border-color: rgba(96, 68, 121, 0.45);
+  box-shadow: 0 20px 30px -28px rgba(52, 28, 76, 0.7);
+}
+
+.tocu-program-grid {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.tocu-program-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(97, 72, 121, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(250, 244, 253, 0.84));
+  box-shadow: 0 22px 34px -34px rgba(49, 24, 72, 0.9), 0 10px 18px -22px rgba(69, 42, 98, 0.45);
+  padding: 1rem 1.05rem;
+}
+
+.tocu-program-badge {
+  border-radius: 999px;
+  border: 1px solid rgba(100, 71, 126, 0.2);
+  background: rgba(118, 85, 152, 0.1);
+  color: #50316b;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.tocu-guide-stage-grid {
+  margin-top: 1.45rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.tocu-guide-stage-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(97, 72, 121, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(250, 244, 253, 0.84));
+  box-shadow: 0 22px 34px -34px rgba(49, 24, 72, 0.9), 0 10px 18px -22px rgba(69, 42, 98, 0.45);
+  padding: 1rem 1.05rem;
+}
+
+.tocu-open-link {
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(95, 67, 121, 0.28);
+  background: rgba(117, 86, 150, 0.08);
+  padding: 0.24rem 0.62rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4d2f66;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tocu-open-link:hover {
+  border-color: rgba(95, 67, 121, 0.44);
+  background: rgba(117, 86, 150, 0.14);
+}
+
 .tocu-home-open {
   position: relative;
   width: 100%;
@@ -483,6 +602,25 @@ code {
     min-height: auto;
   }
 
+  .tocu-open-page {
+    min-height: auto;
+    padding: 0.8rem 1rem 1.2rem;
+  }
+
+  .tocu-open-toolbar {
+    margin-top: 1rem;
+  }
+
+  .tocu-open-search {
+    width: 100%;
+    font-size: 0.88rem;
+  }
+
+  .tocu-program-card,
+  .tocu-guide-stage-card {
+    padding: 0.92rem 0.9rem;
+  }
+
   .tocu-home-main {
     align-items: stretch;
   }
@@ -537,6 +675,16 @@ code {
 }
 
 @media (max-width: 1080px) and (min-width: 768px) {
+  .tocu-program-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.86rem;
+  }
+
+  .tocu-guide-stage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.86rem;
+  }
+
   .tocu-home-grid {
     gap: 1.2rem;
     grid-template-columns: minmax(14.5rem, 0.92fr) minmax(0, 1.08fr);
@@ -548,6 +696,18 @@ code {
 
   .tocu-roadmap-title {
     font-size: clamp(0.88rem, 1.15vw, 1rem);
+  }
+}
+
+@media (min-width: 1081px) {
+  .tocu-program-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.92rem;
+  }
+
+  .tocu-guide-stage-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.92rem;
   }
 }
 

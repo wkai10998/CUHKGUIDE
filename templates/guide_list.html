@@ -3,24 +3,24 @@
 {% set title = "操作步骤 - 港中文申请一站式助手" %}
 
 {% block body %}
-<section>
-  <div class="cuhk-card px-6 md:px-8 py-8 md:py-10">
+<section class="tocu-open-page tocu-guide-open">
+  <header class="tocu-open-head">
     <span class="cuhk-kicker">Application Flow</span>
-    <h1 class="mt-4 text-4xl md:text-5xl cuhk-display text-ink-900">操作步骤总览</h1>
-    <p class="mt-3 text-base md:text-lg cuhk-muted max-w-3xl leading-8">按阶段进入详细步骤页，每个步骤都包含教程、材料清单和评论区。建议按时间顺序依次推进。</p>
-  </div>
+    <h1 class="tocu-open-title">操作步骤总览</h1>
+    <p class="tocu-open-desc tocu-open-desc-wide">按阶段进入详细步骤页，每个步骤都包含教程、材料清单和评论区。建议按时间顺序依次推进。</p>
+  </header>
 
-  <div class="mt-8 cuhk-timeline-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+  <div class="tocu-guide-stage-grid">
     {% for stage in stages %}
       {% set badge_style = 'is-accent' if loop.index == 2 else 'is-primary' %}
-      <article class="cuhk-card-soft cuhk-lift p-5">
+      <article class="tocu-guide-stage-card cuhk-lift">
         <div class="flex items-center justify-between gap-3">
           <span class="cuhk-step-badge {{ badge_style }}">{{ "%02d"|format(loop.index) }}</span>
           <p class="text-sm font-semibold text-brand-700">{{ stage.month_range }}</p>
         </div>
         <h2 class="mt-4 text-xl cuhk-guide-title text-ink-900">{{ stage.title }}</h2>
         <p class="mt-2 text-sm text-ink-700 leading-7">{{ stage.description }}</p>
-        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-5 cuhk-btn-secondary px-4 py-2 text-sm">进入阶段</a>
+        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-5 tocu-open-link">进入阶段</a>
       </article>
     {% endfor %}
   </div>

@@ -3,33 +3,33 @@
 {% set title = "专业速查 - 港中文申请一站式助手" %}
 
 {% block body %}
-<section>
-  <div class="cuhk-card px-6 md:px-8 py-8">
+<section class="tocu-open-page tocu-programs-open">
+  <header class="tocu-open-head">
     <span class="cuhk-kicker">Programs & Requirements</span>
-    <h1 class="mt-4 text-4xl md:text-5xl cuhk-display text-ink-900">专业速查</h1>
-    <p class="mt-3 text-base md:text-lg cuhk-muted">用于快速对比专业方向、语言要求和截止日期。</p>
+    <h1 class="tocu-open-title">专业速查</h1>
+    <p class="tocu-open-desc">用于快速对比专业方向、语言要求和截止日期。</p>
+  </header>
 
-    <div class="mt-6">
-      <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="w-full md:w-[30rem] rounded-xl border border-brand-100 bg-paper-25 px-4 py-3 text-sm text-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-200">
-    </div>
+  <div class="tocu-open-toolbar">
+    <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="tocu-open-search">
   </div>
 
-  <div id="program-list" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div id="program-list" class="tocu-program-grid">
     {% for p in programs %}
-      <article class="program-item cuhk-card-soft cuhk-lift p-5" data-name="{{ p.name }}" data-school="{{ p.school }}" data-focus="{{ p.focus }}">
+      <article class="program-item tocu-program-card cuhk-lift" data-name="{{ p.name }}" data-school="{{ p.school }}" data-focus="{{ p.focus }}">
         <div class="flex items-start justify-between gap-4">
-          <h2 class="text-xl cuhk-guide-title text-ink-900">{{ p.name }}</h2>
-          <span class="text-xs rounded-full bg-brand-50 text-brand-700 px-2.5 py-1 font-semibold">{{ p.degree }}</span>
+          <h2 class="text-xl cuhk-guide-title text-ink-900 leading-snug">{{ p.name }}</h2>
+          <span class="tocu-program-badge">{{ p.degree }}</span>
         </div>
-        <p class="mt-1 text-sm text-ink-700">{{ p.school }}</p>
+        <p class="mt-1.5 text-sm text-ink-700">{{ p.school }}</p>
 
-        <ul class="mt-4 space-y-2 text-sm text-ink-700">
+        <ul class="mt-4 space-y-2 text-sm text-ink-700 leading-7">
           <li><span class="font-medium">方向：</span>{{ p.focus }}</li>
           <li><span class="font-medium">语言：</span>{{ p.language }}</li>
           <li><span class="font-medium">截止日期：</span>{{ p.deadline }}</li>
         </ul>
 
-        <a href="{{ p.link }}" target="_blank" rel="noreferrer" class="inline-flex mt-5 cuhk-btn-secondary px-4 py-2 text-sm">查看官网入口 ↗</a>
+        <a href="{{ p.link }}" target="_blank" rel="noreferrer" class="inline-flex mt-5 tocu-open-link">查看官网入口 ↗</a>
       </article>
     {% endfor %}
   </div>
