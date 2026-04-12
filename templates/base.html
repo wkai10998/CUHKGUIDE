@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -54,9 +54,10 @@
   <title>{{ title or "港中文申请一站式助手" }}</title>
 </head>
 <body class="bg-paper-50 text-ink-900 min-h-screen font-sans">
+  {% set is_home = request.path == '/' %}
   {% include "header.html" %}
 
-  <main class="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-10">
+  <main class="{% if is_home %}tocu-home-main max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-5{% else %}max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-10{% endif %}">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="mb-6 space-y-2">
@@ -73,7 +74,9 @@
   </main>
 
   {% include "login_modal.html" %}
-  {% include "footer.html" %}
+  {% if not is_home %}
+    {% include "footer.html" %}
+  {% endif %}
   <script src="{{ url_for('static', filename='js/components/login_modal.js') }}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>

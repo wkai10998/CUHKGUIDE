@@ -1,30 +1,56 @@
-<section id="roadmap" class="mt-10 md:mt-12">
-  <div class="text-center mb-6 md:mb-7">
-    <h2 class="text-3xl md:text-4xl cuhk-display text-ink-900">申请时间线</h2>
-    <p class="mt-2 text-sm md:text-base cuhk-muted">把握每一个关键节点，从容应对。</p>
-  </div>
+<section class="tocu-home-shell">
+  {% set home_cards = [
+    {
+      "tag": "Stage 01",
+      "title": "背景研究 & 选校",
+      "description": "在海量专业中快速锁定你的“大选项带”。",
+      "slug": "prep"
+    },
+    {
+      "tag": "Stage 02",
+      "title": "材料集结",
+      "description": "公证、认证、PS、简历、推荐全面并行。",
+      "slug": "docs"
+    },
+    {
+      "tag": "Stage 03",
+      "title": "正式提交",
+      "description": "开网即冲刺，按节点稳步完成递交动作。",
+      "slug": "apply"
+    },
+    {
+      "tag": "Stage 04",
+      "title": "获得录取",
+      "description": "保持关键反馈节奏，及时推进后续环节。",
+      "slug": "fill"
+    }
+  ] %}
+  <div class="tocu-home-grid">
+    <article class="tocu-home-copy">
+      <p class="tocu-home-greeting">你好，<br>同学</p>
+      <p class="tocu-home-subtitle">Nice to CU，你的全流程申请助理</p>
+      <p class="tocu-home-watermark">nice to CU</p>
+    </article>
 
-  <div id="timeline-flow" class="cuhk-flow relative px-1 md:px-2 py-1">
-    <svg
-      id="timeline-connector-layer"
-      class="hidden md:block absolute inset-0 w-full h-full pointer-events-none"
-      aria-hidden="true"
-    ></svg>
+    <article class="tocu-roadmap-panel" aria-label="申请流程阶段总览">
+      <div class="tocu-roadmap-board">
+        <svg class="tocu-roadmap-arrows" viewBox="0 0 100 70" preserveAspectRatio="none" aria-hidden="true">
+          <path class="tocu-roadmap-line" d="M24 19 C39 16,58 17,74 23"></path>
+          <path class="tocu-roadmap-line" d="M73 27 C66 37,48 42,30 47"></path>
+          <path class="tocu-roadmap-line" d="M32 52 C45 55,60 57,74 56"></path>
+        </svg>
 
-    <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-4">
-    {% for stage in stages %}
-      {% set card_theme = loop.cycle('cuhk-stage-card-yellow', 'cuhk-stage-card-pink', 'cuhk-stage-card-purple') %}
-      <article
-        data-stage-card="{{ loop.index0 }}"
-        class="cuhk-stage-card {{ card_theme }}"
-      >
-        <p class="text-[11px] md:text-xs font-extrabold tracking-wide uppercase opacity-70">Stage {{ "%02d"|format(loop.index) }}</p>
-        <h3 class="mt-1.5 text-2xl md:text-3xl cuhk-guide-title leading-tight text-ink-900">{{ stage.title }}</h3>
-        <p class="mt-2 text-sm md:text-base font-semibold text-ink-900/85">{{ stage.month }}</p>
-        <p class="mt-2 text-xs md:text-sm leading-6 text-ink-900/90">{{ stage.description }}</p>
-        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-auto pt-3 rounded-lg border-2 border-black/70 bg-white/80 px-3 py-1.5 text-xs md:text-sm font-semibold text-ink-900 hover:bg-white transition">进入阶段 →</a>
-      </article>
-    {% endfor %}
-    </div>
+        <div class="tocu-stage-grid">
+          {% for card in home_cards %}
+            <article class="tocu-roadmap-card tocu-roadmap-card-{{ loop.index }}">
+              <p class="tocu-roadmap-tag">{{ card.tag }}</p>
+              <h2 class="tocu-roadmap-title">{{ card.title }}</h2>
+              <p class="tocu-roadmap-desc">{{ card.description }}</p>
+              <a href="{{ url_for('guide', stage_slug=card.slug) }}" class="tocu-roadmap-link">进入阶段</a>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </article>
   </div>
 </section>

@@ -1,25 +1,13 @@
 <header class="sticky top-0 z-30 border-b border-brand-100 bg-paper-25/95 backdrop-blur">
   <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between gap-4">
-    <a href="{{ url_for('index') }}" class="cuhk-wordmark text-brand-700 text-base md:text-xl">CUHK Master</a>
+    <a href="{{ url_for('index') }}" class="cuhk-wordmark text-brand-700 text-base md:text-xl">ToCU</a>
 
     <div class="flex items-center gap-5">
       <nav class="hidden md:flex items-center gap-6 text-sm">
         <a href="{{ url_for('index') }}" class="cuhk-nav-link {% if request.path == '/' %}is-active{% endif %}">首页</a>
         <a href="{{ url_for('programs') }}" class="cuhk-nav-link {% if request.path.startswith('/programs') %}is-active{% endif %}">专业速查</a>
-
-        <div class="relative group">
-          <a href="{{ url_for('guide_list') }}" class="cuhk-nav-link {% if request.path.startswith('/guide') %}is-active{% endif %}">申请指南</a>
-          <div class="hidden group-hover:block group-focus-within:block absolute left-0 mt-3 w-72 cuhk-card-soft p-2 z-50">
-            <p class="px-3 py-2 text-xs text-ink-700">快速跳转阶段</p>
-            {% for stage in stage_nav_items %}
-              <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="block rounded-lg px-3 py-2 text-sm text-ink-700 hover:bg-brand-50 hover:text-brand-700">
-                {{ stage.month }} · {{ stage.title }}
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-
-        <a href="{{ url_for('faq_list') }}" class="cuhk-nav-link {% if request.path.startswith('/faq') %}is-active{% endif %}">常见问题</a>
+        <a href="{{ url_for('guide_list') }}" class="cuhk-nav-link {% if request.path.startswith('/guide') %}is-active{% endif %}">操作步骤</a>
+        <a href="{{ url_for('faq_list') }}" class="cuhk-nav-link {% if request.path.startswith('/faq') %}is-active{% endif %}">问题清单</a>
         <a href="{{ url_for('assistant') }}" class="cuhk-nav-link {% if request.path.startswith('/assistant') %}is-active{% endif %}">智能助手</a>
       </nav>
 
@@ -75,11 +63,11 @@
   </div>
 
   <div class="md:hidden border-t border-brand-50 px-4 py-2 bg-paper-25">
-    <div class="flex items-center justify-between text-xs">
+    <div class="flex items-center gap-4 overflow-x-auto whitespace-nowrap text-xs pb-0.5">
       <a href="{{ url_for('index') }}" class="text-ink-700">首页</a>
       <a href="{{ url_for('programs') }}" class="text-ink-700">专业速查</a>
-      <a href="{{ url_for('guide_list') }}" class="text-ink-700">申请指南</a>
-      <a href="{{ url_for('faq_list') }}" class="text-ink-700">常见问题</a>
+      <a href="{{ url_for('guide_list') }}" class="text-ink-700">操作步骤</a>
+      <a href="{{ url_for('faq_list') }}" class="text-ink-700">问题清单</a>
       <a href="{{ url_for('assistant') }}" class="text-ink-700">智能助手</a>
       {% if not current_user.is_authenticated %}
         <a href="{{ url_for('login_page') }}" data-open-login data-auth-tab="login" class="text-brand-700 font-semibold">登录</a>
