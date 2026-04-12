@@ -35,6 +35,24 @@ class AssistantRagTestCase(unittest.TestCase):
         self.assertEqual(answer, "这是本地回退回答")
         self.assertEqual(sources, [])
 
+    def test_answer_assistant_question_falls_back_when_rag_times_out(self):
+        with (
+            patch.object(
+                app_module,
+                "ask_assistant_with_rag",
+                side_effect=TimeoutError("read timed out"),
+            ),
+            patch.object(
+                app_module,
+                "ask_assistant_local",
+                return_value=("这是超时后的本地回退回答", []),
+            ),
+        ):
+            answer, sources = app_module.answer_assistant_question("语言成绩最晚何时提交？")
+
+        self.assertEqual(answer, "这是超时后的本地回退回答")
+        self.assertEqual(sources, [])
+
 
 if __name__ == "__main__":
     unittest.main()

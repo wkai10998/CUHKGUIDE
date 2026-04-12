@@ -148,8 +148,9 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         raise RuntimeError("RAG 运行依赖未配置完成。")
 
     embedding_dim = _get_int_env("RAG_EMBEDDING_DIM", 1024)
-    top_k = _get_int_env("RAG_TOP_K", 4)
+    top_k = _get_int_env("RAG_TOP_K", 3)
     min_similarity = _get_float_env("RAG_MIN_SIMILARITY", 0.45)
+    context_char_limit = _get_int_env("RAG_CONTEXT_CHAR_LIMIT", 320)
 
     query_vector = zhipu_client.create_embeddings([prompt], dimensions=embedding_dim)[0]
     matches = supabase_client.match_rag_chunks(
@@ -171,6 +172,8 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         source = str(item.get("source", "未知来源"))
         link = str(item.get("link", "/assistant"))
         content = str(item.get("content", "")).strip()
+        if context_char_limit > 0 and len(content) > context_char_limit:
+            content = content[:context_char_limit].rstrip() + "..."
         similarity = float(item.get("similarity", 0.0))
         context_lines.append(
             f"[{index}] 来源: {source}\n"

@@ -270,7 +270,7 @@ def answer_assistant_question(question: str) -> tuple[str, list[dict[str, str]]]
 
     try:
         return ask_assistant_with_rag(prompt)
-    except RuntimeError as err:
+    except (RuntimeError, TimeoutError, OSError) as err:
         app.logger.warning("RAG failed, fallback to local retrieval: %s", err)
         return ask_assistant_local(prompt)
 

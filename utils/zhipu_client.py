@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import json
 import os
+import socket
 import urllib.error
 import urllib.request
 from typing import Any
 
-ZHIPU_TIMEOUT_SECONDS = 30
+DEFAULT_ZHIPU_TIMEOUT_SECONDS = 15
+DEFAULT_ZHIPU_CHAT_MAX_TOKENS = 512
 ZHIPU_BASE_URL = "https://open.bigmodel.cn/api/paas/v4"
 
 
@@ -28,6 +30,28 @@ def is_zhipu_enabled() -> bool:
     return bool(config["api_key"] and config["base_url"])
 
 
+def _get_timeout_seconds() -> float:
+    raw = os.environ.get("ZHIPU_TIMEOUT_SECONDS", "").strip()
+    if not raw:
+        return float(DEFAULT_ZHIPU_TIMEOUT_SECONDS)
+    try:
+        value = float(raw)
+    except ValueError:
+        return float(DEFAULT_ZHIPU_TIMEOUT_SECONDS)
+    return value if value > 0 else float(DEFAULT_ZHIPU_TIMEOUT_SECONDS)
+
+
+def _get_chat_max_tokens() -> int:
+    raw = os.environ.get("ZHIPU_CHAT_MAX_TOKENS", "").strip()
+    if not raw:
+        return DEFAULT_ZHIPU_CHAT_MAX_TOKENS
+    try:
+        value = int(raw)
+    except ValueError:
+        return DEFAULT_ZHIPU_CHAT_MAX_TOKENS
+    return max(64, min(4096, value))
+
+
 def _post_json(path: str, payload: dict[str, Any]) -> dict[str, Any]:
     config = _get_config()
     if not config["api_key"]:
@@ -42,11 +66,13 @@ def _post_json(path: str, payload: dict[str, Any]) -> dict[str, Any]:
     request_obj = urllib.request.Request(url, data=body, headers=headers, method="POST")
 
     try:
-        with urllib.request.urlopen(request_obj, timeout=ZHIPU_TIMEOUT_SECONDS) as response:
+        with urllib.request.urlopen(request_obj, timeout=_get_timeout_seconds()) as response:
             data = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as err:
         error_text = err.read().decode("utf-8", errors="ignore")
         raise RuntimeError(f"智谱 API 调用失败（HTTP {err.code}）：{error_text}") from err
+    except (TimeoutError, socket.timeout) as err:
+        raise RuntimeError("智谱 API 请求超时，请稍后重试。") from err
     except (urllib.error.URLError, json.JSONDecodeError) as err:
         raise RuntimeError("智谱 API 调用失败，请检查网络或 API Key 配置。") from err
 
@@ -98,6 +124,7 @@ def generate_answer(system_prompt: str, user_prompt: str, temperature: float = 0
             {"role": "user", "content": user_prompt},
         ],
         "temperature": temperature,
+        "max_tokens": _get_chat_max_tokens(),
     }
     data = _post_json("chat/completions", payload)
 
