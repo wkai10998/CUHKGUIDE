@@ -14,7 +14,6 @@ class KnowledgeBaseTestCase(unittest.TestCase):
 
             with (
                 patch.object(knowledge_base, "RAG_TEXT_PATH", rag_path),
-                patch.object(knowledge_base, "get_faqs", return_value=[]),
                 patch.object(knowledge_base, "get_programs", return_value=[]),
                 patch.object(knowledge_base, "get_guides", return_value={}),
             ):
@@ -22,7 +21,7 @@ class KnowledgeBaseTestCase(unittest.TestCase):
 
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["source_type"], "external")
-        self.assertEqual(rows[0]["source"], "外部知识库 · rag_kb.txt")
+        self.assertEqual(rows[0]["source"], "官方知识库")
         self.assertIn("港中文", rows[0]["content"])
 
 

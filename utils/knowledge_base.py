@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from utils.content_loader import get_faqs, get_guides, get_programs
+from utils.content_loader import get_guides, get_programs
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 RAG_TEXT_PATH = BASE_DIR / "content" / "rag_kb.txt"
@@ -18,16 +18,6 @@ def _load_rag_text() -> str:
 
 def build_knowledge_chunks() -> list[dict[str, Any]]:
     chunks: list[dict[str, Any]] = []
-
-    for faq in get_faqs():
-        chunks.append(
-            {
-                "source_type": "faq",
-                "source": f"常见问题 · {faq['question']}",
-                "link": f"/faq/{faq['id']}",
-                "content": str(faq["answer"]),
-            }
-        )
 
     for program in get_programs():
         summary = (
@@ -61,7 +51,7 @@ def build_knowledge_chunks() -> list[dict[str, Any]]:
         chunks.append(
             {
                 "source_type": "external",
-                "source": "外部知识库 · rag_kb.txt",
+                "source": "官方知识库",
                 "link": "/assistant",
                 "content": rag_text,
             }

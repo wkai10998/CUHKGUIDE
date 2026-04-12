@@ -3,56 +3,58 @@
 {% set title = "智能助手 - 港中文申请一站式助手" %}
 
 {% block body %}
-<section>
-  <div class="cuhk-card px-6 md:px-8 py-8">
-    <span class="cuhk-kicker">RAG Assistant</span>
+<section class="space-y-5">
+  <div class="cuhk-card px-6 md:px-8 py-7">
+    <span class="cuhk-kicker">Ask ToCU</span>
     <h1 class="mt-4 text-4xl md:text-5xl cuhk-display text-ink-900">智能助手</h1>
-    <p class="mt-3 text-base md:text-lg cuhk-muted">输入申请问题，系统会先检索项目资料，再给出回答和来源。</p>
+    <p class="mt-3 text-base md:text-lg cuhk-muted">和助手持续对话，快速定位申请步骤、材料要求与时间节点。</p>
 
-    <form action="{{ url_for('assistant') }}" method="post" class="mt-6 space-y-3">
-      <label for="question" class="text-sm font-medium text-ink-700">你的问题</label>
-      <textarea id="question" name="question" rows="4" placeholder="例如：推荐信要提前多久联系老师？" class="w-full rounded-xl border border-brand-100 bg-paper-25 px-4 py-3 text-sm leading-7 text-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-200">{{ question }}</textarea>
-      <button type="submit" class="cuhk-btn-primary px-5 py-2.5 text-sm">生成回答</button>
-    </form>
+    {% if suggested_questions %}
+      <div class="mt-5">
+        <p class="text-xs font-semibold tracking-wide text-ink-700 uppercase">快速提问</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {% for question in suggested_questions %}
+            <button
+              type="button"
+              data-question-chip="{{ question }}"
+              class="rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs text-ink-700 hover:border-brand-200 hover:text-brand-700 transition"
+            >
+              {{ question }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
   </div>
 
-  {% if answer %}
-    <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
-      <article class="lg:col-span-8 cuhk-card-soft p-5 md:p-6">
-        <h2 class="text-lg cuhk-guide-title text-ink-900">助手回答</h2>
-        <pre class="mt-3 whitespace-pre-wrap text-sm leading-8 text-ink-700">{{ answer }}</pre>
+  <div class="cuhk-card-soft overflow-hidden">
+    <div id="assistant-chat-log" class="max-h-[60vh] overflow-y-auto bg-white p-4 md:p-6 space-y-4">
+      <article class="flex justify-start">
+        <div class="max-w-[90%] md:max-w-[80%] rounded-2xl rounded-bl-md border border-brand-100 bg-paper-25 px-4 py-3 text-sm leading-7 text-ink-900">
+          <p class="whitespace-pre-wrap">你好，我是你的申请助手。你可以直接问我截止时间、材料准备、推荐信和网申步骤相关问题。</p>
+        </div>
       </article>
+    </div>
 
-      <aside class="lg:col-span-4 space-y-4">
-        <div class="cuhk-card-accent p-4">
-          <h3 class="cuhk-guide-title text-accent-600">提示</h3>
-          <p class="mt-2 text-sm leading-7 text-accent-600">问题越具体，检索结果通常越准确。可加入专业名、阶段名或材料名。</p>
+    <div class="border-t border-brand-100 bg-paper-25 px-4 md:px-6 py-4 md:py-5">
+      <p id="assistant-chat-status" class="text-xs text-ink-700">准备就绪。按 Enter 发送，Shift + Enter 换行。</p>
+      <form id="assistant-chat-form" data-endpoint="{{ url_for('assistant_message_api') }}" class="mt-2">
+        <label for="assistant-chat-input" class="sr-only">输入问题</label>
+        <div class="flex flex-col md:flex-row md:items-end gap-3">
+          <textarea
+            id="assistant-chat-input"
+            rows="3"
+            placeholder="例如：推荐信要提前多久联系老师？"
+            class="w-full rounded-xl border border-brand-100 bg-white px-4 py-3 text-sm leading-7 text-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          ></textarea>
+          <button id="assistant-chat-send" type="submit" class="cuhk-btn-primary px-5 py-2.5 text-sm md:shrink-0">发送</button>
         </div>
-        <div class="cuhk-card-soft p-5">
-          <h2 class="text-base font-semibold text-ink-900">引用来源</h2>
-          {% if sources %}
-            <ul class="mt-3 space-y-2">
-              {% for source in sources %}
-                <li>
-                  <a href="{{ source.link }}" class="text-sm text-brand-700 hover:text-brand-600">{{ source.source }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="mt-3 text-sm text-ink-700">未检索到直接匹配来源，请细化问题后再试。</p>
-          {% endif %}
-        </div>
-      </aside>
-    </section>
-  {% else %}
-    <section class="mt-6 cuhk-card-soft p-6">
-      <h2 class="text-lg cuhk-guide-title text-ink-900">可提问示例</h2>
-      <ul class="mt-3 space-y-2 text-sm text-ink-700 leading-7">
-        <li>1. 推荐信一般要提前多久联系老师？</li>
-        <li>2. 如果语言成绩晚于截止时间怎么办？</li>
-        <li>3. 网申提交后还能补充材料吗？</li>
-      </ul>
-    </section>
-  {% endif %}
+      </form>
+    </div>
+  </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/assistant_chat.js') }}"></script>
 {% endblock %}

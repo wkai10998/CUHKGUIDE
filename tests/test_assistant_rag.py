@@ -6,7 +6,7 @@ import app as app_module
 
 class AssistantRagTestCase(unittest.TestCase):
     def test_answer_assistant_question_prefers_rag(self):
-        rag_sources = [{"source": "常见问题 · 推荐信", "link": "/faq/1"}]
+        rag_sources = [{"source": "官方知识库", "link": "/assistant"}]
         with patch.object(
             app_module,
             "ask_assistant_with_rag",

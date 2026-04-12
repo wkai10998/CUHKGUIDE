@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import time
 import urllib.parse
 from datetime import datetime
 
@@ -18,7 +19,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
-from utils.content_loader import get_faqs, get_guides, get_programs, get_stages
+from utils.content_loader import get_guides, get_programs, get_stages
 from utils.knowledge_base import build_knowledge_chunks
 from utils.rag_pipeline import ask_with_rag
 from utils import supabase_client
@@ -41,6 +42,15 @@ AVATAR_COLORS = {
     "rose": "bg-rose-500",
     "violet": "bg-violet-500",
 }
+
+ASSISTANT_SUGGESTED_QUESTIONS = [
+    "香港中文大学新媒体专业的材料邮寄地址在哪？",
+    "推荐信一般要提前多久联系老师？",
+    "个人陈述写多少字比较合适？",
+    "语言成绩最晚什么时候补交？",
+    "提交后还能修改网申信息吗？",
+    "一个人可以同时申请多个项目吗？",
+]
 
 
 def _clean_redirect_target(raw_url: str, default_endpoint: str = "index") -> str:
@@ -211,13 +221,6 @@ def create_comment(page_type: str, page_key: str, content: str) -> None:
         raise ValueError(str(err)) from err
 
 
-def find_faq_item(faq_id: int) -> dict[str, object] | None:
-    for item in get_faqs():
-        if item["id"] == faq_id:
-            return item
-    return None
-
-
 def ask_assistant_local(question: str) -> tuple[str, list[dict[str, str]]]:
     prompt = question.strip()
     if len(prompt) < 2:
@@ -246,7 +249,7 @@ def ask_assistant_local(question: str) -> tuple[str, list[dict[str, str]]]:
 
     if not top_chunks:
         default_answer = (
-            "我暂时没有在现有资料里检索到直接答案。建议先去“常见问题”和“操作步骤”定位对应阶段，"
+            "我暂时没有在官方知识库里检索到直接答案。建议补充专业名、材料名、时间点后再问，"
             "如果你愿意可以把问题写得更具体（例如专业名、截止时间、材料名称）。"
         )
         return default_answer, []
@@ -361,34 +364,61 @@ def guide_comments_api(stage_slug: str, step_id: int):
 
 @app.route("/faq")
 def faq_list() -> str:
-    return render_template("faq.html", faqs=get_faqs())
+    return redirect(url_for("assistant"), code=302)
 
 
-@app.route("/faq/<int:faq_id>")
-def faq_detail(faq_id: int) -> str:
-    faq = find_faq_item(faq_id)
-    if not faq:
-        abort(404)
-
-    comments = list_comments("faq", str(faq_id))
-    return render_template("faq_detail.html", faq=faq, comments=comments)
+@app.route("/faq/<path:faq_id>")
+def faq_detail(faq_id: str) -> str:
+    _ = faq_id
+    return redirect(url_for("assistant"), code=302)
 
 
-@app.route("/assistant", methods=["GET", "POST"])
+@app.route("/assistant", methods=["GET"])
 def assistant() -> str:
-    question = ""
-    answer = ""
-    sources: list[dict[str, str]] = []
+    return render_template("assistant.html", suggested_questions=ASSISTANT_SUGGESTED_QUESTIONS)
 
-    if request.method == "POST":
-        question = request.form.get("question", "").strip()
+
+@app.route("/assistant/message", methods=["POST"])
+def assistant_message_api():
+    payload = request.get_json(silent=True)
+    data = payload if isinstance(payload, dict) else {}
+    question = str(data.get("message", "")).strip()
+
+    if len(question) < 2:
+        return (
+            jsonify(
+                {
+                    "ok": False,
+                    "error": "请输入至少 2 个字的问题，例如“推荐信要提前多久联系老师？”。",
+                }
+            ),
+            400,
+        )
+
+    start = time.perf_counter()
+    try:
         answer, sources = ask_assistant(question)
+    except Exception as err:  # defensive guard for unexpected runtime errors
+        app.logger.exception("Assistant message API failed: %s", err)
+        return (
+            jsonify(
+                {
+                    "ok": False,
+                    "error": "当前服务繁忙，请稍后重试。",
+                }
+            ),
+            503,
+        )
 
-    return render_template(
-        "assistant.html",
-        question=question,
-        answer=answer,
-        sources=sources,
+    elapsed_ms = int((time.perf_counter() - start) * 1000)
+    return jsonify(
+        {
+            "ok": True,
+            "question": question,
+            "answer": answer,
+            "sources": sources,
+            "elapsed_ms": elapsed_ms,
+        }
     )
 
 
@@ -628,22 +658,9 @@ def toggle_step_complete(stage_slug: str, step_id: int):
 
 @app.route("/faq/<int:faq_id>/comment", methods=["POST"])
 def faq_comment(faq_id: int):
-    faq = find_faq_item(faq_id)
-    if not faq:
-        abort(404)
-
-    target_url = url_for("faq_detail", faq_id=faq_id)
-
-    try:
-        create_comment("faq", str(faq_id), request.form.get("content", ""))
-        flash("评论已发布", "success")
-    except ValueError as err:
-        message = str(err)
-        flash(message, "error")
-        if "请先登录后发表评论" in message:
-            target_url = _with_open_login_flag(target_url)
-
-    return redirect(target_url)
+    _ = faq_id
+    flash("问题清单页面已停用，相关内容已并入官方知识库。", "success")
+    return redirect(url_for("assistant"))
 
 
 # ----------------------------

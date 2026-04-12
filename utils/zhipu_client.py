@@ -3,12 +3,15 @@ from __future__ import annotations
 import json
 import os
 import socket
+import time
 import urllib.error
 import urllib.request
 from typing import Any
 
-DEFAULT_ZHIPU_TIMEOUT_SECONDS = 15
+DEFAULT_ZHIPU_TIMEOUT_SECONDS = 22
 DEFAULT_ZHIPU_CHAT_MAX_TOKENS = 512
+DEFAULT_ZHIPU_CHAT_RETRIES = 1
+DEFAULT_ZHIPU_RETRY_DELAY_SECONDS = 0.35
 ZHIPU_BASE_URL = "https://open.bigmodel.cn/api/paas/v4"
 
 
@@ -16,7 +19,7 @@ def _get_config() -> dict[str, str]:
     api_key = os.environ.get("ZHIPU_API_KEY", "").strip()
     base_url = os.environ.get("ZHIPU_API_BASE", ZHIPU_BASE_URL).strip().rstrip("/")
     embedding_model = os.environ.get("ZHIPU_EMBEDDING_MODEL", "embedding-3").strip() or "embedding-3"
-    chat_model = os.environ.get("ZHIPU_CHAT_MODEL", "glm-4-flash").strip() or "glm-4-flash"
+    chat_model = os.environ.get("ZHIPU_CHAT_MODEL", "GLM-4.5-AirX").strip() or "GLM-4.5-AirX"
     return {
         "api_key": api_key,
         "base_url": base_url,
@@ -52,7 +55,18 @@ def _get_chat_max_tokens() -> int:
     return max(64, min(4096, value))
 
 
-def _post_json(path: str, payload: dict[str, Any]) -> dict[str, Any]:
+def _get_chat_retries() -> int:
+    raw = os.environ.get("ZHIPU_CHAT_RETRIES", "").strip()
+    if not raw:
+        return DEFAULT_ZHIPU_CHAT_RETRIES
+    try:
+        value = int(raw)
+    except ValueError:
+        return DEFAULT_ZHIPU_CHAT_RETRIES
+    return max(0, min(2, value))
+
+
+def _post_json(path: str, payload: dict[str, Any], retries: int = 0) -> dict[str, Any]:
     config = _get_config()
     if not config["api_key"]:
         raise RuntimeError("ZHIPU_API_KEY 未配置。")
@@ -65,20 +79,30 @@ def _post_json(path: str, payload: dict[str, Any]) -> dict[str, Any]:
     }
     request_obj = urllib.request.Request(url, data=body, headers=headers, method="POST")
 
-    try:
-        with urllib.request.urlopen(request_obj, timeout=_get_timeout_seconds()) as response:
-            data = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as err:
-        error_text = err.read().decode("utf-8", errors="ignore")
-        raise RuntimeError(f"智谱 API 调用失败（HTTP {err.code}）：{error_text}") from err
-    except (TimeoutError, socket.timeout) as err:
-        raise RuntimeError("智谱 API 请求超时，请稍后重试。") from err
-    except (urllib.error.URLError, json.JSONDecodeError) as err:
-        raise RuntimeError("智谱 API 调用失败，请检查网络或 API Key 配置。") from err
+    max_attempts = max(1, retries + 1)
+    timeout_seconds = _get_timeout_seconds()
+    last_err: Exception | None = None
+    for attempt in range(max_attempts):
+        try:
+            with urllib.request.urlopen(request_obj, timeout=timeout_seconds) as response:
+                data = json.loads(response.read().decode("utf-8"))
+            if not isinstance(data, dict):
+                raise RuntimeError("智谱 API 返回格式异常。")
+            return data
+        except urllib.error.HTTPError as err:
+            error_text = err.read().decode("utf-8", errors="ignore")
+            raise RuntimeError(f"智谱 API 调用失败（HTTP {err.code}）：{error_text}") from err
+        except (TimeoutError, socket.timeout, urllib.error.URLError) as err:
+            last_err = err
+            if attempt < max_attempts - 1:
+                time.sleep(DEFAULT_ZHIPU_RETRY_DELAY_SECONDS)
+                continue
+        except json.JSONDecodeError as err:
+            raise RuntimeError("智谱 API 调用失败，返回内容无法解析。") from err
 
-    if not isinstance(data, dict):
-        raise RuntimeError("智谱 API 返回格式异常。")
-    return data
+    if isinstance(last_err, (TimeoutError, socket.timeout)):
+        raise RuntimeError("智谱 API 请求超时，请稍后重试。") from last_err
+    raise RuntimeError("智谱 API 调用失败，请检查网络或 API Key 配置。") from last_err
 
 
 def create_embeddings(texts: list[str], dimensions: int | None = None) -> list[list[float]]:
@@ -126,7 +150,7 @@ def generate_answer(system_prompt: str, user_prompt: str, temperature: float = 0
         "temperature": temperature,
         "max_tokens": _get_chat_max_tokens(),
     }
-    data = _post_json("chat/completions", payload)
+    data = _post_json("chat/completions", payload, retries=_get_chat_retries())
 
     choices = data.get("choices", [])
     if not isinstance(choices, list) or not choices:

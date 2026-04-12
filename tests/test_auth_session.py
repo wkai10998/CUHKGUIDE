@@ -41,12 +41,12 @@ class AuthSessionTestCase(unittest.TestCase):
 
     def test_comment_requires_login(self):
         response = self.client.post(
-            "/faq/1/comment",
-            data={"content": "test comment"},
+            "/guide/prep/comment",
+            data={"step_id": 1, "content": "test comment"},
             follow_redirects=False,
         )
         self.assertEqual(response.status_code, 302)
-        self.assertIn("/faq/1?open_login=1&auth_tab=login", response.location)
+        self.assertIn("/guide/prep?step=1&open_login=1&auth_tab=login", response.location)
 
     def test_update_profile_persists_to_supabase(self):
         with self.client.session_transaction() as session:

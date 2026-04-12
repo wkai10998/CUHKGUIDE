@@ -148,9 +148,9 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         raise RuntimeError("RAG 运行依赖未配置完成。")
 
     embedding_dim = _get_int_env("RAG_EMBEDDING_DIM", 1024)
-    top_k = _get_int_env("RAG_TOP_K", 3)
+    top_k = _get_int_env("RAG_TOP_K", 2)
     min_similarity = _get_float_env("RAG_MIN_SIMILARITY", 0.45)
-    context_char_limit = _get_int_env("RAG_CONTEXT_CHAR_LIMIT", 320)
+    context_char_limit = _get_int_env("RAG_CONTEXT_CHAR_LIMIT", 220)
 
     query_vector = zhipu_client.create_embeddings([prompt], dimensions=embedding_dim)[0]
     matches = supabase_client.match_rag_chunks(
@@ -158,6 +158,11 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         match_count=top_k,
         min_similarity=min_similarity,
     )
+    matches = [
+        item
+        for item in matches
+        if not str(item.get("link", "")).strip().startswith("/faq")
+    ]
 
     if not matches:
         return (
@@ -169,8 +174,12 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
     sources: list[dict[str, str]] = []
     seen_source: set[str] = set()
     for index, item in enumerate(matches, start=1):
+        source_type = str(item.get("source_type", "")).strip().lower()
         source = str(item.get("source", "未知来源"))
         link = str(item.get("link", "/assistant"))
+        if source_type in {"external", "faq"}:
+            source = "官方知识库"
+            link = "/assistant"
         content = str(item.get("content", "")).strip()
         if context_char_limit > 0 and len(content) > context_char_limit:
             content = content[:context_char_limit].rstrip() + "..."
@@ -189,12 +198,13 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
     system_prompt = (
         "你是港中文申请助手。请只基于给定上下文回答。"
         "如果上下文不足，明确说“未检索到证据”，不要编造。"
+        "优先输出简短结论，控制在 1-3 句。"
     )
     user_prompt = (
         f"用户问题：{prompt}\n\n"
         "检索上下文：\n"
         f"{chr(10).join(context_lines)}\n\n"
-        "请输出：1) 结论 2) 关键依据 3) 风险提示（如信息可能变更）。"
+        "请按顺序输出：1) 结论（先给明确答案）2) 关键依据（最多 2 点）3) 风险提示（可选）。"
     )
     answer = zhipu_client.generate_answer(system_prompt=system_prompt, user_prompt=user_prompt)
     return answer, sources[:3]
