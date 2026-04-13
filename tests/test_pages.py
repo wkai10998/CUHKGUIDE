@@ -57,8 +57,8 @@ class PageRenderingTestCase(unittest.TestCase):
         html = self.client.get("/programs").get_data(as_text=True)
 
         self.assertIn("专业速查", html)
-        self.assertIn("用于快速对比专业方向、语言要求和截止日期", html)
         self.assertIn("输入专业名、学院或方向关键词", html)
+        self.assertIn("查看官网入口", html)
 
     def test_guide_detail_keeps_progress_controls_and_materials_sections(self):
         html = self.client.get("/guide/docs").get_data(as_text=True)
