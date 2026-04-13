@@ -1,35 +1,49 @@
 {% extends "base.html" %}
 
-{% set title = "专业速查 - 港中文申请一站式助手" %}
+{% set title = "专业速查 - ToCU" %}
 
 {% block body %}
-<section class="tocu-open-page tocu-programs-open">
-  <header class="tocu-open-head">
-    <span class="cuhk-kicker">Programs & Requirements</span>
-    <h1 class="tocu-open-title">专业速查</h1>
-    <p class="tocu-open-desc">用于快速对比专业方向、语言要求和截止日期。</p>
+<section class="tocu-page-stack">
+  <header class="tocu-page-hero">
+    <p class="tocu-page-hero__eyebrow">Programs</p>
+    <h1 class="tocu-page-hero__title">专业速查</h1>
+    <p class="tocu-page-hero__summary">用于快速对比专业方向、语言要求和截止日期。信息组织得更像目录，而不是堆叠的产品卡片。</p>
   </header>
 
-  <div class="tocu-open-toolbar">
-    <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="tocu-open-search">
+  <div class="tocu-directory-toolbar">
+    <label class="tocu-field tocu-field--search">
+      <span class="sr-only">搜索专业</span>
+      <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="tocu-input">
+    </label>
   </div>
 
-  <div id="program-list" class="tocu-program-grid">
+  <div id="program-list" class="tocu-directory-grid">
     {% for p in programs %}
-      <article class="program-item tocu-program-card cuhk-lift" data-name="{{ p.name }}" data-school="{{ p.school }}" data-focus="{{ p.focus }}">
-        <div class="flex items-start justify-between gap-4">
-          <h2 class="text-xl cuhk-guide-title text-ink-900 leading-snug">{{ p.name }}</h2>
-          <span class="tocu-program-badge">{{ p.degree }}</span>
+      <article class="program-item tocu-directory-card" data-name="{{ p.name }}" data-school="{{ p.school }}" data-focus="{{ p.focus }}">
+        <div class="tocu-directory-card__top">
+          <div>
+            <h2 class="tocu-directory-card__title">{{ p.name }}</h2>
+            <p class="tocu-directory-card__school">{{ p.school }}</p>
+          </div>
+          <span class="tocu-directory-card__badge">{{ p.degree }}</span>
         </div>
-        <p class="mt-1.5 text-sm text-ink-700">{{ p.school }}</p>
 
-        <ul class="mt-4 space-y-2 text-sm text-ink-700 leading-7">
-          <li><span class="font-medium">方向：</span>{{ p.focus }}</li>
-          <li><span class="font-medium">语言：</span>{{ p.language }}</li>
-          <li><span class="font-medium">截止日期：</span>{{ p.deadline }}</li>
-        </ul>
+        <dl class="tocu-directory-card__facts">
+          <div>
+            <dt>方向</dt>
+            <dd>{{ p.focus }}</dd>
+          </div>
+          <div>
+            <dt>语言</dt>
+            <dd>{{ p.language }}</dd>
+          </div>
+          <div>
+            <dt>截止日期</dt>
+            <dd>{{ p.deadline }}</dd>
+          </div>
+        </dl>
 
-        <a href="{{ p.link }}" target="_blank" rel="noreferrer" class="inline-flex mt-5 tocu-open-link">查看官网入口 ↗</a>
+        <a href="{{ p.link }}" target="_blank" rel="noreferrer" class="tocu-directory-card__link">查看官网入口</a>
       </article>
     {% endfor %}
   </div>

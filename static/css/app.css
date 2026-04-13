@@ -1,713 +1,1219 @@
 :root {
-  --cuhk-plum-700: #331646;
-  --cuhk-plum-600: #46205f;
-  --cuhk-plum-500: #5b2f78;
-  --cuhk-gold-500: #a57a1c;
-  --cuhk-paper-50: #f4f1ee;
-  --cuhk-paper-25: #fbf8f5;
+  --tocu-bg: #f5f4ed;
+  --tocu-surface: #faf9f5;
+  --tocu-surface-strong: #ffffff;
+  --tocu-ink: #141413;
+  --tocu-muted: #5e5d59;
+  --tocu-subtle: #87867f;
+  --tocu-border: #f0eee6;
+  --tocu-border-strong: #e8e6dc;
+  --tocu-accent: #c96442;
+  --tocu-accent-strong: #b85637;
+  --tocu-shadow-whisper: 0 4px 24px rgba(20, 20, 19, 0.05);
+  --tocu-shadow-ring: 0 0 0 1px #d1cfc5;
+  --tocu-radius-sm: 12px;
+  --tocu-radius-md: 18px;
+  --tocu-radius-lg: 28px;
+  --tocu-max-width: 1180px;
+  --tocu-transition: 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html,
 body {
+  margin: 0;
+  padding: 0;
   scroll-behavior: smooth;
 }
 
-body {
+body.tocu-body {
+  min-height: 100vh;
   background:
-    radial-gradient(125% 82% at 0% 0%, rgba(85, 43, 116, 0.12), transparent 58%),
-    radial-gradient(90% 62% at 100% 0%, rgba(173, 126, 168, 0.16), transparent 64%),
-    var(--cuhk-paper-50);
+    radial-gradient(80% 65% at 0% 0%, rgba(201, 100, 66, 0.08), transparent 62%),
+    radial-gradient(90% 72% at 100% 0%, rgba(232, 230, 220, 0.85), transparent 70%),
+    var(--tocu-bg);
+  color: var(--tocu-ink);
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-.cuhk-wordmark {
-  font-family: "Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.cuhk-display {
-  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-weight: 700;
-  line-height: 1.15;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.cuhk-card {
-  border-radius: 1rem;
-  border: 1px solid rgba(91, 78, 95, 0.12);
-  background: rgba(252, 251, 248, 0.95);
-  box-shadow: 0 16px 40px -26px rgba(55, 23, 73, 0.35);
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.cuhk-card-soft {
-  border-radius: 1rem;
-  border: 1px solid rgba(123, 103, 137, 0.16);
-  background: #ffffff;
-  box-shadow: 0 8px 28px -22px rgba(55, 23, 73, 0.35);
-}
-
-.cuhk-card-accent {
-  border-radius: 1rem;
-  border: 1px solid rgba(165, 122, 28, 0.32);
-  background: linear-gradient(140deg, #f8eed0 0%, #f4e2ae 100%);
-  box-shadow: 0 10px 28px -22px rgba(93, 72, 15, 0.5);
-}
-
-.cuhk-kicker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  background: rgba(122, 31, 128, 0.12);
-  color: var(--cuhk-plum-600);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 0.35rem 0.8rem;
-}
-
-.cuhk-btn-primary {
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, var(--cuhk-plum-600), var(--cuhk-plum-500));
-  border: 1px solid rgba(81, 20, 91, 0.45);
-  color: #fcfbf8;
-  font-weight: 700;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-  box-shadow: 0 12px 24px -18px rgba(87, 17, 95, 0.7);
-}
-
-.cuhk-btn-primary:hover {
-  transform: translateY(-1px);
-  filter: saturate(1.05);
-  box-shadow: 0 18px 26px -18px rgba(87, 17, 95, 0.75);
-}
-
-.cuhk-btn-secondary {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(96, 71, 108, 0.24);
-  background: #fff;
-  color: #342a3b;
-  font-weight: 600;
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.cuhk-btn-secondary:hover {
-  border-color: rgba(122, 31, 128, 0.45);
-  color: var(--cuhk-plum-600);
-  transform: translateY(-1px);
-}
-
-.cuhk-nav-link {
-  position: relative;
-  color: #463c51;
-  transition: color 0.2s ease;
-}
-
-.cuhk-nav-link:hover {
-  color: var(--cuhk-plum-600);
-}
-
-.cuhk-nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.45rem;
-  width: 100%;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(122, 31, 128, 0.6);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.24s ease;
-}
-
-.cuhk-nav-link:hover::after,
-.cuhk-nav-link.is-active::after {
-  transform: scaleX(1);
-}
-
-.cuhk-nav-link.is-active {
-  color: var(--cuhk-plum-600);
-  font-weight: 700;
-}
-
-.cuhk-timeline-grid {
-  position: relative;
-}
-
-.cuhk-timeline-grid::before {
-  content: "";
-  position: absolute;
-  top: 1.8rem;
-  left: 8%;
-  width: 84%;
-  height: 1px;
-  background: rgba(117, 101, 123, 0.28);
-}
-
-.cuhk-step-badge {
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 0.75rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 20px -14px rgba(57, 26, 76, 0.55);
-}
-
-.cuhk-step-badge.is-primary {
-  background: linear-gradient(135deg, var(--cuhk-plum-600), var(--cuhk-plum-500));
-  color: #fcfbf8;
-}
-
-.cuhk-step-badge.is-accent {
-  background: linear-gradient(140deg, #a57a1c, #be952f);
-  color: #faf7ef;
-}
-
-.cuhk-guide-title {
-  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.cuhk-highlight-band {
-  border-radius: 1.25rem;
-  background: linear-gradient(135deg, #5a0f62, #7b1f80 60%, #4f0d5a);
-  color: #f7f3f9;
-  box-shadow: 0 24px 46px -28px rgba(68, 13, 76, 0.8);
-}
-
-.cuhk-section-rule {
-  border-left: 3px solid rgba(165, 122, 28, 0.9);
-  padding-left: 0.85rem;
-}
-
-.cuhk-muted {
-  color: #60566c;
-}
-
-.tocu-home-main {
-  width: 100%;
-  margin: 0;
-  display: flex;
-  align-items: stretch;
-}
-
-.tocu-open-main {
-  width: 100%;
-  margin: 0;
-}
-
-.tocu-open-page {
-  width: 100%;
-  min-height: calc(100vh - 9.6rem);
-  padding: clamp(0.8rem, 2vw, 1.5rem) clamp(1rem, 4.8vw, 4rem) clamp(1.4rem, 3vw, 2.4rem);
-}
-
-.tocu-open-head {
-  position: relative;
-  max-width: 58rem;
-}
-
-.tocu-open-title {
-  margin-top: 0.85rem;
-  font-family: "Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-size: clamp(2rem, 4.3vw, 3.4rem);
-  font-weight: 700;
-  line-height: 1.08;
-  color: #231336;
-}
-
-.tocu-open-desc {
-  margin-top: 0.9rem;
-  font-size: clamp(0.95rem, 1.35vw, 1.08rem);
-  line-height: 1.85;
-  color: #655b72;
-  max-width: 36rem;
-}
-
-.tocu-open-desc-wide {
-  max-width: 44rem;
-}
-
-.tocu-open-toolbar {
-  margin-top: 1.35rem;
-}
-
-.tocu-open-search {
-  width: min(40rem, 100%);
-  border-radius: 0.95rem;
-  border: 1px solid rgba(107, 81, 129, 0.2);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(250, 245, 254, 0.82));
-  padding: 0.78rem 1rem;
-  font-size: 0.9rem;
-  color: #27183b;
-  box-shadow: 0 16px 24px -28px rgba(52, 28, 76, 0.65);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tocu-open-search:focus {
-  outline: none;
-  border-color: rgba(96, 68, 121, 0.45);
-  box-shadow: 0 20px 30px -28px rgba(52, 28, 76, 0.7);
-}
-
-.tocu-program-grid {
-  margin-top: 1.15rem;
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.9rem;
-}
-
-.tocu-program-card {
-  border-radius: 1rem;
-  border: 1px solid rgba(97, 72, 121, 0.14);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(250, 244, 253, 0.84));
-  box-shadow: 0 22px 34px -34px rgba(49, 24, 72, 0.9), 0 10px 18px -22px rgba(69, 42, 98, 0.45);
-  padding: 1rem 1.05rem;
-}
-
-.tocu-program-badge {
-  border-radius: 999px;
-  border: 1px solid rgba(100, 71, 126, 0.2);
-  background: rgba(118, 85, 152, 0.1);
-  color: #50316b;
-  padding: 0.22rem 0.6rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.tocu-guide-stage-grid {
-  margin-top: 1.45rem;
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.9rem;
-}
-
-.tocu-guide-stage-card {
-  border-radius: 1rem;
-  border: 1px solid rgba(97, 72, 121, 0.14);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(250, 244, 253, 0.84));
-  box-shadow: 0 22px 34px -34px rgba(49, 24, 72, 0.9), 0 10px 18px -22px rgba(69, 42, 98, 0.45);
-  padding: 1rem 1.05rem;
-}
-
-.tocu-open-link {
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(95, 67, 121, 0.28);
-  background: rgba(117, 86, 150, 0.08);
-  padding: 0.24rem 0.62rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #4d2f66;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.tocu-open-link:hover {
-  border-color: rgba(95, 67, 121, 0.44);
-  background: rgba(117, 86, 150, 0.14);
-}
-
-.tocu-home-open {
-  position: relative;
-  width: 100%;
-  min-height: calc(100vh - 9.6rem);
-  padding: clamp(0.85rem, 2vw, 1.6rem) clamp(1rem, 4.8vw, 4rem) clamp(1.2rem, 2.8vw, 2rem);
-  background:
-    radial-gradient(62% 80% at 87% 14%, rgba(159, 128, 195, 0.11), transparent 71%),
-    radial-gradient(46% 58% at 10% 92%, rgba(180, 152, 208, 0.08), transparent 75%);
-}
-
-.tocu-home-open::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 28%);
-  pointer-events: none;
-}
-
-.tocu-home-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(16rem, 0.86fr) minmax(0, 1.14fr);
-  align-items: center;
-  gap: clamp(1.4rem, 3.8vw, 4.2rem);
-  min-height: calc(100vh - 12rem);
-}
-
-.tocu-home-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 24rem;
-  min-width: 0;
-}
-
-.tocu-home-greeting {
-  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-size: clamp(2.9rem, 8.6vw, 4.7rem);
-  font-weight: 900;
-  line-height: 0.88;
-  color: #241435;
-  letter-spacing: 0.01em;
-}
-
-.tocu-home-subtitle {
-  margin-top: 1.15rem;
-  max-width: 19rem;
-  font-size: clamp(0.95rem, 1.45vw, 1.04rem);
-  color: #6b6277;
-  line-height: 1.8;
-}
-
-.tocu-roadmap-panel {
-  position: relative;
-  min-height: clamp(24rem, 58vh, 33rem);
-  min-width: 0;
-}
-
-.tocu-roadmap-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(70% 88% at 52% 48%, rgba(183, 154, 213, 0.1), rgba(183, 154, 213, 0));
-  pointer-events: none;
-}
-
-.tocu-roadmap-arrows {
-  position: absolute;
-  inset: 14% 8% 12%;
-  width: auto;
-  height: auto;
-  pointer-events: none;
-}
-
-.tocu-roadmap-line {
-  fill: none;
-  stroke: rgba(111, 78, 145, 0.44);
-  stroke-width: 1.15;
-  stroke-dasharray: 2 6.2;
-  stroke-linecap: round;
-  filter: drop-shadow(0 1px 1px rgba(88, 58, 118, 0.14));
-}
-
-.tocu-stage-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 0.9rem;
-  min-height: clamp(24rem, 58vh, 33rem);
-  padding: clamp(0.3rem, 1.3vw, 0.7rem);
-}
-
-.tocu-roadmap-card {
-  --offset-x: 0px;
-  --offset-y: 0px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.96rem;
-  border: 1px solid rgba(95, 69, 120, 0.13);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.86), rgba(249, 243, 253, 0.84));
-  box-shadow:
-    0 26px 38px -36px rgba(46, 22, 67, 0.9),
-    0 14px 24px -28px rgba(67, 39, 96, 0.48);
-  padding: 0.82rem 0.88rem 0.76rem;
-  transform: translate(var(--offset-x), var(--offset-y));
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  backdrop-filter: blur(5px);
-}
-
-.tocu-roadmap-card:hover {
-  transform: translate(var(--offset-x), calc(var(--offset-y) - 2px));
-  box-shadow:
-    0 30px 40px -36px rgba(46, 22, 67, 0.98),
-    0 20px 30px -28px rgba(67, 39, 96, 0.55);
-}
-
-.tocu-roadmap-card-1 {
-  --offset-x: -4px;
-  --offset-y: -5px;
-  align-self: start;
-  justify-self: start;
-}
-
-.tocu-roadmap-card-2 {
-  --offset-x: 6px;
-  --offset-y: -5px;
-  align-self: center;
-  justify-self: end;
-}
-
-.tocu-roadmap-card-3 {
-  --offset-x: 2px;
-  --offset-y: 4px;
-  align-self: center;
-  justify-self: start;
-}
-
-.tocu-roadmap-card-4 {
-  --offset-x: -4px;
-  --offset-y: 4px;
-  align-self: end;
-  justify-self: end;
-}
-
-.tocu-roadmap-tag {
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #735591;
-}
-
-.tocu-roadmap-title {
-  margin-top: 0.36rem;
-  font-family: "Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", serif;
-  font-size: clamp(0.92rem, 1.22vw, 1.12rem);
-  font-weight: 700;
-  line-height: 1.3;
-  color: #2b193f;
-}
-
-.tocu-roadmap-desc {
-  margin-top: 0.38rem;
-  font-size: 0.72rem;
-  line-height: 1.45;
-  color: #645a73;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.tocu-roadmap-link {
-  margin-top: auto;
-  padding-top: 0.62rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(95, 67, 121, 0.28);
-  background: rgba(117, 86, 150, 0.08);
-  padding: 0.23rem 0.6rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #4d2f66;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  align-self: flex-start;
-}
-
-.tocu-roadmap-link:hover {
-  border-color: rgba(95, 67, 121, 0.44);
-  background: rgba(117, 86, 150, 0.14);
-}
-
-.tocu-home-watermark {
-  margin-top: auto;
-  padding-top: clamp(2.2rem, 7vh, 4rem);
-  font-family: "Source Serif 4", "Noto Serif SC", serif;
-  font-size: clamp(2.8rem, 7.8vw, 5rem);
-  line-height: 1;
-  font-weight: 700;
-  color: rgba(45, 20, 64, 0.1);
-  text-transform: lowercase;
-  letter-spacing: 0.015em;
-  pointer-events: none;
-  user-select: none;
-}
-
-.cuhk-lift {
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-}
-
-.cuhk-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 26px -22px rgba(50, 23, 63, 0.44);
-  border-color: rgba(122, 31, 128, 0.35);
-}
-
-.cuhk-flow {
-  isolation: isolate;
-}
-
-.timeline-flow-path {
-  fill: none;
-  stroke: rgba(114, 37, 182, 0.9);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-dasharray: 14 14;
-  filter: drop-shadow(0 2px 2px rgba(63, 14, 99, 0.25));
-}
-
-.cuhk-stage-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border: 3px solid #15131a;
-  border-radius: 1.2rem;
-  padding: 1rem;
-  box-shadow: 6px 6px 0 #101012;
-  min-height: 11rem;
-}
-
-.cuhk-stage-card-yellow {
-  background: linear-gradient(145deg, #ffd90a 0%, #f9ca12 100%);
-}
-
-.cuhk-stage-card-pink {
-  background: linear-gradient(145deg, #f48fb2 0%, #ef7fa8 100%);
-}
-
-.cuhk-stage-card-purple {
-  background: linear-gradient(145deg, #ad8df2 0%, #9a7de8 100%);
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-@media (max-width: 1024px) {
-  .cuhk-timeline-grid::before {
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tocu-site-shell {
+  width: min(1440px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.tocu-site-shell--home {
+  width: min(1500px, calc(100% - 2rem));
+  padding-top: 0.35rem;
+  padding-bottom: 0;
+}
+
+.tocu-flash-stack {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.tocu-flash {
+  border-radius: var(--tocu-radius-sm);
+  border: 1px solid var(--tocu-border-strong);
+  background: var(--tocu-surface);
+  padding: 0.95rem 1rem;
+  box-shadow: var(--tocu-shadow-whisper);
+  font-size: 0.95rem;
+}
+
+.tocu-flash--success {
+  border-color: rgba(22, 101, 52, 0.15);
+  color: #166534;
+}
+
+.tocu-flash--error {
+  border-color: rgba(185, 28, 28, 0.15);
+  color: #b53333;
+}
+
+.tocu-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--tocu-border);
+  background: rgba(245, 244, 237, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.tocu-site-header__inner,
+.tocu-mobile-nav,
+.tocu-site-footer__inner {
+  width: min(var(--tocu-max-width), calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.tocu-site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.tocu-site-header__brand {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.tocu-site-header__mark,
+.tocu-site-footer__brand {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--tocu-ink);
+}
+
+.tocu-site-header__subtitle,
+.tocu-site-footer__copy {
+  font-size: 0.78rem;
+  color: var(--tocu-subtle);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tocu-site-nav,
+.tocu-site-header__actions,
+.tocu-site-footer__links,
+.tocu-home-cover__actions,
+.tocu-home-links,
+.tocu-directory-card__top,
+.tocu-guide-main__heading,
+.tocu-auth-modal__head,
+.tocu-auth-modal__tabs,
+.tocu-resume-card,
+.tocu-breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.tocu-site-nav {
+  gap: 0.45rem;
+  padding: 0.32rem;
+  border: 1px solid var(--tocu-border);
+  border-radius: 999px;
+  background: rgba(250, 249, 245, 0.82);
+}
+
+.tocu-site-nav__link,
+.tocu-mobile-nav__link {
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  font-size: 0.92rem;
+  color: var(--tocu-muted);
+  transition: background-color var(--tocu-transition), color var(--tocu-transition), box-shadow var(--tocu-transition);
+}
+
+.tocu-site-nav__link:hover,
+.tocu-mobile-nav__link:hover {
+  color: var(--tocu-ink);
+}
+
+.tocu-site-nav__link.is-active,
+.tocu-mobile-nav__link.is-active {
+  background: var(--tocu-ink);
+  color: var(--tocu-surface);
+  box-shadow: var(--tocu-shadow-ring);
+}
+
+.tocu-site-header__actions {
+  gap: 0.75rem;
+}
+
+.tocu-mobile-nav {
+  display: none;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  overflow: visible;
+  padding-bottom: 0.9rem;
+}
+
+.tocu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid transparent;
+  transition: transform var(--tocu-transition), background-color var(--tocu-transition), border-color var(--tocu-transition), color var(--tocu-transition), box-shadow var(--tocu-transition);
+  cursor: pointer;
+}
+
+.tocu-btn:hover {
+  transform: translateY(-1px);
+}
+
+.tocu-btn--primary {
+  background: var(--tocu-accent);
+  color: var(--tocu-surface);
+  box-shadow: 0 0 0 1px var(--tocu-accent);
+}
+
+.tocu-btn--primary:hover {
+  background: var(--tocu-accent-strong);
+}
+
+.tocu-btn--secondary {
+  background: var(--tocu-border-strong);
+  color: #4d4c48;
+  box-shadow: var(--tocu-shadow-ring);
+}
+
+.tocu-btn--secondary:hover {
+  border-color: #c2c0b6;
+}
+
+.tocu-btn--ghost {
+  background: var(--tocu-surface-strong);
+  border-color: var(--tocu-border-strong);
+  color: var(--tocu-ink);
+  box-shadow: var(--tocu-shadow-ring);
+}
+
+.tocu-btn--small {
+  min-height: 38px;
+  padding: 0.6rem 1rem;
+  font-size: 0.92rem;
+}
+
+.tocu-btn--full {
+  width: 100%;
+}
+
+.tocu-user-menu {
+  position: relative;
+}
+
+.tocu-user-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid var(--tocu-border);
+  border-radius: 999px;
+  background: var(--tocu-surface);
+  padding: 0.35rem 0.4rem 0.35rem 0.85rem;
+  color: var(--tocu-ink);
+  cursor: pointer;
+}
+
+.tocu-user-menu__name {
+  font-size: 0.92rem;
+  color: var(--tocu-muted);
+}
+
+.tocu-user-menu__avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.tocu-user-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.75rem);
+  width: min(320px, 92vw);
+  padding: 1rem;
+  border-radius: 22px;
+  border: 1px solid var(--tocu-border);
+  background: rgba(250, 249, 245, 0.98);
+  box-shadow: 0 20px 40px rgba(20, 20, 19, 0.08);
+  display: none;
+}
+
+.tocu-user-menu:hover .tocu-user-menu__panel,
+.tocu-user-menu:focus-within .tocu-user-menu__panel {
+  display: block;
+}
+
+.tocu-user-menu__eyebrow,
+.tocu-page-hero__eyebrow,
+.tocu-home-cover__eyebrow,
+.tocu-home-links__eyebrow,
+.tocu-guide-nav__eyebrow,
+.tocu-guide-main__step,
+.tocu-guide-side__eyebrow,
+.tocu-resume-card__eyebrow,
+.tocu-assistant-shell__intro-label,
+.tocu-directory-card__badge,
+.tocu-faq-card__badge {
+  font-size: 0.73rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tocu-subtle);
+}
+
+.tocu-user-menu__title,
+.tocu-auth-card__title,
+.tocu-auth-modal__title,
+.tocu-guide-nav__title,
+.tocu-guide-side__title,
+.tocu-resume-card__title {
+  margin: 0.15rem 0 0;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tocu-user-menu__email,
+.tocu-guide-nav__hint,
+.tocu-guide-side__body,
+.tocu-auth-modal__body {
+  color: var(--tocu-muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.tocu-inline-form,
+.tocu-form-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.tocu-form-stack {
+  margin-top: 1rem;
+}
+
+.tocu-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tocu-field__label {
+  font-size: 0.9rem;
+  color: var(--tocu-muted);
+}
+
+.tocu-input {
+  width: 100%;
+  min-height: 46px;
+  border-radius: 16px;
+  border: 1px solid var(--tocu-border-strong);
+  background: var(--tocu-surface-strong);
+  color: var(--tocu-ink);
+  padding: 0.8rem 0.95rem;
+  transition: border-color var(--tocu-transition), box-shadow var(--tocu-transition);
+}
+
+.tocu-input:focus {
+  outline: none;
+  border-color: var(--tocu-focus, #3898ec);
+  box-shadow: 0 0 0 3px rgba(56, 152, 236, 0.12);
+}
+
+.tocu-input--textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.tocu-page-stack {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.tocu-page-hero,
+.tocu-directory-toolbar,
+.tocu-resume-card,
+.tocu-auth-card,
+.tocu-chat-surface,
+.tocu-guide-main__surface,
+.tocu-guide-nav__panel,
+.tocu-guide-side__panel,
+.tocu-home-cover__inner,
+.tocu-home-links__card,
+.tocu-faq-card {
+  border-radius: var(--tocu-radius-lg);
+  border: 1px solid var(--tocu-border);
+  background: rgba(250, 249, 245, 0.56);
+  box-shadow: none;
+}
+
+.tocu-page-hero {
+  border: 0;
+  background: transparent;
+  padding: 0 0 1rem;
+}
+
+.tocu-page-hero__title,
+.tocu-home-cover__title,
+.tocu-home-cover__slogan,
+.tocu-directory-card__title,
+.tocu-stage-card__title,
+.tocu-faq-card__title,
+.tocu-guide-main__title {
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-weight: 600;
+  color: var(--tocu-ink);
+}
+
+.tocu-page-hero__title {
+  margin: 0.55rem 0 0;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.12;
+}
+
+.tocu-page-hero__summary {
+  max-width: 48rem;
+  margin: 0.9rem 0 0;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: var(--tocu-muted);
+}
+
+.tocu-page-hero__badge {
+  display: inline-flex;
+  margin-top: 1rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: var(--tocu-border-strong);
+  color: #4d4c48;
+  font-size: 0.92rem;
+}
+
+.tocu-breadcrumb a {
+  color: var(--tocu-muted);
+  font-size: 0.95rem;
+}
+
+.tocu-home-cover {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: center;
+  min-height: calc(100svh - 6.4rem);
+  padding: clamp(0.9rem, 1.8vw, 1.8rem) clamp(0.75rem, 1.5vw, 1.4rem) clamp(1.25rem, 2vw, 1.9rem);
+  overflow: hidden;
+}
+
+.tocu-home-cover__intro {
+  display: grid;
+  align-content: center;
+  gap: 1.1rem;
+  min-height: min(100%, 42rem);
+  width: min(100%, 32rem);
+  justify-self: center;
+}
+
+.tocu-home-cover__title {
+  margin: 0;
+  display: grid;
+  gap: 0.15em;
+  font-size: clamp(5rem, 10vw, 8.8rem);
+  line-height: 0.82;
+  letter-spacing: -0.065em;
+}
+
+.tocu-home-cover__title span {
+  display: block;
+}
+
+.tocu-home-cover__slogan {
+  margin: 0;
+  max-width: 26rem;
+  font-size: clamp(1.02rem, 1.6vw, 1.28rem);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--tocu-ink) 64%, var(--tocu-muted) 36%);
+}
+
+.tocu-home-cover__aside {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: stretch;
+  min-height: min(100%, 34rem);
+}
+
+.tocu-home-links {
+  width: min(100%, 35rem);
+  margin: 0 0 0 auto;
+  display: grid;
+  gap: 0;
+  border-radius: 2rem;
+  border: 1px solid rgba(232, 230, 220, 0.88);
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.82), rgba(255, 249, 244, 0.52));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(20, 20, 19, 0.06);
+  overflow: hidden;
+}
+
+.tocu-home-links__card {
+  position: relative;
+  padding: 1.45rem 1.5rem;
+  display: grid;
+  gap: 0.22rem 0.9rem;
+  grid-template-columns: minmax(9.5rem, 12.5rem) minmax(0, 1fr) auto;
+  grid-template-areas:
+    "eyebrow body arrow"
+    "title body arrow";
+  align-items: end;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(232, 230, 220, 0.92);
+  background: transparent;
+  box-shadow: none;
+  transition: transform var(--tocu-transition), color var(--tocu-transition), background-color var(--tocu-transition);
+}
+
+.tocu-home-links__card:first-child {
+  border-top: 0;
+}
+
+.tocu-home-links__card:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.tocu-home-cover__watermark {
+  position: absolute;
+  right: -0.4rem;
+  bottom: -0.9rem;
+  margin: 0;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: clamp(5.2rem, 8.4vw, 7.8rem);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  color: rgba(20, 20, 19, 0.055);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tocu-stage-card:hover,
+.tocu-directory-card:hover,
+.tocu-faq-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--tocu-border-strong);
+}
+
+.tocu-home-links__title,
+.tocu-directory-card__title,
+.tocu-stage-card__title,
+.tocu-faq-card__title {
+  font-size: 1.62rem;
+  line-height: 1.14;
+}
+
+.tocu-home-links__title {
+  grid-area: title;
+  align-self: start;
+}
+
+.tocu-home-links__body,
+.tocu-directory-card__school,
+.tocu-stage-card__body,
+.tocu-faq-card__body,
+.tocu-resume-card__body {
+  color: color-mix(in srgb, var(--tocu-ink) 72%, var(--tocu-muted) 28%);
+  line-height: 1.68;
+}
+
+.tocu-home-links__body {
+  grid-area: body;
+  max-width: 16rem;
+  justify-self: start;
+  align-self: end;
+  font-size: 0.97rem;
+}
+
+.tocu-home-links__eyebrow {
+  grid-area: eyebrow;
+  color: color-mix(in srgb, var(--tocu-accent-strong) 70%, var(--tocu-subtle) 30%);
+  align-self: end;
+}
+
+.tocu-home-links__arrow {
+  grid-area: arrow;
+  align-self: end;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  color: color-mix(in srgb, var(--tocu-ink) 46%, transparent);
+}
+
+.tocu-directory-toolbar {
+  border: 0;
+  background: transparent;
+  padding: 0 0 0.85rem;
+}
+
+.tocu-field--search {
+  margin: 0;
+}
+
+.tocu-directory-grid,
+.tocu-stage-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.tocu-directory-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tocu-directory-card {
+  padding: 1.35rem;
+  display: grid;
+  gap: 1rem;
+  border-radius: 24px;
+  border: 1px solid var(--tocu-border);
+  background: rgba(255, 255, 255, 0.32);
+  box-shadow: none;
+  transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
+}
+
+.tocu-directory-card__top {
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.tocu-directory-card__school {
+  margin: 0.35rem 0 0;
+}
+
+.tocu-directory-card__badge {
+  color: var(--tocu-accent-strong);
+  background: rgba(201, 100, 66, 0.08);
+  border: 1px solid rgba(201, 100, 66, 0.16);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+}
+
+.tocu-directory-card__facts {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.tocu-directory-card__facts div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.tocu-directory-card__facts dt {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tocu-subtle);
+}
+
+.tocu-directory-card__facts dd {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--tocu-ink);
+}
+
+.tocu-directory-card__link,
+.tocu-stage-card__cta {
+  color: var(--tocu-accent-strong);
+  font-weight: 600;
+}
+
+.tocu-resume-card {
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem 1.35rem;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.tocu-resume-card__title {
+  margin-top: 0.4rem;
+}
+
+.tocu-stage-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tocu-stage-card {
+  padding: 1.35rem;
+  border-radius: 24px;
+  border: 1px solid var(--tocu-border);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: none;
+  display: grid;
+  gap: 0.9rem;
+  transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
+}
+
+.tocu-stage-card.is-highlighted {
+  border-color: rgba(201, 100, 66, 0.26);
+  background: rgba(255, 247, 243, 0.95);
+  box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.16);
+}
+
+.tocu-stage-card__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tocu-stage-card__index {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tocu-subtle);
+}
+
+.tocu-stage-card__range {
+  font-size: 0.86rem;
+  color: var(--tocu-accent-strong);
+}
+
+.tocu-guide-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 260px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.tocu-guide-nav,
+.tocu-guide-side {
+  position: sticky;
+  top: 6.25rem;
+}
+
+.tocu-guide-nav__panel,
+.tocu-guide-side__panel,
+.tocu-guide-main__surface,
+.tocu-auth-card,
+.tocu-chat-surface,
+.tocu-faq-card,
+.tocu-auth-modal {
+  padding: 1.25rem;
+}
+
+.tocu-guide-nav__list,
+.tocu-guide-side__materials,
+.tocu-guide-main__section ol,
+.tocu-guide-main__section ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.tocu-guide-nav__list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.tocu-guide-nav__link {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.8rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--tocu-border);
+  color: var(--tocu-muted);
+  transition: background-color var(--tocu-transition), color var(--tocu-transition), border-color var(--tocu-transition);
+}
+
+.tocu-guide-nav__link:hover {
+  border-color: var(--tocu-border-strong);
+  color: var(--tocu-ink);
+}
+
+.tocu-guide-nav__link.is-current {
+  background: var(--tocu-ink);
+  color: var(--tocu-surface);
+  border-color: var(--tocu-ink);
+}
+
+.tocu-guide-main {
+  display: grid;
+  gap: 1rem;
+}
+
+.tocu-guide-main__heading {
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.tocu-guide-main__title {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.18;
+}
+
+.tocu-guide-main__image {
+  margin-top: 1.2rem;
+  border-radius: 22px;
+  border: 1px solid var(--tocu-border);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--tocu-border-strong);
+}
+
+.tocu-guide-main__section {
+  margin-top: 1.4rem;
+}
+
+.tocu-guide-main__section h3,
+.tocu-guide-comments__title {
+  margin: 0;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.tocu-guide-main__section ol,
+.tocu-guide-main__section ul {
+  margin-top: 0.9rem;
+  color: var(--tocu-muted);
+  line-height: 1.85;
+}
+
+.tocu-complete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform var(--tocu-transition), opacity var(--tocu-transition);
+}
+
+.tocu-complete-button:hover {
+  transform: translateY(-1px);
+}
+
+.tocu-guide-comments {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.tocu-callout {
+  margin-top: 0.8rem;
+  border-radius: 16px;
+  border: 1px solid rgba(201, 100, 66, 0.18);
+  background: rgba(255, 247, 243, 0.92);
+  color: var(--tocu-muted);
+  padding: 0.95rem 1rem;
+}
+
+.tocu-callout a {
+  color: var(--tocu-accent-strong);
+}
+
+.tocu-guide-side {
+  display: grid;
+  gap: 1rem;
+}
+
+.tocu-guide-side__panel--accent {
+  background: linear-gradient(180deg, rgba(255, 247, 243, 0.98), rgba(250, 249, 245, 0.96));
+  border-color: rgba(201, 100, 66, 0.18);
+}
+
+.tocu-guide-side__materials {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.7rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.tocu-guide-side__materials li {
+  padding: 0.8rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--tocu-border);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--tocu-muted);
+  line-height: 1.65;
+}
+
+.tocu-assistant-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.tocu-assistant-shell__intro {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tocu-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.tocu-chip {
+  border: 1px solid var(--tocu-border-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--tocu-muted);
+  padding: 0.55rem 0.9rem;
+  transition: border-color var(--tocu-transition), color var(--tocu-transition), background-color var(--tocu-transition);
+  cursor: pointer;
+}
+
+.tocu-chip:hover {
+  border-color: rgba(201, 100, 66, 0.24);
+  color: var(--tocu-ink);
+}
+
+.tocu-chat-surface {
+  overflow: hidden;
+}
+
+.tocu-chat-log {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.tocu-chat-compose {
+  border-top: 1px solid var(--tocu-border);
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.tocu-chat-compose__status {
+  margin: 0;
+  color: var(--tocu-muted);
+  font-size: 0.92rem;
+}
+
+.tocu-chat-compose__form {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+
+.tocu-faq-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.tocu-faq-card {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.tocu-faq-card__badge {
+  color: var(--tocu-accent-strong);
+}
+
+.tocu-auth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tocu-auth-modal {
+  width: min(560px, 100%);
+  border-radius: 26px;
+  border: 1px solid var(--tocu-border);
+  background: rgba(250, 249, 245, 0.98);
+  box-shadow: 0 24px 44px rgba(20, 20, 19, 0.12);
+}
+
+.tocu-auth-modal__head {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tocu-auth-modal__tabs {
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tocu-auth-modal__tab {
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+}
+
+.tocu-site-footer {
+  border-top: 1px solid var(--tocu-border);
+  margin-top: 2rem;
+  padding: 1.4rem 0 2.5rem;
+}
+
+.tocu-site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tocu-site-footer__links {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tocu-site-footer__links a {
+  color: var(--tocu-muted);
+  font-size: 0.95rem;
+}
+
+.tocu-site-footer__links a:hover,
+.tocu-breadcrumb a:hover {
+  color: var(--tocu-ink);
+}
+
+@media (max-width: 1080px) {
+  .tocu-stage-grid,
+  .tocu-directory-grid,
+  .tocu-auth-grid,
+  .tocu-guide-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tocu-home-cover {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.88fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .tocu-guide-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tocu-guide-nav,
+  .tocu-guide-side {
+    position: static;
+  }
+}
+
+@media (max-width: 860px) {
+  .tocu-site-nav {
     display: none;
   }
-}
 
-@media (min-width: 1024px) {
-  .cuhk-stage-card:nth-child(2),
-  .cuhk-stage-card:nth-child(5) {
-    transform: translateY(12px);
+  .tocu-mobile-nav {
+    display: flex;
+    padding-top: 0.15rem;
   }
 
-  .cuhk-stage-card:nth-child(3),
-  .cuhk-stage-card:nth-child(6) {
-    transform: translateY(-6px);
+  .tocu-stage-grid,
+  .tocu-directory-grid,
+  .tocu-auth-grid,
+  .tocu-chat-compose__form {
+    grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 767px) {
-  .cuhk-stage-card {
-    box-shadow: 4px 4px 0 #101012;
+  .tocu-chat-compose__form {
+    display: grid;
+  }
+
+  .tocu-home-cover {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
     min-height: auto;
+    padding-top: 0.6rem;
+    padding-bottom: 1.6rem;
   }
 
-  .tocu-open-page {
-    min-height: auto;
-    padding: 0.8rem 1rem 1.2rem;
-  }
-
-  .tocu-open-toolbar {
-    margin-top: 1rem;
-  }
-
-  .tocu-open-search {
+  .tocu-home-cover__intro {
     width: 100%;
-    font-size: 0.88rem;
+    justify-self: stretch;
+    min-height: auto;
+    gap: 0.8rem;
   }
 
-  .tocu-program-card,
-  .tocu-guide-stage-card {
-    padding: 0.92rem 0.9rem;
+  .tocu-home-cover__aside {
+    min-height: auto;
+    gap: 1rem;
   }
 
-  .tocu-home-main {
+  .tocu-home-links {
+    width: 100%;
+    margin: 0;
+  }
+
+  .tocu-home-cover__watermark {
+    position: static;
+    margin-top: 0.25rem;
+    font-size: clamp(3.8rem, 15vw, 5.8rem);
+    text-align: right;
+  }
+
+  .tocu-resume-card,
+  .tocu-site-footer__inner {
+    flex-direction: column;
     align-items: stretch;
   }
 
-  .tocu-home-open {
-    min-height: auto;
-    padding: 0.8rem 1rem 1.2rem;
+  .tocu-site-header__brand {
+    align-items: flex-start;
+    text-align: left;
   }
 
-  .tocu-home-grid {
-    grid-template-columns: 1fr;
-    gap: 1.1rem;
-    min-height: auto;
-  }
-
-  .tocu-home-copy {
-    justify-content: flex-start;
-    max-width: none;
-  }
-
-  .tocu-roadmap-panel {
-    min-height: 23rem;
-  }
-
-  .tocu-roadmap-arrows {
-    display: none;
-  }
-
-  .tocu-stage-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 0.62rem;
-    min-height: auto;
-    padding: 0;
-  }
-
-  .tocu-roadmap-card {
-    --offset-x: 0px;
-    --offset-y: 0px;
-    transform: none;
-  }
-
-  .tocu-roadmap-card:hover {
-    transform: translateY(-1px);
-  }
-
-  .tocu-home-watermark {
-    margin-top: 1.1rem;
-    padding-top: 0;
-    font-size: clamp(2.3rem, 13vw, 3.8rem);
+  .tocu-site-header__actions {
+    justify-content: flex-end;
   }
 }
 
-@media (max-width: 1080px) and (min-width: 768px) {
-  .tocu-program-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.86rem;
+@media (max-width: 640px) {
+  .tocu-site-shell,
+  .tocu-site-shell--home,
+  .tocu-site-header__inner,
+  .tocu-mobile-nav,
+  .tocu-site-footer__inner {
+    width: calc(100% - 1.25rem);
   }
 
-  .tocu-guide-stage-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.86rem;
+  .tocu-site-shell--home {
+    padding-top: 0.5rem;
   }
 
-  .tocu-home-grid {
+  .tocu-home-cover {
     gap: 1.2rem;
-    grid-template-columns: minmax(14.5rem, 0.92fr) minmax(0, 1.08fr);
+    padding-inline: 0;
+    padding-top: 0.35rem;
   }
 
-  .tocu-stage-grid {
-    gap: 0.74rem;
+  .tocu-home-cover__title {
+    font-size: clamp(3.7rem, 19vw, 5.3rem);
+    line-height: 0.84;
   }
 
-  .tocu-roadmap-title {
-    font-size: clamp(0.88rem, 1.15vw, 1rem);
-  }
-}
-
-@media (min-width: 1081px) {
-  .tocu-program-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.92rem;
+  .tocu-home-cover__slogan {
+    font-size: 0.98rem;
   }
 
-  .tocu-guide-stage-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.92rem;
+  .tocu-home-links {
+    border-radius: 1.55rem;
+  }
+
+  .tocu-home-links__card {
+    padding: 1.1rem 1.05rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow arrow"
+      "title arrow"
+      "body body";
+    gap: 0.2rem 0.7rem;
+  }
+
+  .tocu-home-links__title {
+    font-size: 1.46rem;
+  }
+
+  .tocu-home-links__body {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: none;
+    margin-top: 0.22rem;
+  }
+
+  .tocu-home-links__arrow {
+    font-size: 1.45rem;
+    align-self: start;
+    padding-top: 0.32rem;
+  }
+
+  .tocu-home-cover__watermark {
+    margin-top: 0.15rem;
+    font-size: clamp(3rem, 16vw, 4.8rem);
+  }
+
+  .tocu-page-hero__title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
   }
 }
 
@@ -717,7 +1223,7 @@ code {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -18,11 +18,18 @@ class CourseStructureTestCase(unittest.TestCase):
                 msg=f"expected {path} to return 200, got {response.status_code}",
             )
 
-    def test_legacy_faq_routes_redirect_to_assistant(self):
-        for path in ["/faq", "/faq/1", "/faq/some-legacy-path"]:
-            response = self.client.get(path, follow_redirects=False)
-            self.assertEqual(response.status_code, 302)
-            self.assertIn("/assistant", response.location)
+    def test_faq_routes_render_secondary_support_pages(self):
+        list_response = self.client.get("/faq")
+        detail_response = self.client.get("/faq/1")
+        missing_response = self.client.get("/faq/some-legacy-path")
+
+        self.assertEqual(list_response.status_code, 200)
+        self.assertIn("常见问题", list_response.get_data(as_text=True))
+
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertIn("评论区", detail_response.get_data(as_text=True))
+
+        self.assertEqual(missing_response.status_code, 404)
 
     def test_guide_stage_page_exists(self):
         response = self.client.get("/guide/prep")
@@ -43,7 +50,7 @@ class CourseStructureTestCase(unittest.TestCase):
         html = response.get_data(as_text=True)
 
         nav_match = re.search(
-            r'<nav class="hidden md:flex items-center gap-6 text-sm">(.*?)</nav>',
+            r'<nav class="tocu-site-nav"[^>]*>(.*?)</nav>',
             html,
             re.S,
         )
@@ -69,22 +76,19 @@ class CourseStructureTestCase(unittest.TestCase):
         self.assertNotIn(">问题清单</a>", nav_html)
         self.assertNotIn(">文件清单</a>", nav_html)
 
-    def test_home_timeline_uses_svg_connector_with_all_stages(self):
+    def test_homepage_uses_cover_layout_and_moves_process_overview_to_guides(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         html = response.get_data(as_text=True)
 
-        self.assertIn('class="tocu-roadmap-arrows"', html)
-        self.assertIn("tocu-stage-grid", html)
-        self.assertIn("tocu-roadmap-line", html)
+        self.assertIn("tocu-home-cover__title", html)
+        self.assertIn("快速比较项目方向、语言要求与截止日期。", html)
+        self.assertNotIn("tocu-roadmap-arrows", html)
+        self.assertNotIn("tocu-roadmap-card-", html)
 
-        expected_count = min(4, len(get_stages()))
-        actual_count = html.count("tocu-roadmap-card-")
-        self.assertEqual(
-            actual_count,
-            expected_count,
-            msg=f"expected {expected_count} stage cards in timeline, got {actual_count}",
-        )
+        guide_html = self.client.get("/guide").get_data(as_text=True)
+        actual_count = guide_html.count('<article class="tocu-stage-card')
+        self.assertEqual(actual_count, len(get_stages()))
 
 
 if __name__ == "__main__":

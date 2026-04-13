@@ -1,26 +1,36 @@
 {% extends "base.html" %}
 
-{% set title = "操作步骤 - 港中文申请一站式助手" %}
+{% set title = "操作步骤 - ToCU" %}
 
 {% block body %}
-<section class="tocu-open-page tocu-guide-open">
-  <header class="tocu-open-head">
-    <span class="cuhk-kicker">Application Flow</span>
-    <h1 class="tocu-open-title">操作步骤总览</h1>
-    <p class="tocu-open-desc tocu-open-desc-wide">按阶段进入详细步骤页，每个步骤都包含教程、材料清单和评论区。建议按时间顺序依次推进。</p>
+<section class="tocu-page-stack">
+  <header class="tocu-page-hero">
+    <p class="tocu-page-hero__eyebrow">Application Flow</p>
+    <h1 class="tocu-page-hero__title">操作步骤</h1>
+    <p class="tocu-page-hero__summary">从你所在的阶段进入。这里承接完整的 6 阶段申请流程，而不是把时间线挤进首页。</p>
   </header>
 
-  <div class="tocu-guide-stage-grid">
+  {% if last_stage_stage %}
+    <aside class="tocu-resume-card">
+      <div>
+        <p class="tocu-resume-card__eyebrow">Resume Where You Left Off</p>
+        <h2 class="tocu-resume-card__title">继续上次进度</h2>
+        <p class="tocu-resume-card__body">上次看到：{{ last_stage_stage.title }}</p>
+      </div>
+      <a href="{{ url_for('guide', stage_slug=last_stage_stage.slug) }}" class="tocu-btn tocu-btn--secondary">继续查看</a>
+    </aside>
+  {% endif %}
+
+  <div class="tocu-stage-grid">
     {% for stage in stages %}
-      {% set badge_style = 'is-accent' if loop.index == 2 else 'is-primary' %}
-      <article class="tocu-guide-stage-card cuhk-lift">
-        <div class="flex items-center justify-between gap-3">
-          <span class="cuhk-step-badge {{ badge_style }}">{{ "%02d"|format(loop.index) }}</span>
-          <p class="text-sm font-semibold text-brand-700">{{ stage.month_range }}</p>
+      <article class="tocu-stage-card {% if last_stage_slug == stage.slug %}is-highlighted{% endif %}">
+        <div class="tocu-stage-card__meta">
+          <span class="tocu-stage-card__index">Stage {{ "%02d"|format(loop.index) }}</span>
+          <span class="tocu-stage-card__range">{{ stage.month_range }}</span>
         </div>
-        <h2 class="mt-4 text-xl cuhk-guide-title text-ink-900">{{ stage.title }}</h2>
-        <p class="mt-2 text-sm text-ink-700 leading-7">{{ stage.description }}</p>
-        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="inline-flex mt-5 tocu-open-link">进入阶段</a>
+        <h2 class="tocu-stage-card__title">{{ stage.title }}</h2>
+        <p class="tocu-stage-card__body">{{ stage.description }}</p>
+        <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="tocu-stage-card__cta">进入阶段</a>
       </article>
     {% endfor %}
   </div>

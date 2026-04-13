@@ -8,102 +8,62 @@
   id="login-modal"
   data-auto-open="{{ '1' if request.args.get('open_login') == '1' else '0' }}"
   data-auto-tab="{{ default_auth_tab }}"
-  class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50 px-4"
+  class="hidden fixed inset-0 z-50 items-center justify-center bg-black/35 px-4"
 >
-  <div class="w-full max-w-xl cuhk-card-soft border border-brand-100 bg-paper-25 p-5 md:p-6">
-    <div class="flex items-start justify-between gap-4">
+  <div class="tocu-auth-modal">
+    <div class="tocu-auth-modal__head">
       <div>
-        <h2 class="text-xl font-semibold text-ink-900">登录 / 注册</h2>
-        <p class="mt-1 text-sm text-ink-700">登录后可以发表评论，并同步你的学习进度。</p>
+        <h2 class="tocu-auth-modal__title">登录 / 注册</h2>
+        <p class="tocu-auth-modal__body">登录后可以发表评论，并同步你的学习进度。</p>
       </div>
-      <button
-        type="button"
-        data-close-login
-        class="rounded-lg border border-brand-100 px-3 py-1.5 text-sm text-ink-700 hover:bg-brand-50"
-      >
-        关闭
-      </button>
+      <button type="button" data-close-login class="tocu-btn tocu-btn--ghost tocu-btn--small">关闭</button>
     </div>
 
-    <div class="mt-4 inline-flex rounded-lg border border-brand-100 bg-white p-1">
-      <button type="button" data-auth-tab="login" class="auth-tab rounded-md px-3 py-1.5 text-sm">登录</button>
-      <button type="button" data-auth-tab="register" class="auth-tab rounded-md px-3 py-1.5 text-sm">注册</button>
+    <div class="tocu-auth-modal__tabs">
+      <button type="button" data-auth-tab="login" class="auth-tab tocu-auth-modal__tab">登录</button>
+      <button type="button" data-auth-tab="register" class="auth-tab tocu-auth-modal__tab">注册</button>
     </div>
 
     <section data-auth-panel="login" class="mt-4">
-      <form action="{{ url_for('auth_login') }}" method="post" class="space-y-3">
+      <form action="{{ url_for('auth_login') }}" method="post" class="tocu-form-stack">
         <input type="hidden" name="next" value="{{ next_url }}">
-        <div>
-          <label class="text-sm text-ink-700">邮箱</label>
-          <input
-            name="email"
-            type="email"
-            required
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
-        </div>
-        <div>
-          <label class="text-sm text-ink-700">密码</label>
-          <input
-            name="password"
-            type="password"
-            required
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
-        </div>
-        <button type="submit" class="w-full cuhk-btn-primary py-2 text-sm">登录</button>
+        <label class="tocu-field">
+          <span class="tocu-field__label">邮箱</span>
+          <input name="email" type="email" required class="tocu-input">
+        </label>
+        <label class="tocu-field">
+          <span class="tocu-field__label">密码</span>
+          <input name="password" type="password" required class="tocu-input">
+        </label>
+        <button type="submit" class="tocu-btn tocu-btn--primary tocu-btn--full">登录</button>
       </form>
     </section>
 
     <section data-auth-panel="register" class="mt-4 hidden">
-      <form action="{{ url_for('auth_register') }}" method="post" class="space-y-3">
+      <form action="{{ url_for('auth_register') }}" method="post" class="tocu-form-stack">
         <input type="hidden" name="next" value="{{ next_url }}">
-        <div>
-          <label class="text-sm text-ink-700">昵称</label>
-          <input
-            name="name"
-            type="text"
-            maxlength="20"
-            required
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
-        </div>
-        <div>
-          <label class="text-sm text-ink-700">邮箱</label>
-          <input
-            name="email"
-            type="email"
-            required
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
-        </div>
-        <div>
-          <label class="text-sm text-ink-700">密码（至少 6 位）</label>
-          <input
-            name="password"
-            type="password"
-            minlength="6"
-            required
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
-        </div>
-        <div>
-          <label class="text-sm text-ink-700">头像色</label>
-          <select
-            name="avatar_seed"
-            class="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-200"
-          >
+        <label class="tocu-field">
+          <span class="tocu-field__label">昵称</span>
+          <input name="name" type="text" maxlength="20" required class="tocu-input">
+        </label>
+        <label class="tocu-field">
+          <span class="tocu-field__label">邮箱</span>
+          <input name="email" type="email" required class="tocu-input">
+        </label>
+        <label class="tocu-field">
+          <span class="tocu-field__label">密码（至少 6 位）</span>
+          <input name="password" type="password" minlength="6" required class="tocu-input">
+        </label>
+        <label class="tocu-field">
+          <span class="tocu-field__label">头像色</span>
+          <select name="avatar_seed" class="tocu-input">
             {% for seed in ['sky', 'emerald', 'amber', 'rose', 'violet'] %}
               <option value="{{ seed }}">{{ seed }}</option>
             {% endfor %}
           </select>
-        </div>
-        <button type="submit" class="w-full cuhk-btn-secondary py-2 text-sm">注册并登录</button>
+        </label>
+        <button type="submit" class="tocu-btn tocu-btn--secondary tocu-btn--full">注册并登录</button>
       </form>
     </section>
-
-    <p class="mt-4 text-xs text-ink-700">
-      登录后可发表评论，并同步你的个人资料与学习进度。
-    </p>
   </div>
 </div>
