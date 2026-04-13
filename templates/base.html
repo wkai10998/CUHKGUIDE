@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,57 +13,49 @@
         extend: {
           colors: {
             brand: {
-              50: "#faf7fc",
-              100: "#f2ebf7",
-              200: "#e4d4ef",
-              300: "#c7aadf",
-              500: "#7a1f80",
-              600: "#6b1a73",
-              700: "#57115f",
-              800: "#3e0c45"
-            },
-            accent: {
-              100: "#f8eed0",
-              200: "#f0d98a",
-              500: "#a57a1c",
-              600: "#8d6511"
+              50: "#fff7f3",
+              100: "#f4e1d8",
+              200: "#e8c4b3",
+              500: "#c96442",
+              600: "#b85637",
+              700: "#8f432b"
             },
             paper: {
-              25: "#fcfbf8",
-              50: "#f7f4ef",
-              100: "#f1ece3"
+              25: "#faf9f5",
+              50: "#f5f4ed",
+              100: "#e8e6dc"
             },
             ink: {
-              900: "#1f1729",
-              700: "#4b4257"
+              900: "#141413",
+              700: "#5e5d59",
+              600: "#87867f"
             }
           },
           fontFamily: {
             sans: ["Noto Sans SC", "PingFang SC", "Microsoft YaHei", "sans-serif"],
-            serif: ["Noto Serif SC", "Songti SC", "STSong", "serif"]
+            serif: ["Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", "serif"]
           },
           boxShadow: {
-            "soft-card": "0 10px 30px -18px rgba(43, 18, 54, 0.35)",
-            "float-card": "0 18px 40px -24px rgba(62, 12, 69, 0.35)"
+            "soft-card": "0 4px 24px rgba(20, 20, 19, 0.05)",
+            "ring-warm": "0 0 0 1px #d1cfc5"
           }
         }
       }
     };
   </script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-  <title>{{ title or "港中文申请一站式助手" }}</title>
+  <title>{{ title or "ToCU" }}</title>
 </head>
-<body class="bg-paper-50 text-ink-900 min-h-screen font-sans">
+<body class="tocu-body">
   {% set is_home = request.path == '/' %}
-  {% set is_open_overview = request.path == '/programs' or request.path == '/guide' %}
   {% include "header.html" %}
 
-  <main class="{% if is_home %}tocu-home-main w-full px-0 py-0{% elif is_open_overview %}tocu-open-main w-full px-0 py-0{% else %}max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-10{% endif %}">
+  <main class="tocu-site-shell {% if is_home %}tocu-site-shell--home{% endif %}">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div class="mb-6 space-y-2">
+        <div class="tocu-flash-stack">
           {% for category, message in messages %}
-            <div class="rounded-xl px-4 py-3 text-sm shadow-soft-card {% if category == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-rose-50 text-rose-700 border border-rose-200{% endif %}">
+            <div class="tocu-flash {% if category == 'success' %}tocu-flash--success{% else %}tocu-flash--error{% endif %}">
               {{ message }}
             </div>
           {% endfor %}
@@ -75,9 +67,7 @@
   </main>
 
   {% include "login_modal.html" %}
-  {% if not is_home %}
-    {% include "footer.html" %}
-  {% endif %}
+  {% include "footer.html" %}
   <script src="{{ url_for('static', filename='js/components/login_modal.js') }}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>

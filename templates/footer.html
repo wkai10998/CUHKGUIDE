@@ -1,11 +1,15 @@
-<footer class="border-t border-brand-100 bg-paper-25 mt-14">
-  <div class="max-w-6xl mx-auto px-4 md:px-6 py-8 text-xs text-ink-700 space-y-4">
-    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
-      <a href="{{ url_for('index') }}" class="hover:text-brand-700 transition">联系我们</a>
-      <a href="{{ url_for('assistant') }}" class="hover:text-brand-700 transition">官方知识库</a>
-      <a href="{{ url_for('guide_list') }}" class="hover:text-brand-700 transition">服务条款</a>
-      <a href="{{ url_for('programs') }}" class="hover:text-brand-700 transition">CUHK 官网导览</a>
+<footer class="tocu-site-footer">
+  <div class="tocu-site-footer__inner">
+    <div>
+      <p class="tocu-site-footer__brand">ToCU</p>
+      <p class="tocu-site-footer__copy">给港中文硕士申请者的一份清晰导航。</p>
     </div>
-    <p class="text-[11px] text-ink-700/85">© 2026 香港中文大学申请助手。课程示例项目：Jinja2 模板继承、Flask 路由、Session、JavaScript 交互。</p>
+
+    <div class="tocu-site-footer__links">
+      <a href="{{ url_for('programs') }}">专业速查</a>
+      <a href="{{ url_for('guide_list') }}">操作步骤</a>
+      <a href="{{ url_for('assistant') }}">智能助手</a>
+      <a href="{{ url_for('faq_list') }}">常见问题</a>
+    </div>
   </div>
 </footer>

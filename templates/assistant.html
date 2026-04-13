@@ -1,57 +1,51 @@
 {% extends "base.html" %}
 
-{% set title = "智能助手 - 港中文申请一站式助手" %}
+{% set title = "智能助手 - ToCU" %}
 
 {% block body %}
-<section class="space-y-5">
-  <div class="cuhk-card px-6 md:px-8 py-7">
-    <span class="cuhk-kicker">Ask ToCU</span>
-    <h1 class="mt-4 text-4xl md:text-5xl cuhk-display text-ink-900">智能助手</h1>
-    <p class="mt-3 text-base md:text-lg cuhk-muted">和助手持续对话，快速定位申请步骤、材料要求与时间节点。</p>
+<section class="tocu-page-stack">
+  <header class="tocu-page-hero">
+    <p class="tocu-page-hero__eyebrow">Ask ToCU</p>
+    <h1 class="tocu-page-hero__title">智能助手</h1>
+    <p class="tocu-page-hero__summary">把眼前的问题问得更具体一些。它适合解决当前卡点，而不是替代整站导航。</p>
+  </header>
 
-    {% if suggested_questions %}
-      <div class="mt-5">
-        <p class="text-xs font-semibold tracking-wide text-ink-700 uppercase">快速提问</p>
-        <div class="mt-2 flex flex-wrap gap-2">
+  <section class="tocu-assistant-shell">
+    <div class="tocu-assistant-shell__intro">
+      <p class="tocu-assistant-shell__intro-label">快速提问</p>
+      {% if suggested_questions %}
+        <div class="tocu-chip-list">
           {% for question in suggested_questions %}
-            <button
-              type="button"
-              data-question-chip="{{ question }}"
-              class="rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs text-ink-700 hover:border-brand-200 hover:text-brand-700 transition"
-            >
-              {{ question }}
-            </button>
+            <button type="button" data-question-chip="{{ question }}" class="tocu-chip">{{ question }}</button>
           {% endfor %}
         </div>
-      </div>
-    {% endif %}
-  </div>
-
-  <div class="cuhk-card-soft overflow-hidden">
-    <div id="assistant-chat-log" class="max-h-[60vh] overflow-y-auto bg-white p-4 md:p-6 space-y-4">
-      <article class="flex justify-start">
-        <div class="max-w-[90%] md:max-w-[80%] rounded-2xl rounded-bl-md border border-brand-100 bg-paper-25 px-4 py-3 text-sm leading-7 text-ink-900">
-          <p class="whitespace-pre-wrap">你好，我是你的申请助手。你可以直接问我截止时间、材料准备、推荐信和网申步骤相关问题。</p>
-        </div>
-      </article>
+      {% endif %}
     </div>
 
-    <div class="border-t border-brand-100 bg-paper-25 px-4 md:px-6 py-4 md:py-5">
-      <p id="assistant-chat-status" class="text-xs text-ink-700">准备就绪。按 Enter 发送，Shift + Enter 换行。</p>
-      <form id="assistant-chat-form" data-endpoint="{{ url_for('assistant_message_api') }}" class="mt-2">
-        <label for="assistant-chat-input" class="sr-only">输入问题</label>
-        <div class="flex flex-col md:flex-row md:items-end gap-3">
+    <div class="tocu-chat-surface">
+      <div id="assistant-chat-log" class="tocu-chat-log">
+        <article class="flex justify-start">
+          <div class="max-w-[90%] md:max-w-[80%] rounded-2xl rounded-bl-md border border-brand-100 bg-paper-25 px-4 py-3 text-sm leading-7 text-ink-900">
+            <p class="whitespace-pre-wrap">你好，我是你的申请助手。你可以直接问我截止时间、材料准备、推荐信和网申步骤相关问题。</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="tocu-chat-compose">
+        <p id="assistant-chat-status" class="tocu-chat-compose__status">准备就绪。按 Enter 发送，Shift + Enter 换行。</p>
+        <form id="assistant-chat-form" data-endpoint="{{ url_for('assistant_message_api') }}" class="tocu-chat-compose__form">
+          <label for="assistant-chat-input" class="sr-only">输入问题</label>
           <textarea
             id="assistant-chat-input"
             rows="3"
             placeholder="例如：推荐信要提前多久联系老师？"
-            class="w-full rounded-xl border border-brand-100 bg-white px-4 py-3 text-sm leading-7 text-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            class="tocu-input tocu-input--textarea"
           ></textarea>
-          <button id="assistant-chat-send" type="submit" class="cuhk-btn-primary px-5 py-2.5 text-sm md:shrink-0">发送</button>
-        </div>
-      </form>
+          <button id="assistant-chat-send" type="submit" class="tocu-btn tocu-btn--primary">发送</button>
+        </form>
+      </div>
     </div>
-  </div>
+  </section>
 </section>
 {% endblock %}
 
