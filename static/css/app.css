@@ -75,14 +75,15 @@ code {
 }
 
 .tocu-site-shell {
-  width: min(var(--tocu-max-width), calc(100% - 2rem));
+  width: min(1440px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 1.2rem 0 4rem;
+  padding: 1rem 0 3rem;
 }
 
 .tocu-site-shell--home {
-  width: min(1280px, calc(100% - 2rem));
-  padding-top: 1.6rem;
+  width: min(1500px, calc(100% - 2rem));
+  padding-top: 0.35rem;
+  padding-bottom: 0;
 }
 
 .tocu-flash-stack {
@@ -208,7 +209,8 @@ code {
 .tocu-mobile-nav {
   display: none;
   gap: 0.5rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow: visible;
   padding-bottom: 0.9rem;
 }
 
@@ -414,12 +416,14 @@ code {
 .tocu-faq-card {
   border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
-  background: rgba(250, 249, 245, 0.92);
-  box-shadow: var(--tocu-shadow-whisper);
+  background: rgba(250, 249, 245, 0.56);
+  box-shadow: none;
 }
 
 .tocu-page-hero {
-  padding: clamp(1.6rem, 3vw, 2.2rem);
+  border: 0;
+  background: transparent;
+  padding: 0 0 1rem;
 }
 
 .tocu-page-hero__title,
@@ -464,68 +468,127 @@ code {
 }
 
 .tocu-home-cover {
+  position: relative;
   display: grid;
-  gap: 1rem;
-  min-height: calc(100vh - 12rem);
-  align-content: center;
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: center;
+  min-height: calc(100svh - 6.4rem);
+  padding: clamp(0.9rem, 1.8vw, 1.8rem) clamp(0.75rem, 1.5vw, 1.4rem) clamp(1.25rem, 2vw, 1.9rem);
+  overflow: hidden;
 }
 
-.tocu-home-cover__inner {
-  padding: clamp(2.4rem, 7vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
-  text-align: center;
+.tocu-home-cover__intro {
+  display: grid;
+  align-content: center;
+  gap: 1.1rem;
+  min-height: min(100%, 42rem);
+  width: min(100%, 32rem);
+  justify-self: center;
 }
 
 .tocu-home-cover__title {
-  margin: 0.9rem 0 0;
-  font-size: clamp(3.8rem, 11vw, 7rem);
-  line-height: 0.95;
+  margin: 0;
+  display: grid;
+  gap: 0.15em;
+  font-size: clamp(5rem, 10vw, 8.8rem);
+  line-height: 0.82;
+  letter-spacing: -0.065em;
+}
+
+.tocu-home-cover__title span {
+  display: block;
 }
 
 .tocu-home-cover__slogan {
-  max-width: 16ch;
-  margin: 1.1rem auto 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  line-height: 1.15;
+  margin: 0;
+  max-width: 26rem;
+  font-size: clamp(1.02rem, 1.6vw, 1.28rem);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--tocu-ink) 64%, var(--tocu-muted) 36%);
 }
 
-.tocu-home-cover__summary {
-  max-width: 40rem;
-  margin: 1rem auto 0;
-  font-size: 1.02rem;
-  line-height: 1.9;
-  color: var(--tocu-muted);
+.tocu-home-cover__aside {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: stretch;
+  min-height: min(100%, 34rem);
 }
 
 .tocu-home-links {
-  width: min(980px, 100%);
-  margin: 2rem auto 0;
-  gap: 1rem;
+  width: min(100%, 35rem);
+  margin: 0 0 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-radius: 2rem;
+  border: 1px solid rgba(232, 230, 220, 0.88);
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.82), rgba(255, 249, 244, 0.52));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(20, 20, 19, 0.06);
+  overflow: hidden;
 }
 
 .tocu-home-links__card {
-  padding: 1.35rem;
+  position: relative;
+  padding: 1.45rem 1.5rem;
   display: grid;
-  gap: 0.55rem;
-  transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
+  gap: 0.22rem 0.9rem;
+  grid-template-columns: minmax(9.5rem, 12.5rem) minmax(0, 1fr) auto;
+  grid-template-areas:
+    "eyebrow body arrow"
+    "title body arrow";
+  align-items: end;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(232, 230, 220, 0.92);
+  background: transparent;
+  box-shadow: none;
+  transition: transform var(--tocu-transition), color var(--tocu-transition), background-color var(--tocu-transition);
 }
 
-.tocu-home-links__card:hover,
+.tocu-home-links__card:first-child {
+  border-top: 0;
+}
+
+.tocu-home-links__card:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.tocu-home-cover__watermark {
+  position: absolute;
+  right: -0.4rem;
+  bottom: -0.9rem;
+  margin: 0;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: clamp(5.2rem, 8.4vw, 7.8rem);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  color: rgba(20, 20, 19, 0.055);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 .tocu-stage-card:hover,
 .tocu-directory-card:hover,
 .tocu-faq-card:hover {
   transform: translateY(-2px);
   border-color: var(--tocu-border-strong);
-  box-shadow: 0 12px 30px rgba(20, 20, 19, 0.07);
 }
 
 .tocu-home-links__title,
 .tocu-directory-card__title,
 .tocu-stage-card__title,
 .tocu-faq-card__title {
-  font-size: 1.45rem;
-  line-height: 1.18;
+  font-size: 1.62rem;
+  line-height: 1.14;
+}
+
+.tocu-home-links__title {
+  grid-area: title;
+  align-self: start;
 }
 
 .tocu-home-links__body,
@@ -533,12 +596,36 @@ code {
 .tocu-stage-card__body,
 .tocu-faq-card__body,
 .tocu-resume-card__body {
-  color: var(--tocu-muted);
-  line-height: 1.75;
+  color: color-mix(in srgb, var(--tocu-ink) 72%, var(--tocu-muted) 28%);
+  line-height: 1.68;
+}
+
+.tocu-home-links__body {
+  grid-area: body;
+  max-width: 16rem;
+  justify-self: start;
+  align-self: end;
+  font-size: 0.97rem;
+}
+
+.tocu-home-links__eyebrow {
+  grid-area: eyebrow;
+  color: color-mix(in srgb, var(--tocu-accent-strong) 70%, var(--tocu-subtle) 30%);
+  align-self: end;
+}
+
+.tocu-home-links__arrow {
+  grid-area: arrow;
+  align-self: end;
+  font-family: "Source Serif 4", "Noto Serif SC", serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  color: color-mix(in srgb, var(--tocu-ink) 46%, transparent);
 }
 
 .tocu-directory-toolbar {
-  padding: 1rem;
+  border: 0;
+  background: transparent;
+  padding: 0 0 0.85rem;
 }
 
 .tocu-field--search {
@@ -561,8 +648,8 @@ code {
   gap: 1rem;
   border-radius: 24px;
   border: 1px solid var(--tocu-border);
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: var(--tocu-shadow-whisper);
+  background: rgba(255, 255, 255, 0.32);
+  box-shadow: none;
   transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
 }
 
@@ -618,7 +705,7 @@ code {
   justify-content: space-between;
   gap: 1rem;
   padding: 1.2rem 1.35rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(250, 249, 245, 0.92));
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .tocu-resume-card__title {
@@ -633,8 +720,8 @@ code {
   padding: 1.35rem;
   border-radius: 24px;
   border: 1px solid var(--tocu-border);
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: var(--tocu-shadow-whisper);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: none;
   display: grid;
   gap: 0.9rem;
   transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
@@ -971,11 +1058,15 @@ code {
 
 @media (max-width: 1080px) {
   .tocu-stage-grid,
-  .tocu-home-links,
   .tocu-directory-grid,
   .tocu-auth-grid,
   .tocu-guide-layout {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .tocu-home-cover {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.88fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
   }
 
   .tocu-guide-layout {
@@ -995,9 +1086,9 @@ code {
 
   .tocu-mobile-nav {
     display: flex;
+    padding-top: 0.15rem;
   }
 
-  .tocu-home-links,
   .tocu-stage-grid,
   .tocu-directory-grid,
   .tocu-auth-grid,
@@ -1009,20 +1100,51 @@ code {
     display: grid;
   }
 
+  .tocu-home-cover {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    min-height: auto;
+    padding-top: 0.6rem;
+    padding-bottom: 1.6rem;
+  }
+
+  .tocu-home-cover__intro {
+    width: 100%;
+    justify-self: stretch;
+    min-height: auto;
+    gap: 0.8rem;
+  }
+
+  .tocu-home-cover__aside {
+    min-height: auto;
+    gap: 1rem;
+  }
+
+  .tocu-home-links {
+    width: 100%;
+    margin: 0;
+  }
+
+  .tocu-home-cover__watermark {
+    position: static;
+    margin-top: 0.25rem;
+    font-size: clamp(3.8rem, 15vw, 5.8rem);
+    text-align: right;
+  }
+
   .tocu-resume-card,
-  .tocu-site-footer__inner,
-  .tocu-site-header__inner {
+  .tocu-site-footer__inner {
     flex-direction: column;
     align-items: stretch;
   }
 
   .tocu-site-header__brand {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .tocu-site-header__actions {
-    justify-content: center;
+    justify-content: flex-end;
   }
 }
 
@@ -1035,30 +1157,61 @@ code {
     width: calc(100% - 1.25rem);
   }
 
-  .tocu-page-hero,
-  .tocu-directory-toolbar,
-  .tocu-resume-card,
-  .tocu-guide-main__surface,
-  .tocu-guide-nav__panel,
-  .tocu-guide-side__panel,
-  .tocu-auth-card,
-  .tocu-chat-surface,
-  .tocu-faq-card,
-  .tocu-home-cover__inner,
-  .tocu-home-links__card {
-    border-radius: 22px;
-    padding: 1rem;
+  .tocu-site-shell--home {
+    padding-top: 0.5rem;
   }
 
   .tocu-home-cover {
-    min-height: auto;
+    gap: 1.2rem;
+    padding-inline: 0;
+    padding-top: 0.35rem;
   }
 
   .tocu-home-cover__title {
-    font-size: clamp(3rem, 18vw, 4.6rem);
+    font-size: clamp(3.7rem, 19vw, 5.3rem);
+    line-height: 0.84;
   }
 
-  .tocu-home-cover__slogan,
+  .tocu-home-cover__slogan {
+    font-size: 0.98rem;
+  }
+
+  .tocu-home-links {
+    border-radius: 1.55rem;
+  }
+
+  .tocu-home-links__card {
+    padding: 1.1rem 1.05rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow arrow"
+      "title arrow"
+      "body body";
+    gap: 0.2rem 0.7rem;
+  }
+
+  .tocu-home-links__title {
+    font-size: 1.46rem;
+  }
+
+  .tocu-home-links__body {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: none;
+    margin-top: 0.22rem;
+  }
+
+  .tocu-home-links__arrow {
+    font-size: 1.45rem;
+    align-self: start;
+    padding-top: 0.32rem;
+  }
+
+  .tocu-home-cover__watermark {
+    margin-top: 0.15rem;
+    font-size: clamp(3rem, 16vw, 4.8rem);
+  }
+
   .tocu-page-hero__title {
     font-size: clamp(2rem, 8vw, 2.6rem);
   }

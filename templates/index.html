@@ -3,29 +3,40 @@
 {% set title = "首页 - ToCU" %}
 
 {% block body %}
-<section class="tocu-home-cover">
-  <div class="tocu-home-cover__inner">
-    <p class="tocu-home-cover__eyebrow">CUHK Master's Application Companion</p>
-    <h1 class="tocu-home-cover__title">ToCU</h1>
-    <div class="tocu-home-links">
+<section class="tocu-home-cover" aria-labelledby="home-title">
+  <div class="tocu-home-cover__intro">
+    <h1 id="home-title" class="tocu-home-cover__title">
+      <span>你好，</span>
+      <span>同学</span>
+    </h1>
+    <p class="tocu-home-cover__slogan">Nice to CU，你的全流程申请助理</p>
+  </div>
+
+  <div class="tocu-home-cover__aside">
+    <div class="tocu-home-links" aria-label="首页功能入口">
       <a href="{{ url_for('programs') }}" class="tocu-home-links__card">
         <span class="tocu-home-links__eyebrow">Programs</span>
         <strong class="tocu-home-links__title">专业速查</strong>
         <span class="tocu-home-links__body">快速比较项目方向、语言要求与截止日期。</span>
+        <span class="tocu-home-links__arrow" aria-hidden="true">→</span>
       </a>
 
       <a href="{{ url_for('guide_list') }}" class="tocu-home-links__card">
         <span class="tocu-home-links__eyebrow">Guides</span>
         <strong class="tocu-home-links__title">操作步骤</strong>
         <span class="tocu-home-links__body">从 6 个阶段进入完整申请流程与具体步骤。</span>
+        <span class="tocu-home-links__arrow" aria-hidden="true">→</span>
       </a>
 
       <a href="{{ url_for('assistant') }}" class="tocu-home-links__card">
         <span class="tocu-home-links__eyebrow">Assistant</span>
         <strong class="tocu-home-links__title">智能助手</strong>
         <span class="tocu-home-links__body">针对推荐信、截止时间和网申动作随时提问。</span>
+        <span class="tocu-home-links__arrow" aria-hidden="true">→</span>
       </a>
     </div>
+
+    <p class="tocu-home-cover__watermark" aria-hidden="true">Nice to CU</p>
   </div>
 </section>
 {% endblock %}

@@ -67,7 +67,9 @@
   </main>
 
   {% include "login_modal.html" %}
-  {% include "footer.html" %}
+  {% if not is_home %}
+    {% include "footer.html" %}
+  {% endif %}
   <script src="{{ url_for('static', filename='js/components/login_modal.js') }}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
