@@ -50,7 +50,7 @@
 
   function renderComment(comment) {
     const wrapper = document.createElement("div");
-    wrapper.className = "rounded-xl border border-brand-100 bg-white p-3";
+    wrapper.className = "rounded-md border border-brand-100 bg-white p-3";
 
     const userName = String(comment.user_name || "游客");
     const createdAt = String(comment.created_at || "");

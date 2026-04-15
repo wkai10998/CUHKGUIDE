@@ -11,9 +11,10 @@
   --tocu-accent-strong: #b85637;
   --tocu-shadow-whisper: 0 4px 24px rgba(20, 20, 19, 0.05);
   --tocu-shadow-ring: 0 0 0 1px #d1cfc5;
-  --tocu-radius-sm: 12px;
-  --tocu-radius-md: 18px;
-  --tocu-radius-lg: 28px;
+  --tocu-radius-sm: 8px;
+  --tocu-radius-md: 10px;
+  --tocu-radius-lg: 12px;
+  --tocu-radius-round: 999px;
   --tocu-max-width: 1180px;
   --tocu-transition: 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -177,13 +178,13 @@ code {
   gap: 0.45rem;
   padding: 0.32rem;
   border: 1px solid var(--tocu-border);
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-md);
   background: rgba(250, 249, 245, 0.82);
 }
 
 .tocu-site-nav__link,
 .tocu-mobile-nav__link {
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-sm);
   padding: 0.55rem 0.95rem;
   font-size: 0.92rem;
   color: var(--tocu-muted);
@@ -220,7 +221,7 @@ code {
   justify-content: center;
   gap: 0.4rem;
   min-height: 44px;
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-md);
   padding: 0.8rem 1.2rem;
   border: 1px solid transparent;
   transition: transform var(--tocu-transition), background-color var(--tocu-transition), border-color var(--tocu-transition), color var(--tocu-transition), box-shadow var(--tocu-transition);
@@ -277,7 +278,7 @@ code {
   align-items: center;
   gap: 0.65rem;
   border: 1px solid var(--tocu-border);
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-md);
   background: var(--tocu-surface);
   padding: 0.35rem 0.4rem 0.35rem 0.85rem;
   color: var(--tocu-ink);
@@ -292,7 +293,7 @@ code {
 .tocu-user-menu__avatar {
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-round);
   display: grid;
   place-items: center;
   color: #fff;
@@ -305,7 +306,7 @@ code {
   top: calc(100% + 0.75rem);
   width: min(320px, 92vw);
   padding: 1rem;
-  border-radius: 22px;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
   background: rgba(250, 249, 245, 0.98);
   box-shadow: 0 20px 40px rgba(20, 20, 19, 0.08);
@@ -335,7 +336,6 @@ code {
 }
 
 .tocu-user-menu__title,
-.tocu-auth-card__title,
 .tocu-auth-modal__title,
 .tocu-guide-nav__title,
 .tocu-guide-side__title,
@@ -379,7 +379,7 @@ code {
 .tocu-input {
   width: 100%;
   min-height: 46px;
-  border-radius: 16px;
+  border-radius: var(--tocu-radius-md);
   border: 1px solid var(--tocu-border-strong);
   background: var(--tocu-surface-strong);
   color: var(--tocu-ink);
@@ -406,7 +406,6 @@ code {
 .tocu-page-hero,
 .tocu-directory-toolbar,
 .tocu-resume-card,
-.tocu-auth-card,
 .tocu-guide-main__surface,
 .tocu-guide-nav__panel,
 .tocu-guide-side__panel,
@@ -455,7 +454,7 @@ code {
   display: inline-flex;
   margin-top: 1rem;
   padding: 0.55rem 0.9rem;
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-sm);
   background: var(--tocu-border-strong);
   color: #4d4c48;
   font-size: 0.92rem;
@@ -520,7 +519,7 @@ code {
   margin: 0 0 0 auto;
   display: grid;
   gap: 0;
-  border-radius: 2rem;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid rgba(232, 230, 220, 0.88);
   background: linear-gradient(180deg, rgba(255, 252, 249, 0.82), rgba(255, 249, 244, 0.52));
   backdrop-filter: blur(10px);
@@ -627,8 +626,31 @@ code {
   padding: 0 0 0.85rem;
 }
 
+.tocu-directory-toolbar__filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2.35fr) minmax(176px, 1fr);
+  gap: 0.65rem;
+  align-items: end;
+  max-width: min(780px, 100%);
+}
+
 .tocu-field--search {
   margin: 0;
+  min-width: 0;
+}
+
+.tocu-field--college {
+  margin: 0;
+  min-width: 0;
+  max-width: none;
+}
+
+.tocu-field--college .tocu-field__label {
+  margin-bottom: 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tocu-subtle);
 }
 
 .tocu-directory-grid,
@@ -645,7 +667,7 @@ code {
   padding: 1.35rem;
   display: grid;
   gap: 1rem;
-  border-radius: 24px;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
   background: rgba(255, 255, 255, 0.32);
   box-shadow: none;
@@ -658,6 +680,21 @@ code {
   gap: 1rem;
 }
 
+.tocu-program-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.tocu-program-title__en {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--tocu-subtle);
+}
+
 .tocu-directory-card__school {
   margin: 0.35rem 0 0;
 }
@@ -666,7 +703,7 @@ code {
   color: var(--tocu-accent-strong);
   background: rgba(201, 100, 66, 0.08);
   border: 1px solid rgba(201, 100, 66, 0.16);
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-sm);
   padding: 0.45rem 0.7rem;
 }
 
@@ -717,7 +754,7 @@ code {
 
 .tocu-stage-card {
   padding: 1.35rem;
-  border-radius: 24px;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
   background: rgba(255, 255, 255, 0.28);
   box-shadow: none;
@@ -768,7 +805,6 @@ code {
 .tocu-guide-nav__panel,
 .tocu-guide-side__panel,
 .tocu-guide-main__surface,
-.tocu-auth-card,
 .tocu-faq-card,
 .tocu-auth-modal {
   padding: 1.25rem;
@@ -795,7 +831,7 @@ code {
   gap: 0.55rem;
   align-items: center;
   padding: 0.8rem 0.9rem;
-  border-radius: 16px;
+  border-radius: var(--tocu-radius-md);
   border: 1px solid var(--tocu-border);
   color: var(--tocu-muted);
   transition: background-color var(--tocu-transition), color var(--tocu-transition), border-color var(--tocu-transition);
@@ -831,7 +867,7 @@ code {
 
 .tocu-guide-main__image {
   margin-top: 1.2rem;
-  border-radius: 22px;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -864,7 +900,7 @@ code {
   min-height: 44px;
   padding: 0.75rem 1rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-md);
   color: #fff;
   cursor: pointer;
   transition: transform var(--tocu-transition), opacity var(--tocu-transition);
@@ -882,7 +918,7 @@ code {
 
 .tocu-callout {
   margin-top: 0.8rem;
-  border-radius: 16px;
+  border-radius: var(--tocu-radius-md);
   border: 1px solid rgba(201, 100, 66, 0.18);
   background: rgba(255, 247, 243, 0.92);
   color: var(--tocu-muted);
@@ -913,7 +949,7 @@ code {
 
 .tocu-guide-side__materials li {
   padding: 0.8rem 0.9rem;
-  border-radius: 16px;
+  border-radius: var(--tocu-radius-md);
   border: 1px solid var(--tocu-border);
   background: rgba(255, 255, 255, 0.7);
   color: var(--tocu-muted);
@@ -923,7 +959,7 @@ code {
 .tocu-site-shell--assistant {
   width: min(1500px, calc(100% - 2rem));
   padding-top: 0.55rem;
-  padding-bottom: 10rem;
+  padding-bottom: 1.25rem;
 }
 
 body.tocu-body--assistant {
@@ -960,7 +996,7 @@ body.tocu-body--assistant {
   min-height: 100%;
   margin: 0 auto;
   display: grid;
-  align-content: center;
+  align-content: start;
   padding: clamp(1rem, 3vw, 2rem) clamp(0.2rem, 1vw, 0.4rem);
 }
 
@@ -1006,7 +1042,7 @@ body.tocu-body--assistant {
 
 .tocu-chip {
   border: 1px solid rgba(232, 230, 220, 0.96);
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-md);
   background: rgba(255, 255, 255, 0.56);
   color: color-mix(in srgb, var(--tocu-ink) 82%, var(--tocu-muted) 18%);
   padding: 0.8rem 1.25rem;
@@ -1059,7 +1095,7 @@ body.tocu-body--assistant {
 .tocu-chat-bubble {
   max-width: min(80%, 42rem);
   padding: 0.95rem 1.1rem;
-  border-radius: 1.6rem;
+  border-radius: var(--tocu-radius-lg);
   font-size: 0.98rem;
   line-height: 1.8;
   box-shadow: 0 10px 24px rgba(20, 20, 19, 0.04);
@@ -1134,7 +1170,7 @@ body.tocu-body--assistant {
   gap: 0.85rem;
   align-items: end;
   padding: 0.7rem 0.75rem 0.75rem 1.05rem;
-  border-radius: 2rem;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid rgba(196, 202, 255, 0.95);
   background: rgba(250, 249, 245, 0.98);
   box-shadow: 0 14px 36px rgba(146, 174, 255, 0.16);
@@ -1164,7 +1200,7 @@ body.tocu-body--assistant {
   width: 3.1rem;
   height: 3.1rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-round);
   display: grid;
   place-items: center;
   background: rgba(20, 20, 19, 0.08);
@@ -1222,15 +1258,9 @@ body.tocu-body--assistant {
   color: var(--tocu-accent-strong);
 }
 
-.tocu-auth-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
 .tocu-auth-modal {
   width: min(560px, 100%);
-  border-radius: 26px;
+  border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
   background: rgba(250, 249, 245, 0.98);
   box-shadow: 0 24px 44px rgba(20, 20, 19, 0.12);
@@ -1247,7 +1277,7 @@ body.tocu-body--assistant {
 }
 
 .tocu-auth-modal__tab {
-  border-radius: 999px;
+  border-radius: var(--tocu-radius-sm);
   padding: 0.65rem 1rem;
 }
 
@@ -1282,7 +1312,6 @@ body.tocu-body--assistant {
 @media (max-width: 1080px) {
   .tocu-stage-grid,
   .tocu-directory-grid,
-  .tocu-auth-grid,
   .tocu-guide-layout {
     grid-template-columns: 1fr 1fr;
   }
@@ -1322,15 +1351,19 @@ body.tocu-body--assistant {
   }
 
   .tocu-stage-grid,
-  .tocu-directory-grid,
-  .tocu-auth-grid {
+  .tocu-directory-grid {
     grid-template-columns: 1fr;
+  }
+
+  .tocu-directory-toolbar__filters {
+    grid-template-columns: minmax(0, 1.8fr) minmax(132px, 1fr);
+    gap: 0.5rem;
   }
 
   .tocu-site-shell--assistant {
     width: calc(100% - 1.25rem);
     padding-top: 0.35rem;
-    padding-bottom: 9.6rem;
+    padding-bottom: 1rem;
   }
 
   .tocu-assistant-shell {
@@ -1416,7 +1449,7 @@ body.tocu-body--assistant {
   }
 
   .tocu-site-shell--assistant {
-    padding-bottom: 8.75rem;
+    padding-bottom: 1rem;
   }
 
   .tocu-assistant-shell__headline {
@@ -1466,7 +1499,7 @@ body.tocu-body--assistant {
 
   .tocu-chat-compose__surface {
     padding: 0.6rem 0.65rem 0.68rem 0.88rem;
-    border-radius: 1.55rem;
+    border-radius: var(--tocu-radius-lg);
   }
 
   .tocu-chat-compose__input {
@@ -1496,7 +1529,7 @@ body.tocu-body--assistant {
   }
 
   .tocu-home-links {
-    border-radius: 1.55rem;
+    border-radius: var(--tocu-radius-lg);
   }
 
   .tocu-home-links__card {

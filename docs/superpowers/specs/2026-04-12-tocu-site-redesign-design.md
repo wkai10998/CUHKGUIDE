@@ -383,9 +383,10 @@ The redesign should be implemented through the existing Flask/Jinja structure, m
 - `templates/guide.html`
 - `templates/assistant.html`
 - `templates/faq.html`
-- `templates/login.html`
 - `templates/login_modal.html`
 - `static/css/app.css`
+
+Note (updated on April 14, 2026): `templates/login.html` has been removed in the current codebase; auth entry is handled via `templates/login_modal.html`.
 
 JavaScript changes should stay light and only support layout/navigation needs, not invent new application logic unless necessary.
 

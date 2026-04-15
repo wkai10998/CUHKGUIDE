@@ -1,6 +1,8 @@
 # ToCU Site Redesign Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+>
+> **Maintenance note (April 14, 2026):** `templates/login.html` was removed after this plan was authored. Auth UI is now provided through `templates/login_modal.html`.
 
 **Goal:** Implement the approved whole-site redesign for ToCU so the site follows `DESIGN.md`, ships a minimal cover-style homepage, moves the six-stage process overview to Guides, and unifies the core pages under one editorial visual system.
 
@@ -30,8 +32,6 @@
   Responsibility: keep assistant light-themed and aligned with the shared visual system.
 - Modify: `/Users/wkai/Desktop/FlaskProject/templates/faq.html`
   Responsibility: restyle FAQ as a secondary-supporting page in the same system.
-- Modify: `/Users/wkai/Desktop/FlaskProject/templates/login.html`
-  Responsibility: align the full login/register page with the redesigned surfaces.
 - Modify: `/Users/wkai/Desktop/FlaskProject/templates/login_modal.html`
   Responsibility: align modal auth surfaces with the redesigned visual language.
 - Modify: `/Users/wkai/Desktop/FlaskProject/static/css/app.css`
@@ -396,7 +396,6 @@ git commit -m "feat: redesign guide detail layout"
 **Files:**
 - Modify: `/Users/wkai/Desktop/FlaskProject/templates/assistant.html`
 - Modify: `/Users/wkai/Desktop/FlaskProject/templates/faq.html`
-- Modify: `/Users/wkai/Desktop/FlaskProject/templates/login.html`
 - Modify: `/Users/wkai/Desktop/FlaskProject/templates/login_modal.html`
 - Modify: `/Users/wkai/Desktop/FlaskProject/static/css/app.css`
 - Test: `/Users/wkai/Desktop/FlaskProject/tests/test_pages.py`
@@ -407,7 +406,7 @@ git commit -m "feat: redesign guide detail layout"
 def test_assistant_and_login_pages_still_render_primary_labels():
     client = app.test_client()
     assistant_html = client.get("/assistant").get_data(as_text=True)
-    login_html = client.get("/login").get_data(as_text=True)
+    login_html = client.get("/?open_login=1&auth_tab=login").get_data(as_text=True)
 
     assert "智能助手" in assistant_html
     assert "快速提问" in assistant_html
@@ -440,7 +439,7 @@ Expected: PASS
 - [ ] **Step 5: Commit**
 
 ```bash
-git add templates/assistant.html templates/faq.html templates/login.html templates/login_modal.html static/css/app.css tests/test_pages.py
+git add templates/assistant.html templates/faq.html templates/login_modal.html static/css/app.css tests/test_pages.py
 git commit -m "feat: align supporting pages with redesign"
 ```
 

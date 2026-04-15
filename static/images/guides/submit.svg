@@ -1,9 +1,0 @@
-<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Submit application stage illustration">
-  <rect width="1200" height="675" fill="#FFF7ED"/>
-  <rect x="260" y="115" width="680" height="445" rx="24" fill="#FFFFFF" stroke="#FED7AA" stroke-width="2"/>
-  <rect x="320" y="200" width="560" height="20" rx="10" fill="#E2E8F0"/>
-  <rect x="320" y="240" width="560" height="20" rx="10" fill="#E2E8F0"/>
-  <rect x="320" y="280" width="480" height="20" rx="10" fill="#E2E8F0"/>
-  <rect x="320" y="380" width="240" height="60" rx="12" fill="#EA580C"/>
-  <text x="600" y="510" text-anchor="middle" fill="#0F172A" font-size="42" font-family="Arial, sans-serif" font-weight="700">Stage: Submit</text>
-</svg>

@@ -5,24 +5,57 @@
 {% block body %}
 <section class="tocu-page-stack">
   <div class="tocu-directory-toolbar">
-    <label class="tocu-field tocu-field--search">
-      <span class="sr-only">搜索专业</span>
-      <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="tocu-input">
-    </label>
+    <div class="tocu-directory-toolbar__filters">
+      <label class="tocu-field tocu-field--search">
+        <span class="sr-only">搜索专业</span>
+        <input id="program-search" type="text" placeholder="输入专业名、学院或方向关键词..." class="tocu-input">
+      </label>
+
+      <label class="tocu-field tocu-field--college">
+        <span class="tocu-field__label">按学院筛选</span>
+        <select id="program-college-filter" class="tocu-input">
+          <option value="全部" selected>全部</option>
+          <option value="文学院">文学院</option>
+          <option value="商学院">商学院</option>
+          <option value="教育学院">教育学院</option>
+          <option value="工学院">工学院</option>
+          <option value="跨学院">跨学院</option>
+          <option value="法学院">法学院</option>
+          <option value="医学院">医学院</option>
+          <option value="理学院">理学院</option>
+          <option value="社科学院">社科学院</option>
+        </select>
+      </label>
+    </div>
   </div>
 
   <div id="program-list" class="tocu-directory-grid">
     {% for p in programs %}
-      <article class="program-item tocu-directory-card" data-name="{{ p.name }}" data-school="{{ p.school }}" data-focus="{{ p.focus }}">
+      <article
+        class="program-item tocu-directory-card"
+        data-name="{{ p.name }}"
+        data-name-zh="{{ p.name_zh }}"
+        data-name-en="{{ p.name_en }}"
+        data-school="{{ p.school }}"
+        data-college="{{ p.college }}"
+        data-focus="{{ p.focus }}"
+      >
         <div class="tocu-directory-card__top">
           <div>
-            <h2 class="tocu-directory-card__title">{{ p.name }}</h2>
+            <h2 class="tocu-directory-card__title tocu-program-title">
+              <span class="tocu-program-title__zh">{{ p.name_zh }}</span>
+              <span class="tocu-program-title__en">{{ p.name_en }}</span>
+            </h2>
             <p class="tocu-directory-card__school">{{ p.school }}</p>
           </div>
           <span class="tocu-directory-card__badge">{{ p.degree }}</span>
         </div>
 
         <dl class="tocu-directory-card__facts">
+          <div>
+            <dt>学院</dt>
+            <dd>{{ p.college }}</dd>
+          </div>
           <div>
             <dt>方向</dt>
             <dd>{{ p.focus }}</dd>

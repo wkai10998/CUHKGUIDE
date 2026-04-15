@@ -158,11 +158,6 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         match_count=top_k,
         min_similarity=min_similarity,
     )
-    matches = [
-        item
-        for item in matches
-        if not str(item.get("link", "")).strip().startswith("/faq")
-    ]
 
     if not matches:
         return (
@@ -177,7 +172,7 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         source_type = str(item.get("source_type", "")).strip().lower()
         source = str(item.get("source", "未知来源"))
         link = str(item.get("link", "/assistant"))
-        if source_type in {"external", "faq"}:
+        if source_type == "external":
             source = "官方知识库"
             link = "/assistant"
         content = str(item.get("content", "")).strip()

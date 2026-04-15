@@ -18,18 +18,48 @@ class CourseStructureTestCase(unittest.TestCase):
                 msg=f"expected {path} to return 200, got {response.status_code}",
             )
 
-    def test_faq_routes_render_secondary_support_pages(self):
+    def test_faq_routes_are_removed(self):
         list_response = self.client.get("/faq")
         detail_response = self.client.get("/faq/1")
         missing_response = self.client.get("/faq/some-legacy-path")
 
-        self.assertEqual(list_response.status_code, 200)
-        self.assertIn("常见问题", list_response.get_data(as_text=True))
-
-        self.assertEqual(detail_response.status_code, 200)
-        self.assertIn("评论区", detail_response.get_data(as_text=True))
-
+        self.assertEqual(list_response.status_code, 404)
+        self.assertEqual(detail_response.status_code, 404)
         self.assertEqual(missing_response.status_code, 404)
+
+    def test_disclaimer_route_renders(self):
+        response = self.client.get("/disclaimer")
+        self.assertEqual(response.status_code, 200)
+
+        html = response.get_data(as_text=True)
+        self.assertIn("免责声明", html)
+        self.assertIn("仅供参考", html)
+
+    def test_footer_links_switch_to_disclaimer_and_contact(self):
+        response = self.client.get("/programs")
+        self.assertEqual(response.status_code, 200)
+        html = response.get_data(as_text=True)
+
+        footer_match = re.search(
+            r'<footer class="tocu-site-footer"[^>]*>(.*?)</footer>',
+            html,
+            re.S,
+        )
+        self.assertIsNotNone(footer_match, msg="footer should exist on non-home pages")
+        footer_html = footer_match.group(1)
+
+        self.assertIn('href="/disclaimer"', footer_html)
+        self.assertIn(">免责声明</a>", footer_html)
+        self.assertIn(
+            'href="https://www.xiaohongshu.com/user/profile/605f118500000000010023aa"',
+            footer_html,
+        )
+        self.assertIn(">联络我们</a>", footer_html)
+
+        self.assertNotIn(">专业速查</a>", footer_html)
+        self.assertNotIn(">操作步骤</a>", footer_html)
+        self.assertNotIn(">智能助手</a>", footer_html)
+        self.assertNotIn(">常见问题</a>", footer_html)
 
     def test_guide_stage_page_exists(self):
         response = self.client.get("/guide/prep")
@@ -75,6 +105,25 @@ class CourseStructureTestCase(unittest.TestCase):
 
         self.assertNotIn(">问题清单</a>", nav_html)
         self.assertNotIn(">文件清单</a>", nav_html)
+
+    def test_mobile_nav_keeps_only_four_primary_tabs_without_login_tab(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        html = response.get_data(as_text=True)
+
+        mobile_nav_match = re.search(
+            r'<div class="tocu-mobile-nav"[^>]*>(.*?)</div>',
+            html,
+            re.S,
+        )
+        self.assertIsNotNone(mobile_nav_match, msg="mobile navigation block should exist")
+        mobile_nav_html = mobile_nav_match.group(1)
+
+        expected_labels = ["首页", "专业速查", "操作步骤", "智能助手"]
+        for label in expected_labels:
+            self.assertIn(f">{label}</a>", mobile_nav_html)
+
+        self.assertNotIn(">登录</a>", mobile_nav_html)
 
     def test_homepage_uses_cover_layout_and_moves_process_overview_to_guides(self):
         response = self.client.get("/")

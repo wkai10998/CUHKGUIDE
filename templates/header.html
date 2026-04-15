@@ -69,8 +69,5 @@
     <a href="{{ url_for('programs') }}" class="tocu-mobile-nav__link {% if request.path.startswith('/programs') %}is-active{% endif %}">专业速查</a>
     <a href="{{ url_for('guide_list') }}" class="tocu-mobile-nav__link {% if request.path.startswith('/guide') %}is-active{% endif %}">操作步骤</a>
     <a href="{{ url_for('assistant') }}" class="tocu-mobile-nav__link {% if request.path.startswith('/assistant') %}is-active{% endif %}">智能助手</a>
-    {% if not current_user.is_authenticated %}
-      <a href="{{ url_for('login_page') }}" data-open-login data-auth-tab="login" class="tocu-mobile-nav__link">登录</a>
-    {% endif %}
   </div>
 </header>

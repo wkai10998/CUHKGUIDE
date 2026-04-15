@@ -24,7 +24,3 @@ def get_guides() -> dict[str, Any]:
 
 def get_programs() -> list[dict[str, Any]]:
     return _read_json("programs.json")
-
-
-def get_faqs() -> list[dict[str, Any]]:
-    return _read_json("faq.json")

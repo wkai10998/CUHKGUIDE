@@ -19,7 +19,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
-from utils.content_loader import get_faqs, get_guides, get_programs, get_stages
+from utils.content_loader import get_guides, get_programs, get_stages
 from utils.knowledge_base import build_knowledge_chunks
 from utils.rag_pipeline import ask_with_rag
 from utils import supabase_client
@@ -370,20 +370,9 @@ def guide_comments_api(stage_slug: str, step_id: int):
     return jsonify({"comments": comments})
 
 
-@app.route("/faq")
-def faq_list() -> str:
-    return render_template("faq.html", faqs=get_faqs())
-
-
-@app.route("/faq/<path:faq_id>")
-def faq_detail(faq_id: str) -> str:
-    faqs = get_faqs()
-    faq = next((item for item in faqs if str(item.get("id")) == str(faq_id)), None)
-    if not faq:
-        abort(404)
-
-    comments = list_comments("faq", str(faq["id"]))
-    return render_template("faq_detail.html", faq=faq, comments=comments)
+@app.route("/disclaimer")
+def disclaimer() -> str:
+    return render_template("disclaimer.html")
 
 
 @app.route("/assistant", methods=["GET"])
@@ -667,22 +656,6 @@ def toggle_step_complete(stage_slug: str, step_id: int):
             "completed_count": len(completed_steps),
         }
     )
-
-
-@app.route("/faq/<int:faq_id>/comment", methods=["POST"])
-def faq_comment(faq_id: int):
-    faqs = get_faqs()
-    faq = next((item for item in faqs if int(item.get("id", 0)) == faq_id), None)
-    if faq is None:
-        abort(404)
-
-    try:
-        create_comment("faq", str(faq_id), request.form.get("content", ""))
-        flash("评论发布成功。", "success")
-    except ValueError as err:
-        flash(str(err), "error")
-
-    return redirect(url_for("faq_detail", faq_id=faq_id))
 
 
 # ----------------------------
