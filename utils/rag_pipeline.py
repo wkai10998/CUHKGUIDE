@@ -9,6 +9,7 @@ from utils.knowledge_base import build_knowledge_chunks
 
 DEFAULT_CHUNK_SIZE = 420
 DEFAULT_CHUNK_OVERLAP = 80
+ALLOWED_SOURCE_TYPES = {"program", "guide", "external"}
 
 
 def _get_int_env(name: str, fallback: int) -> int:
@@ -97,6 +98,35 @@ def _embedding_literal(values: list[float]) -> str:
     return "[" + ",".join(normalized) + "]"
 
 
+def _normalize_source_type(value: object) -> str:
+    return str(value or "").strip().lower()
+
+
+def _normalize_match(item: dict[str, object]) -> dict[str, object] | None:
+    source_type = _normalize_source_type(item.get("source_type"))
+    if source_type not in ALLOWED_SOURCE_TYPES:
+        return None
+
+    source = str(item.get("source", "未知来源")).strip() or "未知来源"
+    link = str(item.get("link", "")).strip()
+
+    if source_type == "program":
+        link = link if link.startswith("/programs") else "/programs"
+    elif source_type == "guide":
+        link = link if link.startswith("/guide") else "/guide"
+    else:
+        source = "官方知识库"
+        link = "/assistant"
+
+    return {
+        "source_type": source_type,
+        "source": source,
+        "link": link,
+        "content": str(item.get("content", "")).strip(),
+        "similarity": float(item.get("similarity", 0.0)),
+    }
+
+
 def ingest_knowledge_base(
     chunk_size: int | None = None,
     overlap: int | None = None,
@@ -148,16 +178,34 @@ def ask_with_rag(question: str) -> tuple[str, list[dict[str, str]]]:
         raise RuntimeError("RAG 运行依赖未配置完成。")
 
     embedding_dim = _get_int_env("RAG_EMBEDDING_DIM", 1024)
-    top_k = _get_int_env("RAG_TOP_K", 2)
+    top_k = max(1, _get_int_env("RAG_TOP_K", 2))
     min_similarity = _get_float_env("RAG_MIN_SIMILARITY", 0.45)
     context_char_limit = _get_int_env("RAG_CONTEXT_CHAR_LIMIT", 220)
+    candidate_count = max(top_k * 4, top_k + 6)
 
     query_vector = zhipu_client.create_embeddings([prompt], dimensions=embedding_dim)[0]
-    matches = supabase_client.match_rag_chunks(
+    raw_matches = supabase_client.match_rag_chunks(
         query_embedding=query_vector,
-        match_count=top_k,
+        match_count=candidate_count,
         min_similarity=min_similarity,
     )
+
+    if not raw_matches:
+        return (
+            "我没有在当前知识库检索到直接证据。你可以补充更具体关键词（专业名、材料名、时间点）后再试。",
+            [],
+        )
+
+    matches: list[dict[str, object]] = []
+    for item in raw_matches:
+        if not isinstance(item, dict):
+            continue
+        normalized = _normalize_match(item)
+        if normalized is None:
+            continue
+        matches.append(normalized)
+        if len(matches) >= top_k:
+            break
 
     if not matches:
         return (

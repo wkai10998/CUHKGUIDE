@@ -49,20 +49,27 @@
   {% set is_home = request.path == '/' %}
   {% set is_assistant = request.path.startswith('/assistant') %}
 <body class="tocu-body{% if is_assistant %} tocu-body--assistant{% endif %}">
+  {% set flashed_messages = get_flashed_messages(with_categories=true) %}
   {% include "header.html" %}
 
   <main class="tocu-site-shell {% if is_home %}tocu-site-shell--home{% endif %}{% if is_assistant %} tocu-site-shell--assistant{% endif %}">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
+    {% set has_page_flash = namespace(value=false) %}
+    {% for category, message in flashed_messages %}
+      {% if not category.startswith('auth_') %}
+        {% set has_page_flash.value = true %}
+      {% endif %}
+    {% endfor %}
+    {% if has_page_flash.value %}
         <div class="tocu-flash-stack">
-          {% for category, message in messages %}
-            <div class="tocu-flash {% if category == 'success' %}tocu-flash--success{% else %}tocu-flash--error{% endif %}">
-              {{ message }}
-            </div>
+          {% for category, message in flashed_messages %}
+            {% if not category.startswith('auth_') %}
+              <div class="tocu-flash {% if category == 'success' %}tocu-flash--success{% else %}tocu-flash--error{% endif %}">
+                {{ message }}
+              </div>
+            {% endif %}
           {% endfor %}
         </div>
-      {% endif %}
-    {% endwith %}
+    {% endif %}
 
     {% block body %}{% endblock %}
   </main>

@@ -5,7 +5,6 @@ create table if not exists public.users (
   name text not null,
   email text not null unique,
   password_hash text not null,
-  avatar_seed text not null default 'sky',
   created_at timestamptz not null default now()
 );
 
@@ -15,14 +14,14 @@ create table if not exists public.comments (
   page_key text not null,
   user_id uuid not null references public.users(id) on delete cascade,
   user_name text not null,
-  avatar_seed text not null,
   content text not null,
   created_at text not null
 );
 
 alter table public.comments add column if not exists user_id uuid;
 alter table public.comments add column if not exists user_name text;
-alter table public.comments add column if not exists avatar_seed text;
+alter table public.users drop column if exists avatar_seed;
+alter table public.comments drop column if exists avatar_seed;
 
 create index if not exists comments_page_idx
 on public.comments (page_type, page_key, id desc);

@@ -21,7 +21,6 @@ class AuthSessionTestCase(unittest.TestCase):
             "name": "Alice",
             "email": "alice@example.com",
             "password_hash": generate_password_hash("secret123"),
-            "avatar_seed": "sky",
         }
 
         with (
@@ -37,7 +36,7 @@ class AuthSessionTestCase(unittest.TestCase):
         with self.client.session_transaction() as session:
             self.assertEqual(session.get("user_id"), fake_user["id"])
             self.assertEqual(session.get("user_name"), fake_user["name"])
-            self.assertEqual(session.get("avatar_seed"), fake_user["avatar_seed"])
+            self.assertIsNone(session.get("avatar_seed"))
 
     def test_comment_requires_login(self):
         response = self.client.post(
@@ -48,53 +47,16 @@ class AuthSessionTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn("/guide/prep?step=1&open_login=1&auth_tab=login", response.location)
 
-    def test_update_profile_persists_to_supabase(self):
+    def test_authenticated_header_only_shows_logout_action(self):
         with self.client.session_transaction() as session:
             session["user_id"] = "11111111-1111-1111-1111-111111111111"
             session["user_name"] = "Alice"
             session["user_email"] = "alice@example.com"
-            session["avatar_seed"] = "sky"
 
-        with patch.object(
-            app_module,
-            "update_user_profile_in_supabase",
-            return_value={"name": "Alice New", "avatar_seed": "rose"},
-        ) as update_profile:
-            response = self.client.post(
-                "/profile",
-                data={"user_name": "Alice New", "avatar_seed": "rose"},
-            )
-
-        self.assertEqual(response.status_code, 302)
-        update_profile.assert_called_once_with(
-            "11111111-1111-1111-1111-111111111111",
-            "Alice New",
-            "rose",
-        )
-        with self.client.session_transaction() as session:
-            self.assertEqual(session.get("user_name"), "Alice New")
-            self.assertEqual(session.get("avatar_seed"), "rose")
-
-    def test_update_profile_shows_error_when_supabase_fails(self):
-        with self.client.session_transaction() as session:
-            session["user_id"] = "11111111-1111-1111-1111-111111111111"
-            session["user_name"] = "Alice"
-            session["user_email"] = "alice@example.com"
-            session["avatar_seed"] = "sky"
-
-        with patch.object(
-            app_module,
-            "update_user_profile_in_supabase",
-            side_effect=RuntimeError("更新资料失败"),
-        ):
-            response = self.client.post(
-                "/profile",
-                data={"user_name": "Alice New", "avatar_seed": "rose"},
-                follow_redirects=True,
-            )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("更新资料失败", response.get_data(as_text=True))
+        html = self.client.get("/").get_data(as_text=True)
+        self.assertIn("退出登录", html)
+        self.assertNotIn("保存资料", html)
+        self.assertNotIn("恢复默认资料", html)
 
     def test_auth_login_error_redirects_with_modal_flag(self):
         with patch.object(app_module, "is_supabase_comments_enabled", return_value=True):
@@ -115,6 +77,51 @@ class AuthSessionTestCase(unittest.TestCase):
             )
         self.assertEqual(response.status_code, 302)
         self.assertIn("/programs?open_login=1&auth_tab=register", response.location)
+
+    def test_auth_register_requires_matching_confirm_password(self):
+        with patch.object(app_module, "is_supabase_comments_enabled", return_value=True):
+            response = self.client.post(
+                "/auth/register",
+                data={
+                    "name": "Alice",
+                    "email": "alice@example.com",
+                    "password": "secret123",
+                    "confirm_password": "secret999",
+                },
+                follow_redirects=True,
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("两次输入的密码不一致。", response.get_data(as_text=True))
+
+    def test_auth_register_success_calls_create_user_without_avatar_seed(self):
+        with (
+            patch.object(app_module, "is_supabase_comments_enabled", return_value=True),
+            patch.object(
+                app_module,
+                "create_user_in_supabase",
+                return_value={
+                    "id": "11111111-1111-1111-1111-111111111111",
+                    "name": "Alice",
+                    "email": "alice@example.com",
+                },
+            ) as create_user,
+        ):
+            response = self.client.post(
+                "/auth/register",
+                data={
+                    "name": "Alice",
+                    "email": "alice@example.com",
+                    "password": "secret123",
+                    "confirm_password": "secret123",
+                },
+            )
+
+        self.assertEqual(response.status_code, 302)
+        create_user.assert_called_once_with("Alice", "alice@example.com", "secret123")
+        with self.client.session_transaction() as session:
+            self.assertEqual(session.get("user_name"), "Alice")
+            self.assertEqual(session.get("user_email"), "alice@example.com")
+            self.assertIsNone(session.get("avatar_seed"))
 
 
 if __name__ == "__main__":

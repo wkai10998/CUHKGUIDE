@@ -91,7 +91,7 @@ def list_comments(page_type: str, page_key: str) -> list[dict[str, object]]:
         raise RuntimeError("Supabase comments is not configured")
 
     query = (
-        "select=id,user_id,user_name,avatar_seed,content,created_at"
+        "select=id,user_id,user_name,content,created_at"
         f"&page_type=eq.{urllib.parse.quote(page_type, safe='')}"
         f"&page_key=eq.{urllib.parse.quote(page_key, safe='')}"
         "&order=id.desc"
@@ -122,7 +122,6 @@ def list_comments(page_type: str, page_key: str) -> list[dict[str, object]]:
                 "id": row.get("id", 0),
                 "user_id": row.get("user_id", ""),
                 "user_name": row.get("user_name", "游客"),
-                "avatar_seed": row.get("avatar_seed", "sky"),
                 "content": row.get("content", ""),
                 "created_at": row.get("created_at", ""),
             }
@@ -135,7 +134,6 @@ def create_comment(
     page_key: str,
     user_id: str,
     user_name: str,
-    avatar_seed: str,
     content: str,
     created_at: str,
 ) -> None:
@@ -148,7 +146,6 @@ def create_comment(
         "page_key": page_key,
         "user_id": user_id,
         "user_name": user_name,
-        "avatar_seed": avatar_seed,
         "content": content,
         "created_at": created_at,
     }
@@ -177,7 +174,7 @@ def get_user_by_email(email: str) -> dict[str, object] | None:
         raise RuntimeError("Supabase is not configured")
 
     query = (
-        "select=id,name,email,password_hash,avatar_seed"
+        "select=id,name,email,password_hash"
         f"&email=eq.{urllib.parse.quote(email, safe='')}"
         "&limit=1"
     )
@@ -206,7 +203,7 @@ def get_user_by_email(email: str) -> dict[str, object] | None:
     return user
 
 
-def create_user(name: str, email: str, password: str, avatar_seed: str) -> dict[str, object]:
+def create_user(name: str, email: str, password: str) -> dict[str, object]:
     config = _get_config()
     if not is_supabase_enabled():
         raise RuntimeError("Supabase is not configured")
@@ -215,7 +212,6 @@ def create_user(name: str, email: str, password: str, avatar_seed: str) -> dict[
         "name": name,
         "email": email,
         "password_hash": generate_password_hash(password),
-        "avatar_seed": avatar_seed,
     }
     headers = _build_headers(config["key"], include_json=True)
     headers["Prefer"] = "return=representation"
@@ -239,45 +235,6 @@ def create_user(name: str, email: str, password: str, avatar_seed: str) -> dict[
     if not isinstance(data, list) or not data or not isinstance(data[0], dict):
         raise RuntimeError("Supabase register response is invalid")
     return data[0]
-
-
-def update_user_profile(user_id: str, name: str, avatar_seed: str) -> dict[str, object]:
-    config = _get_config()
-    if not is_supabase_enabled():
-        raise RuntimeError("Supabase is not configured")
-    if not user_id:
-        raise RuntimeError("用户 ID 为空，无法更新资料。")
-
-    payload = {
-        "name": name,
-        "avatar_seed": avatar_seed,
-    }
-    body = json.dumps(payload).encode("utf-8")
-    headers = _build_headers(config["key"], include_json=True)
-    headers["Prefer"] = "return=representation"
-
-    user_id_filter = urllib.parse.quote(user_id, safe="")
-    url = f"{config['url']}/rest/v1/{config['users_table']}?id=eq.{user_id_filter}"
-    request_obj = urllib.request.Request(url, data=body, headers=headers, method="PATCH")
-
-    try:
-        with urllib.request.urlopen(request_obj, timeout=SUPABASE_TIMEOUT_SECONDS) as response:
-            data = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as err:
-        error_text = err.read().decode("utf-8", errors="ignore")
-        if "Could not find the table 'public.users'" in error_text:
-            raise RuntimeError("Supabase 缺少 users 表，请执行 docs/supabase_comments.sql。") from err
-        raise RuntimeError("更新资料失败，请检查 Supabase users 表配置。") from err
-    except (urllib.error.URLError, json.JSONDecodeError) as err:
-        raise RuntimeError("更新资料失败，请检查网络与 Supabase 配置。") from err
-
-    if not isinstance(data, list):
-        raise RuntimeError("Supabase profile response is invalid")
-
-    if data and isinstance(data[0], dict):
-        return data[0]
-
-    return {"id": user_id, "name": name, "avatar_seed": avatar_seed}
 
 
 def upsert_rag_chunks(rows: list[dict[str, object]]) -> int:

@@ -11,7 +11,6 @@ class SupabaseCommentsTestCase(unittest.TestCase):
                 "id": 1,
                 "user_id": "11111111-1111-1111-1111-111111111111",
                 "user_name": "Alice",
-                "avatar_seed": "sky",
                 "content": "Test comment",
                 "created_at": "2026-04-09 20:00",
             }
@@ -41,7 +40,6 @@ class SupabaseCommentsTestCase(unittest.TestCase):
                 return_value={
                     "id": "11111111-1111-1111-1111-111111111111",
                     "name": "Alice",
-                    "avatar_seed": "sky",
                     "initial": "A",
                     "is_authenticated": True,
                 },
@@ -54,9 +52,8 @@ class SupabaseCommentsTestCase(unittest.TestCase):
         self.assertEqual(args[1], "1")
         self.assertEqual(args[2], "11111111-1111-1111-1111-111111111111")
         self.assertEqual(args[3], "Alice")
-        self.assertEqual(args[4], "sky")
-        self.assertEqual(args[5], "New comment")
-        self.assertRegex(args[6], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+        self.assertEqual(args[4], "New comment")
+        self.assertRegex(args[5], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
 
     def test_create_comment_raises_when_supabase_not_configured(self):
         with (

@@ -35,14 +35,6 @@ if load_dotenv is not None:
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 
-AVATAR_COLORS = {
-    "sky": "bg-sky-500",
-    "emerald": "bg-emerald-500",
-    "amber": "bg-amber-500",
-    "rose": "bg-rose-500",
-    "violet": "bg-violet-500",
-}
-
 ASSISTANT_SUGGESTED_QUESTIONS = [
     "香港中文大学新媒体专业的材料邮寄地址在哪？",
     "推荐信一般要提前多久联系老师？",
@@ -114,16 +106,12 @@ def get_current_user() -> dict[str, object]:
     user_id = session.get("user_id", "")
     email = session.get("user_email", "")
     name = session.get("user_name", "游客")
-    avatar_seed = session.get("avatar_seed", "sky")
-    if avatar_seed not in AVATAR_COLORS:
-        avatar_seed = "sky"
 
     return {
         "id": user_id,
         "email": email,
         "is_authenticated": bool(user_id),
         "name": name,
-        "avatar_seed": avatar_seed,
         "initial": (name[:1] if name else "游"),
     }
 
@@ -152,7 +140,6 @@ def create_comment_in_supabase(
     page_key: str,
     user_id: str,
     user_name: str,
-    avatar_seed: str,
     content: str,
     created_at: str,
 ) -> None:
@@ -161,7 +148,6 @@ def create_comment_in_supabase(
         page_key=page_key,
         user_id=user_id,
         user_name=user_name,
-        avatar_seed=avatar_seed,
         content=content,
         created_at=created_at,
     )
@@ -171,12 +157,8 @@ def get_user_by_email_from_supabase(email: str) -> dict[str, object] | None:
     return supabase_client.get_user_by_email(email)
 
 
-def create_user_in_supabase(name: str, email: str, password: str, avatar_seed: str) -> dict[str, object]:
-    return supabase_client.create_user(name, email, password, avatar_seed)
-
-
-def update_user_profile_in_supabase(user_id: str, name: str, avatar_seed: str) -> dict[str, object]:
-    return supabase_client.update_user_profile(user_id, name, avatar_seed)
+def create_user_in_supabase(name: str, email: str, password: str) -> dict[str, object]:
+    return supabase_client.create_user(name, email, password)
 
 
 def list_comments(page_type: str, page_key: str) -> list[dict[str, object]]:
@@ -212,7 +194,6 @@ def create_comment(page_type: str, page_key: str, content: str) -> None:
             page_key,
             str(current_user["id"]),
             str(current_user["name"]),
-            str(current_user["avatar_seed"]),
             text,
             created_at,
         )
@@ -287,7 +268,6 @@ def inject_global_data() -> dict[str, object]:
     return {
         "current_user": get_current_user(),
         "stage_nav_items": get_stages(),
-        "avatar_colors": AVATAR_COLORS,
     }
 
 
@@ -442,42 +422,37 @@ def auth_login():
         next_url = url_for("index")
 
     if not is_supabase_comments_enabled():
-        flash("登录服务未配置 Supabase，请联系管理员。", "error")
+        flash("登录服务未配置 Supabase，请联系管理员。", "auth_error")
         return redirect(_with_open_login_flag(next_url))
 
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
     if not email or not password:
-        flash("请输入邮箱和密码。", "error")
+        flash("请输入邮箱和密码。", "auth_error")
         return redirect(_with_open_login_flag(next_url))
 
     try:
         user = get_user_by_email_from_supabase(email)
     except RuntimeError as err:
-        flash(str(err), "error")
+        flash(str(err), "auth_error")
         return redirect(_with_open_login_flag(next_url))
 
     if not user:
-        flash("账号不存在，请先注册。", "error")
+        flash("账号不存在，请先注册。", "auth_error")
         return redirect(_with_open_login_flag(next_url))
 
     stored_hash = str(user.get("password_hash", ""))
     if not stored_hash or not check_password_hash(stored_hash, password):
-        flash("邮箱或密码错误。", "error")
+        flash("邮箱或密码错误。", "auth_error")
         return redirect(_with_open_login_flag(next_url))
 
     user_id = str(user.get("id", "")).strip()
     user_name = str(user.get("name", "用户")).strip()[:20] or "用户"
-    avatar_seed = str(user.get("avatar_seed", "sky")).strip()
-    if avatar_seed not in AVATAR_COLORS:
-        avatar_seed = "sky"
-
     session["user_id"] = user_id
     session["user_name"] = user_name
     session["user_email"] = email
-    session["avatar_seed"] = avatar_seed
 
-    flash("登录成功。", "success")
+    flash("登录成功。", "auth_success")
     return redirect(next_url)
 
 
@@ -488,43 +463,41 @@ def auth_register():
         next_url = url_for("index")
 
     if not is_supabase_comments_enabled():
-        flash("注册服务未配置 Supabase，请联系管理员。", "error")
+        flash("注册服务未配置 Supabase，请联系管理员。", "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     name = request.form.get("name", "").strip()[:20]
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
-    avatar_seed = request.form.get("avatar_seed", "sky").strip()
+    confirm_password = request.form.get("confirm_password", "")
 
-    if avatar_seed not in AVATAR_COLORS:
-        avatar_seed = "sky"
     if not name:
-        flash("请输入昵称。", "error")
+        flash("请输入昵称。", "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     if "@" not in email or "." not in email:
-        flash("请输入有效邮箱。", "error")
+        flash("请输入有效邮箱。", "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     if len(password) < 6:
-        flash("密码至少 6 位。", "error")
+        flash("密码至少 6 位。", "auth_error")
+        return redirect(_with_open_login_flag(next_url, auth_tab="register"))
+    if password != confirm_password:
+        flash("两次输入的密码不一致。", "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     try:
-        created_user = create_user_in_supabase(name, email, password, avatar_seed)
+        created_user = create_user_in_supabase(name, email, password)
     except ValueError as err:
-        flash(str(err), "error")
+        flash(str(err), "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
     except RuntimeError as err:
-        flash(str(err), "error")
+        flash(str(err), "auth_error")
         return redirect(_with_open_login_flag(next_url, auth_tab="register"))
 
     session["user_id"] = str(created_user.get("id", "")).strip()
     session["user_name"] = str(created_user.get("name", name)).strip()[:20] or name
     session["user_email"] = str(created_user.get("email", email)).strip()
-    session["avatar_seed"] = str(created_user.get("avatar_seed", avatar_seed)).strip()
-    if session["avatar_seed"] not in AVATAR_COLORS:
-        session["avatar_seed"] = "sky"
 
-    flash("注册成功并已登录。", "success")
+    flash("注册成功并已登录。", "auth_success")
     return redirect(next_url)
 
 
@@ -533,68 +506,8 @@ def auth_logout():
     session.pop("user_id", None)
     session.pop("user_email", None)
     session.pop("user_name", None)
-    session.pop("avatar_seed", None)
     flash("已退出登录。", "success")
     return redirect(url_for("index"))
-
-
-@app.route("/profile", methods=["POST"])
-def update_profile():
-    current_user = get_current_user()
-    if not current_user["is_authenticated"]:
-        flash("请先登录后再修改资料。", "error")
-        return redirect(_with_open_login_flag(_resolve_next_url(default_endpoint="index")))
-
-    name = request.form.get("user_name", "").strip()[:20]
-    avatar_seed = request.form.get("avatar_seed", "sky").strip()
-
-    if avatar_seed not in AVATAR_COLORS:
-        avatar_seed = "sky"
-    if not name:
-        name = str(current_user["name"]).strip()[:20] or "用户"
-
-    try:
-        updated_user = update_user_profile_in_supabase(str(current_user["id"]), name, avatar_seed)
-    except RuntimeError as err:
-        flash(str(err), "error")
-        return redirect(request.referrer or url_for("index"))
-
-    session["user_name"] = str(updated_user.get("name", name)).strip()[:20] or "用户"
-    session["avatar_seed"] = str(updated_user.get("avatar_seed", avatar_seed)).strip()
-    if session["avatar_seed"] not in AVATAR_COLORS:
-        session["avatar_seed"] = "sky"
-
-    flash("个人资料已更新", "success")
-    return redirect(request.referrer or url_for("index"))
-
-
-@app.route("/profile/reset", methods=["POST"])
-def reset_profile():
-    if not get_current_user()["is_authenticated"]:
-        flash("请先登录后再修改资料。", "error")
-        return redirect(_with_open_login_flag(_resolve_next_url(default_endpoint="index")))
-
-    current_email = session.get("user_email", "")
-    current_id = session.get("user_id", "")
-
-    if current_id:
-        try:
-            update_user_profile_in_supabase(str(current_id), "用户", "sky")
-        except RuntimeError as err:
-            flash(str(err), "error")
-            return redirect(request.referrer or url_for("index"))
-
-    session.pop("user_name", None)
-    session.pop("avatar_seed", None)
-    session.pop("completed_steps", None)
-    if current_id:
-        session["user_id"] = current_id
-    if current_email:
-        session["user_email"] = current_email
-    session["user_name"] = "用户"
-    session["avatar_seed"] = "sky"
-    flash("已恢复默认资料并清空步骤状态", "success")
-    return redirect(request.referrer or url_for("index"))
 
 
 @app.route("/guide/<stage_slug>/comment", methods=["POST"])

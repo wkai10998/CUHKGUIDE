@@ -24,6 +24,14 @@ pip install -r requirements.txt
 - 智能助手：RAG 思路演示（检索 + 回答 + 来源）
 - 登录弹窗：账号注册、登录、退出（Session）
 
+## 数据同步口径（汇报统一）
+- BeautifulSoup 抓取流程已完成，但属于离线一次性抓取。
+- 抓取后的数据需要先清洗，再写入本项目数据文件。
+- 当前项目不做“官网更新后页面自动实时同步”。
+- 抓取产出主要用于：
+  - 更新 `content/programs.json`（专业速查）
+  - 补充 RAG 使用的知识内容（如 `content/rag_kb.txt` 或其上游数据）
+
 ## 技术知识点对应
 - Flask 路由：`GET` 渲染页面、`POST` 提交交互
 - Jinja2：`extends`、`include`、`block`、`for/if`
@@ -228,8 +236,9 @@ FlaskProject/
 1. BeautifulSoup 抓取官网页面（招生要求/截止日期/材料说明）
 2. 解析 HTML，提取字段（项目名、学院、DDL、语言要求等）
 3. 清洗标准化（去噪、去重、格式统一）
-4. 写入 Supabase 或导出为 JSON 供页面读取
+4. 将清洗结果写入项目数据文件（如 `content/programs.json` / `content/rag_kb.txt`）
 5. 前端页面展示 + AI 检索共用同一份结构化数据
+6. 说明：该流程是离线更新，不是运行时实时同步
 
 #### 2) 清洗规则建议（可讲专业性）
 - 时间统一为同一格式（如 `YYYY-MM-DD`）

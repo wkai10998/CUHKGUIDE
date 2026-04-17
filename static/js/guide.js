@@ -37,17 +37,6 @@
     });
   }
 
-  function avatarClass(seed) {
-    const colorMap = {
-      sky: "bg-sky-500",
-      emerald: "bg-emerald-500",
-      amber: "bg-amber-500",
-      rose: "bg-rose-500",
-      violet: "bg-violet-500"
-    };
-    return colorMap[seed] || colorMap.sky;
-  }
-
   function renderComment(comment) {
     const wrapper = document.createElement("div");
     wrapper.className = "rounded-md border border-brand-100 bg-white p-3";
@@ -58,9 +47,7 @@
 
     wrapper.innerHTML =
       '<div class="flex items-center gap-2 mb-2">' +
-      '<span class="w-7 h-7 rounded-full text-white text-xs font-semibold flex items-center justify-center ' +
-      avatarClass(comment.avatar_seed) +
-      '">' +
+      '<span class="w-7 h-7 rounded-full text-white text-xs font-semibold flex items-center justify-center bg-brand-600">' +
       userName.slice(0, 1) +
       "</span>" +
       '<span class="text-sm font-medium text-ink-900"></span>' +

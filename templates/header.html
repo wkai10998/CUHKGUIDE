@@ -16,42 +16,10 @@
         <div class="tocu-user-menu group">
           <button class="tocu-user-menu__trigger" type="button">
             <span class="tocu-user-menu__name">{{ current_user.name }}</span>
-            <span class="tocu-user-menu__avatar {{ avatar_colors[current_user.avatar_seed] }}">{{ current_user.initial }}</span>
+            <span class="tocu-user-menu__avatar">{{ current_user.initial }}</span>
           </button>
 
           <div class="tocu-user-menu__panel">
-            <p class="tocu-user-menu__eyebrow">当前用户</p>
-            <p class="tocu-user-menu__title">{{ current_user.name }}</p>
-            <p class="tocu-user-menu__email">{{ current_user.email }}</p>
-
-            <form action="{{ url_for('update_profile') }}" method="post" class="tocu-form-stack">
-              <label class="tocu-field">
-                <span class="tocu-field__label">昵称</span>
-                <input
-                  type="text"
-                  name="user_name"
-                  value="{{ current_user.name }}"
-                  maxlength="20"
-                  class="tocu-input"
-                >
-              </label>
-
-              <label class="tocu-field">
-                <span class="tocu-field__label">头像色</span>
-                <select name="avatar_seed" class="tocu-input">
-                  {% for seed in ['sky', 'emerald', 'amber', 'rose', 'violet'] %}
-                    <option value="{{ seed }}" {% if current_user.avatar_seed == seed %}selected{% endif %}>{{ seed }}</option>
-                  {% endfor %}
-                </select>
-              </label>
-
-              <button type="submit" class="tocu-btn tocu-btn--primary tocu-btn--small tocu-btn--full">保存资料</button>
-            </form>
-
-            <form action="{{ url_for('reset_profile') }}" method="post" class="tocu-inline-form">
-              <button type="submit" class="tocu-btn tocu-btn--secondary tocu-btn--small tocu-btn--full">恢复默认资料</button>
-            </form>
-
             <form action="{{ url_for('auth_logout') }}" method="post" class="tocu-inline-form">
               <button type="submit" class="tocu-btn tocu-btn--ghost tocu-btn--small tocu-btn--full">退出登录</button>
             </form>
