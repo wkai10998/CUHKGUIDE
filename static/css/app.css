@@ -828,7 +828,7 @@ code {
   background: rgba(255, 255, 255, 0.28);
   box-shadow: none;
   display: grid;
-  gap: 0.9rem;
+  gap: 1rem;
   transition: transform var(--tocu-transition), border-color var(--tocu-transition), box-shadow var(--tocu-transition);
 }
 
@@ -843,7 +843,7 @@ code {
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .tocu-stage-card__index {
@@ -851,11 +851,14 @@ code {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tocu-subtle);
+  flex-shrink: 0;
 }
 
 .tocu-stage-card__range {
   font-size: 0.86rem;
   color: var(--tocu-accent-strong);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tocu-guide-layout {
@@ -1085,7 +1088,7 @@ body.tocu-body--assistant {
   margin: 0;
   font-family: "Source Serif 4", "Noto Serif SC", serif;
   font-size: clamp(2.9rem, 5vw, 4.5rem);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.06;
   letter-spacing: -0.04em;
   color: var(--tocu-ink);
@@ -1094,7 +1097,7 @@ body.tocu-body--assistant {
 .tocu-assistant-shell__intro-copy {
   max-width: 34rem;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.92rem;
   line-height: 1.8;
   color: var(--tocu-muted);
 }
@@ -1633,5 +1636,60 @@ body.tocu-body--assistant {
   .tocu-home-cover__bg-logo,
   .tocu-home-cover__watermark {
     display: none;
+  }
+
+  .tocu-stage-card__body--hide-mobile {
+    display: none !important;
+  }
+
+  .tocu-stage-card__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.35rem;
+    align-items: start;
+  }
+
+  .tocu-stage-card__title {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .tocu-stage-card__index {
+    font-size: 0.65rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .tocu-stage-card__range {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .tocu-btn--outlined-purple.tocu-btn--small {
+    min-height: 40px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .tocu-directory-card__title {
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  .tocu-directory-card__school {
+    font-size: 0.85rem;
+  }
+
+  .tocu-chip-list--assistant {
+    gap: 0.55rem 0.6rem;
+    max-width: 100%;
+  }
+
+  .tocu-chip {
+    padding: 0.62rem 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1.38;
+    border-radius: var(--tocu-radius-sm);
   }
 }

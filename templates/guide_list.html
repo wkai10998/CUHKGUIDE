@@ -23,7 +23,7 @@
           <span class="tocu-stage-card__range">{{ stage.month_range }}</span>
         </div>
         <h2 class="tocu-stage-card__title">{{ stage.title }}</h2>
-        <p class="tocu-stage-card__body">{{ stage.description }}</p>
+        <p class="tocu-stage-card__body tocu-stage-card__body--hide-mobile">{{ stage.description }}</p>
          <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="tocu-btn tocu-btn--outlined-purple tocu-btn--small">进入阶段</a>
       </article>
     {% endfor %}
