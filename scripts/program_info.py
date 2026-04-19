@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-# ---------- 翻译模块 ----------
+# ---------- translation module ----------
 from deep_translator import GoogleTranslator
 
 def translate_to_chinese(text):
@@ -27,7 +27,7 @@ def translate_to_chinese(text):
         print(f"⚠️ 翻译失败 '{text[:30]}...': {e}")
         return text
 
-# ---------- 学院固定中文名 ----------
+# ---------- standardalize Faculty_ZH ----------
 FACULTY_ZH_MAP = {
     "arts": "文学院",
     "business administration": "商学院",
@@ -52,7 +52,7 @@ def get_college_zh(faculty_name):
 HOME_URL = "https://www.gs.cuhk.edu.hk/admissions/"
 
 
-# ---------- 截止日期抓取 ----------
+# ---------- Scraping application deadline ----------
 def clean_deadline_text(raw_text):
     if not raw_text:
         return ""
@@ -148,7 +148,7 @@ def fetch_deadline_mapping():
     return mapping
 
 
-# ---------- 详情抓取 ----------
+# ---------- main scrap ----------
 def extract_by_regex(text, keyword, stop_keywords=None, flags=re.DOTALL | re.IGNORECASE):
     if stop_keywords is None:
         stop_keywords = [

@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 
-# 是否启用翻译（True=翻译成中文，False=保留英文）
+# Translation
 ENABLE_TRANSLATION = True
 
 if ENABLE_TRANSLATION:

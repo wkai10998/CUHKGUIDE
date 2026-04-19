@@ -242,7 +242,7 @@
   {
     "id": 21,
     "name": "Master of Divinity",
-    "name_zh": "神学大师",
+    "name_zh": "神学硕士",
     "name_en": "Master of Divinity",
     "school": "Faculty of Arts",
     "college": "文学院",
@@ -530,7 +530,7 @@
   {
     "id": 45,
     "name": "MA in Teaching English to Speakers of Other Languages",
-    "name_zh": "向其他语言的人教授英语硕士",
+    "name_zh": "对外英语教学硕士",
     "name_en": "MA in Teaching English to Speakers of Other Languages",
     "school": "Faculty of Education",
     "college": "教育学院",
@@ -818,7 +818,7 @@
   {
     "id": 69,
     "name": "Postgraduate Certificate in Laws",
-    "name_zh": "法律研究生证书",
+    "name_zh": "法学专业证书",
     "name_en": "Postgraduate Certificate in Laws",
     "school": "Faculty of Law",
     "college": "法学院",
@@ -1178,7 +1178,7 @@
   {
     "id": 99,
     "name": "MSc in Advanced Studies in Statistics and Data Science",
-    "name_zh": "统计和数据科学高级研究硕士",
+    "name_zh": "统计与数据科学高级研究硕士",
     "name_en": "MSc in Advanced Studies in Statistics and Data Science",
     "school": "Faculty of Science",
     "college": "理学院",
