@@ -1,30 +1,6 @@
 [
   {
     "id": 1,
-    "name": "Master of Fine Arts",
-    "name_zh": "美术硕士",
-    "name_en": "Master of Fine Arts",
-    "school": "Faculty of Arts",
-    "college": "文学院",
-    "deadline": "2025-12-01",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "美术",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#master-of-fine-arts"
-  },
-  {
-    "id": 2,
-    "name": "Master of Music",
-    "name_zh": "音乐硕士",
-    "name_en": "Master of Music",
-    "school": "Faculty of Arts",
-    "college": "文学院",
-    "deadline": "2025-12-01",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "音乐",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#master-of-music"
-  },
-  {
-    "id": 3,
     "name": "MA in Anthropology",
     "name_zh": "人类学硕士",
     "name_en": "MA in Anthropology",
@@ -36,7 +12,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-anthropology"
   },
   {
-    "id": 4,
+    "id": 2,
     "name": "MA in Chinese Studies",
     "name_zh": "中国研究硕士",
     "name_en": "MA in Chinese Studies",
@@ -48,7 +24,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-chinese-studies"
   },
   {
-    "id": 5,
+    "id": 3,
     "name": "MA in Chinese Language and Literature",
     "name_zh": "汉语言文学硕士",
     "name_en": "MA in Chinese Language and Literature",
@@ -60,7 +36,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-chinese-language-and-literature"
   },
   {
-    "id": 6,
+    "id": 4,
     "name": "MA in Cultural Management",
     "name_zh": "文化管理硕士",
     "name_en": "MA in Cultural Management",
@@ -72,7 +48,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-cultural-management"
   },
   {
-    "id": 7,
+    "id": 5,
     "name": "MA in Intercultural Studies",
     "name_zh": "跨文化研究硕士",
     "name_en": "MA in Intercultural Studies",
@@ -84,7 +60,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-intercultural-studies"
   },
   {
-    "id": 8,
+    "id": 6,
     "name": "MA in English (Applied English Linguistics)",
     "name_zh": "英语硕士（应用英语语言学）",
     "name_en": "MA in English (Applied English Linguistics)",
@@ -96,7 +72,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-english-applied-english-linguistics"
   },
   {
-    "id": 9,
+    "id": 7,
     "name": "MA in English (Literary Studies)",
     "name_zh": "英语硕士（文学研究）",
     "name_en": "MA in English (Literary Studies)",
@@ -108,7 +84,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-english-literary-studies"
   },
   {
-    "id": 10,
+    "id": 8,
     "name": "MA in Chinese Art History",
     "name_zh": "中国艺术史硕士",
     "name_en": "MA in Chinese Art History",
@@ -120,7 +96,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-chinese-art-history"
   },
   {
-    "id": 11,
+    "id": 9,
     "name": "MA in Fine Arts",
     "name_zh": "美术硕士",
     "name_en": "MA in Fine Arts",
@@ -132,7 +108,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-fine-arts"
   },
   {
-    "id": 12,
+    "id": 10,
     "name": "MA in Comparative and Public History",
     "name_zh": "比较和公共历史硕士",
     "name_en": "MA in Comparative and Public History",
@@ -144,7 +120,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-comparative-and-public-history"
   },
   {
-    "id": 13,
+    "id": 11,
     "name": "MA in Japanese Studies",
     "name_zh": "日本研究硕士",
     "name_en": "MA in Japanese Studies",
@@ -156,7 +132,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-japanese-studies"
   },
   {
-    "id": 14,
+    "id": 12,
     "name": "MA in Chinese Linguistics and Language Acquisition",
     "name_zh": "汉语语言学与语言习得硕士",
     "name_en": "MA in Chinese Linguistics and Language Acquisition",
@@ -168,7 +144,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-chinese-linguistics-and-language-acquisition"
   },
   {
-    "id": 15,
+    "id": 13,
     "name": "MA in Linguistics",
     "name_zh": "语言学硕士",
     "name_en": "MA in Linguistics",
@@ -180,7 +156,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-linguistics"
   },
   {
-    "id": 16,
+    "id": 14,
     "name": "MA in Music",
     "name_zh": "音乐硕士",
     "name_en": "MA in Music",
@@ -192,7 +168,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-music"
   },
   {
-    "id": 17,
+    "id": 15,
     "name": "MA in Philosophy",
     "name_zh": "哲学硕士",
     "name_en": "MA in Philosophy",
@@ -204,7 +180,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-philosophy"
   },
   {
-    "id": 18,
+    "id": 16,
     "name": "MA in Buddhist Studies",
     "name_zh": "佛学研究硕士",
     "name_en": "MA in Buddhist Studies",
@@ -216,7 +192,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-buddhist-studies"
   },
   {
-    "id": 19,
+    "id": 17,
     "name": "MA in Religious Studies",
     "name_zh": "宗教研究硕士",
     "name_en": "MA in Religious Studies",
@@ -228,7 +204,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-religious-studies"
   },
   {
-    "id": 20,
+    "id": 18,
     "name": "MA in Christian Studies",
     "name_zh": "基督教研究硕士",
     "name_en": "MA in Christian Studies",
@@ -240,19 +216,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-christian-studies"
   },
   {
-    "id": 21,
-    "name": "Master of Divinity",
-    "name_zh": "神学硕士",
-    "name_en": "Master of Divinity",
-    "school": "Faculty of Arts",
-    "college": "文学院",
-    "deadline": "2026-02-27",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "神学",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#master-of-divinity"
-  },
-  {
-    "id": 22,
+    "id": 19,
     "name": "MA in Translation",
     "name_zh": "翻译硕士",
     "name_en": "MA in Translation",
@@ -264,19 +228,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/arts#ma-in-translation"
   },
   {
-    "id": 23,
-    "name": "Executive Master of Professional Accountancy (offered in Shanghai)",
-    "name_zh": "高级专业会计硕士（在上海提供）",
-    "name_en": "Executive Master of Professional Accountancy (offered in Shanghai)",
-    "school": "Faculty of Business Administration",
-    "college": "商学院",
-    "deadline": "To be confirmed",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "商业管理",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#executive-master-of-professional-accountancy-offered-in-shanghai"
-  },
-  {
-    "id": 24,
+    "id": 20,
     "name": "Executive MBA",
     "name_zh": "行政工商管理硕士",
     "name_en": "Executive MBA",
@@ -288,7 +240,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#executive-mba"
   },
   {
-    "id": 25,
+    "id": 21,
     "name": "Executive MBA (Chinese)",
     "name_zh": "行政工商管理硕士（中文）",
     "name_en": "Executive MBA (Chinese)",
@@ -300,19 +252,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#executive-mba-chinese"
   },
   {
-    "id": 26,
-    "name": "Master of Accountancy",
-    "name_zh": "会计学硕士",
-    "name_en": "Master of Accountancy",
-    "school": "Faculty of Business Administration",
-    "college": "商学院",
-    "deadline": "2025-08-01",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "商业管理",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#master-of-accountancy"
-  },
-  {
-    "id": 27,
+    "id": 22,
     "name": "MBA",
     "name_zh": "工商管理硕士",
     "name_en": "MBA",
@@ -324,7 +264,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#mba"
   },
   {
-    "id": 28,
+    "id": 23,
     "name": "MBA in Finance",
     "name_zh": "金融MBA",
     "name_en": "MBA in Finance",
@@ -336,7 +276,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#mba-in-finance"
   },
   {
-    "id": 29,
+    "id": 24,
     "name": "MSc in Actuarial Science and Insurance Analytics",
     "name_zh": "精算科学和保险分析理学硕士",
     "name_en": "MSc in Actuarial Science and Insurance Analytics",
@@ -348,7 +288,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-actuarial-science-and-insurance-analytics"
   },
   {
-    "id": 30,
+    "id": 25,
     "name": "MSc in Aviation Management",
     "name_zh": "航空管理硕士",
     "name_en": "MSc in Aviation Management",
@@ -360,7 +300,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-aviation-management"
   },
   {
-    "id": 31,
+    "id": 26,
     "name": "MSc in Business Analytics",
     "name_zh": "商业分析理学硕士",
     "name_en": "MSc in Business Analytics",
@@ -372,7 +312,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-business-analytics"
   },
   {
-    "id": 32,
+    "id": 27,
     "name": "MSc in Finance",
     "name_zh": "金融硕士",
     "name_en": "MSc in Finance",
@@ -384,7 +324,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-finance"
   },
   {
-    "id": 33,
+    "id": 28,
     "name": "MSc in Information and Technology Management (Part-time mode Only)",
     "name_zh": "信息与技术管理理学硕士（仅限非全日制模式）",
     "name_en": "MSc in Information and Technology Management (Part-time mode Only)",
@@ -396,7 +336,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-information-and-technology-management-part-time-mode-only"
   },
   {
-    "id": 34,
+    "id": 29,
     "name": "MSc in Information Science and Technology Management (Full-time mode Only)",
     "name_zh": "信息科学与技术管理理学硕士（仅限全日制模式）",
     "name_en": "MSc in Information Science and Technology Management (Full-time mode Only)",
@@ -408,7 +348,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-information-science-and-technology-management-full-time-mode-only"
   },
   {
-    "id": 35,
+    "id": 30,
     "name": "MSc in Leadership for Experience Economy",
     "name_zh": "体验经济领导力理学硕士",
     "name_en": "MSc in Leadership for Experience Economy",
@@ -420,7 +360,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-leadership-for-experience-economy"
   },
   {
-    "id": 36,
+    "id": 31,
     "name": "MSc in Management",
     "name_zh": "管理学硕士",
     "name_en": "MSc in Management",
@@ -432,7 +372,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-management"
   },
   {
-    "id": 37,
+    "id": 32,
     "name": "MSc in Marketing",
     "name_zh": "市场营销硕士",
     "name_en": "MSc in Marketing",
@@ -444,7 +384,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-marketing"
   },
   {
-    "id": 38,
+    "id": 33,
     "name": "MSc in Real Estate",
     "name_zh": "房地产理学硕士",
     "name_en": "MSc in Real Estate",
@@ -456,7 +396,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-real-estate"
   },
   {
-    "id": 39,
+    "id": 34,
     "name": "MSc in Sustainable Global Business",
     "name_zh": "可持续全球商业理学硕士",
     "name_en": "MSc in Sustainable Global Business",
@@ -468,7 +408,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/business-administration#msc-in-sustainable-global-business"
   },
   {
-    "id": 40,
+    "id": 35,
     "name": "MA in Chinese Language Education",
     "name_zh": "汉语言教育硕士",
     "name_en": "MA in Chinese Language Education",
@@ -480,7 +420,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-chinese-language-education"
   },
   {
-    "id": 41,
+    "id": 36,
     "name": "MA in Early Childhood Education",
     "name_zh": "幼儿教育硕士",
     "name_en": "MA in Early Childhood Education",
@@ -492,7 +432,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-early-childhood-education"
   },
   {
-    "id": 42,
+    "id": 37,
     "name": "MA in English Language Teaching",
     "name_zh": "英语语言教学硕士",
     "name_en": "MA in English Language Teaching",
@@ -504,7 +444,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-english-language-teaching"
   },
   {
-    "id": 43,
+    "id": 38,
     "name": "MA in School Guidance and Counselling",
     "name_zh": "学校指导和咨询硕士",
     "name_en": "MA in School Guidance and Counselling",
@@ -516,7 +456,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-school-guidance-and-counselling"
   },
   {
-    "id": 44,
+    "id": 39,
     "name": "MA in School Improvement and Leadership",
     "name_zh": "学校改进和领导力硕士",
     "name_en": "MA in School Improvement and Leadership",
@@ -528,7 +468,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-school-improvement-and-leadership"
   },
   {
-    "id": 45,
+    "id": 40,
     "name": "MA in Teaching English to Speakers of Other Languages",
     "name_zh": "对外英语教学硕士",
     "name_en": "MA in Teaching English to Speakers of Other Languages",
@@ -540,31 +480,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#ma-in-teaching-english-to-speakers-of-other-languages"
   },
   {
-    "id": 46,
-    "name": "Master of Education",
-    "name_zh": "教育硕士",
-    "name_en": "Master of Education",
-    "school": "Faculty of Education",
-    "college": "教育学院",
-    "deadline": "2026-02-28",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "教育",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#master-of-education"
-  },
-  {
-    "id": 47,
-    "name": "Master of Education in Teaching in Key Subject Areas (National Excellent Teacher Training Initiative)",
-    "name_zh": "重点学科教学教育硕士（国家级卓越教师培养计划）",
-    "name_en": "Master of Education in Teaching in Key Subject Areas (National Excellent Teacher Training Initiative)",
-    "school": "Faculty of Education",
-    "college": "教育学院",
-    "deadline": "2026-02-28",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "教育",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#master-of-education-in-teaching-in-key-subject-areas-national-excellent-teacher-training-initiative"
-  },
-  {
-    "id": 48,
+    "id": 41,
     "name": "MSc in Mathematics Education",
     "name_zh": "数学教育硕士",
     "name_en": "MSc in Mathematics Education",
@@ -576,7 +492,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#msc-in-mathematics-education"
   },
   {
-    "id": 49,
+    "id": 42,
     "name": "MSc in Sports Science and Physical Activity",
     "name_zh": "运动科学与体育活动理学硕士",
     "name_en": "MSc in Sports Science and Physical Activity",
@@ -588,7 +504,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/education#msc-in-sports-science-and-physical-activity"
   },
   {
-    "id": 50,
+    "id": 43,
     "name": "MSc in Biomedical Engineering",
     "name_zh": "生物医学工程硕士",
     "name_en": "MSc in Biomedical Engineering",
@@ -600,7 +516,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-biomedical-engineering"
   },
   {
-    "id": 51,
+    "id": 44,
     "name": "MSc in Computer Science",
     "name_zh": "计算机科学硕士",
     "name_en": "MSc in Computer Science",
@@ -612,7 +528,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-computer-science"
   },
   {
-    "id": 52,
+    "id": 45,
     "name": "MSc in Electronic Engineering",
     "name_zh": "电子工程硕士",
     "name_en": "MSc in Electronic Engineering",
@@ -624,7 +540,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-electronic-engineering"
   },
   {
-    "id": 53,
+    "id": 46,
     "name": "MSc in Microelectronics and Integrated Circuits",
     "name_zh": "微电子和集成电路理学硕士",
     "name_en": "MSc in Microelectronics and Integrated Circuits",
@@ -636,7 +552,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-microelectronics-and-integrated-circuits"
   },
   {
-    "id": 54,
+    "id": 47,
     "name": "MSc in Artificial Intelligence",
     "name_zh": "人工智能硕士",
     "name_en": "MSc in Artificial Intelligence",
@@ -648,7 +564,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-artificial-intelligence"
   },
   {
-    "id": 55,
+    "id": 48,
     "name": "MSc in Financial Technology",
     "name_zh": "金融科技硕士",
     "name_en": "MSc in Financial Technology",
@@ -660,7 +576,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-financial-technology"
   },
   {
-    "id": 56,
+    "id": 49,
     "name": "MSc in Information Engineering",
     "name_zh": "信息工程硕士",
     "name_en": "MSc in Information Engineering",
@@ -672,7 +588,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-information-engineering"
   },
   {
-    "id": 57,
+    "id": 50,
     "name": "MSc in Information Science and Technology Management (Full-time mode Only)",
     "name_zh": "信息科学与技术管理理学硕士（仅限全日制模式）",
     "name_en": "MSc in Information Science and Technology Management (Full-time mode Only)",
@@ -684,7 +600,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-information-science-and-technology-management-full-time-mode-only"
   },
   {
-    "id": 58,
+    "id": 51,
     "name": "MSc in Mechanical and Automation Engineering",
     "name_zh": "机械与自动化工程硕士",
     "name_en": "MSc in Mechanical and Automation Engineering",
@@ -696,7 +612,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-mechanical-and-automation-engineering"
   },
   {
-    "id": 59,
+    "id": 52,
     "name": "MSc in Robotics",
     "name_zh": "机器人学硕士",
     "name_en": "MSc in Robotics",
@@ -708,7 +624,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-robotics"
   },
   {
-    "id": 60,
+    "id": 53,
     "name": "MSc in E-Commerce and Logistics Technologies",
     "name_zh": "电子商务和物流技术理学硕士",
     "name_en": "MSc in E-Commerce and Logistics Technologies",
@@ -720,7 +636,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-e-commerce-and-logistics-technologies"
   },
   {
-    "id": 61,
+    "id": 54,
     "name": "MSc in Systems Engineering and Engineering Management",
     "name_zh": "系统工程和工程管理理学硕士",
     "name_en": "MSc in Systems Engineering and Engineering Management",
@@ -732,7 +648,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/engineering#msc-in-systems-engineering-and-engineering-management"
   },
   {
-    "id": 62,
+    "id": 55,
     "name": "MA in Gender Studies",
     "name_zh": "性别研究硕士",
     "name_en": "MA in Gender Studies",
@@ -744,79 +660,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/inter-faculty#ma-in-gender-studies"
   },
   {
-    "id": 63,
-    "name": "Master of Laws in AI Law",
-    "name_zh": "人工智能法法学硕士",
-    "name_en": "Master of Laws in AI Law",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-ai-law"
-  },
-  {
-    "id": 64,
-    "name": "Master of Laws in Chinese Business Law",
-    "name_zh": "中国商法法学硕士",
-    "name_en": "Master of Laws in Chinese Business Law",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-chinese-business-law"
-  },
-  {
-    "id": 65,
-    "name": "Master of Laws in Common Law",
-    "name_zh": "普通法法学硕士",
-    "name_en": "Master of Laws in Common Law",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-common-law"
-  },
-  {
-    "id": 66,
-    "name": "Master of Laws in Energy and Environmental Law",
-    "name_zh": "能源与环境法法学硕士",
-    "name_en": "Master of Laws in Energy and Environmental Law",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-energy-and-environmental-law"
-  },
-  {
-    "id": 67,
-    "name": "Master of Laws in International Economic Law",
-    "name_zh": "国际经济法法学硕士",
-    "name_en": "Master of Laws in International Economic Law",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-international-economic-law"
-  },
-  {
-    "id": 68,
-    "name": "Master of Laws in Legal History",
-    "name_zh": "法律史法学硕士",
-    "name_en": "Master of Laws in Legal History",
-    "school": "Faculty of Law",
-    "college": "法学院",
-    "deadline": "2026-01-31",
-    "language": "TOEFL 88",
-    "focus": "法律",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#master-of-laws-in-legal-history"
-  },
-  {
-    "id": 69,
+    "id": 56,
     "name": "Postgraduate Certificate in Laws",
     "name_zh": "法学专业证书",
     "name_en": "Postgraduate Certificate in Laws",
@@ -828,7 +672,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/law#postgraduate-certificate-in-laws"
   },
   {
-    "id": 70,
+    "id": 57,
     "name": "MSc in Genomics and Bioinformatics",
     "name_zh": "基因组学和生物信息学硕士",
     "name_en": "MSc in Genomics and Bioinformatics",
@@ -840,19 +684,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-genomics-and-bioinformatics"
   },
   {
-    "id": 71,
-    "name": "Master of Chinese Medicine",
-    "name_zh": "中医硕士",
-    "name_en": "Master of Chinese Medicine",
-    "school": "Faculty of Medicine",
-    "college": "医学院",
-    "deadline": "2026-02-28",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "中医",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#master-of-chinese-medicine"
-  },
-  {
-    "id": 72,
+    "id": 58,
     "name": "MSc in Chinese Medicine",
     "name_zh": "中医学硕士",
     "name_en": "MSc in Chinese Medicine",
@@ -864,7 +696,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-chinese-medicine"
   },
   {
-    "id": 73,
+    "id": 59,
     "name": "MSc in Chinese Medicine Pharmacology and Drug Development",
     "name_zh": "中药药理学和药物开发理学硕士",
     "name_en": "MSc in Chinese Medicine Pharmacology and Drug Development",
@@ -876,7 +708,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-chinese-medicine-pharmacology-and-drug-development"
   },
   {
-    "id": 74,
+    "id": 60,
     "name": "MSc in Cardiology",
     "name_zh": "心脏病学硕士",
     "name_en": "MSc in Cardiology",
@@ -888,7 +720,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-cardiology"
   },
   {
-    "id": 75,
+    "id": 61,
     "name": "MSc in Gastroenterology",
     "name_zh": "胃肠病学硕士",
     "name_en": "MSc in Gastroenterology",
@@ -900,7 +732,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-gastroenterology"
   },
   {
-    "id": 76,
+    "id": 62,
     "name": "MSc in Stroke and Clinical Neurosciences",
     "name_zh": "中风和临床神经科学理学硕士",
     "name_en": "MSc in Stroke and Clinical Neurosciences",
@@ -912,31 +744,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-stroke-and-clinical-neurosciences"
   },
   {
-    "id": 77,
-    "name": "Master of Nursing",
-    "name_zh": "护理硕士",
-    "name_en": "Master of Nursing",
-    "school": "Faculty of Medicine",
-    "college": "医学院",
-    "deadline": "2026-02-28",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "护理",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#master-of-nursing"
-  },
-  {
-    "id": 78,
-    "name": "Master of Nursing Science (Pre-registration)",
-    "name_zh": "护理科学硕士（预注册）",
-    "name_en": "Master of Nursing Science (Pre-registration)",
-    "school": "Faculty of Medicine",
-    "college": "医学院",
-    "deadline": "2026-01-02",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "护理",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#master-of-nursing-science-pre-registration"
-  },
-  {
-    "id": 79,
+    "id": 63,
     "name": "MSc in Medical Genetics",
     "name_zh": "医学遗传学硕士",
     "name_en": "MSc in Medical Genetics",
@@ -948,7 +756,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-medical-genetics"
   },
   {
-    "id": 80,
+    "id": 64,
     "name": "MSc in Reproductive Medicine and Clinical Embryology",
     "name_zh": "生殖医学和临床胚胎学理学硕士",
     "name_en": "MSc in Reproductive Medicine and Clinical Embryology",
@@ -960,7 +768,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-reproductive-medicine-and-clinical-embryology"
   },
   {
-    "id": 81,
+    "id": 65,
     "name": "MSc in Musculoskeletal Medicine, Rehabilitation and Geriatric Orthopaedics",
     "name_zh": "肌肉骨骼医学、康复和老年骨科硕士",
     "name_en": "MSc in Musculoskeletal Medicine, Rehabilitation and Geriatric Orthopaedics",
@@ -972,7 +780,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-musculoskeletal-medicine-rehabilitation-and-geriatric-orthopaedics"
   },
   {
-    "id": 82,
+    "id": 66,
     "name": "MSc in Sports Medicine and Health Science",
     "name_zh": "运动医学与健康科学理学硕士",
     "name_en": "MSc in Sports Medicine and Health Science",
@@ -984,7 +792,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-sports-medicine-and-health-science"
   },
   {
-    "id": 83,
+    "id": 67,
     "name": "MSc in Speech-Language Pathology",
     "name_zh": "言语病理学硕士",
     "name_en": "MSc in Speech-Language Pathology",
@@ -996,31 +804,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-speech-language-pathology"
   },
   {
-    "id": 84,
-    "name": "Master of Clinical Pharmacy",
-    "name_zh": "临床药学硕士",
-    "name_en": "Master of Clinical Pharmacy",
-    "school": "Faculty of Medicine",
-    "college": "医学院",
-    "deadline": "2026-03-31",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "药店",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#master-of-clinical-pharmacy"
-  },
-  {
-    "id": 85,
-    "name": "Master of Public Health",
-    "name_zh": "公共卫生硕士",
-    "name_en": "Master of Public Health",
-    "school": "Faculty of Medicine",
-    "college": "医学院",
-    "deadline": "2026-02-28",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "公共卫生",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#master-of-public-health"
-  },
-  {
-    "id": 86,
+    "id": 68,
     "name": "MSc in Epidemiology and Biostatistics",
     "name_zh": "流行病学和生物统计学硕士",
     "name_en": "MSc in Epidemiology and Biostatistics",
@@ -1032,7 +816,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-epidemiology-and-biostatistics"
   },
   {
-    "id": 87,
+    "id": 69,
     "name": "MSc in Health Services Management",
     "name_zh": "健康服务管理理学硕士",
     "name_en": "MSc in Health Services Management",
@@ -1044,7 +828,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-health-services-management"
   },
   {
-    "id": 88,
+    "id": 70,
     "name": "MSc in Prehospital and Emergency Care",
     "name_zh": "院前和紧急护理理学硕士",
     "name_en": "MSc in Prehospital and Emergency Care",
@@ -1056,7 +840,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/medicine#msc-in-prehospital-and-emergency-care"
   },
   {
-    "id": 89,
+    "id": 71,
     "name": "MSc in Accreditation Chemistry",
     "name_zh": "认证化学硕士",
     "name_en": "MSc in Accreditation Chemistry",
@@ -1068,7 +852,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-accreditation-chemistry"
   },
   {
-    "id": 90,
+    "id": 72,
     "name": "MSc in Earth and Environmental Analytics for Sustainability",
     "name_zh": "可持续发展地球与环境分析理学硕士",
     "name_en": "MSc in Earth and Environmental Analytics for Sustainability",
@@ -1080,7 +864,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-earth-and-environmental-analytics-for-sustainability"
   },
   {
-    "id": 91,
+    "id": 73,
     "name": "MSc in Biochemical and Biomedical Sciences",
     "name_zh": "生物化学和生物医学科学硕士",
     "name_en": "MSc in Biochemical and Biomedical Sciences",
@@ -1092,7 +876,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-biochemical-and-biomedical-sciences"
   },
   {
-    "id": 92,
+    "id": 74,
     "name": "MSc in Biodiversity, Environmental Management, Sustainability and Technology",
     "name_zh": "生物多样性、环境管理、可持续发展和技术理学硕士",
     "name_en": "MSc in Biodiversity, Environmental Management, Sustainability and Technology",
@@ -1104,7 +888,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-biodiversity-environmental-management-sustainability-and-technology"
   },
   {
-    "id": 93,
+    "id": 75,
     "name": "MSc in Nutrition, Food Science and Technology",
     "name_zh": "营养、食品科学与技术理学硕士",
     "name_en": "MSc in Nutrition, Food Science and Technology",
@@ -1116,7 +900,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-nutrition-food-science-and-technology"
   },
   {
-    "id": 94,
+    "id": 76,
     "name": "MSc in Advanced Materials Science",
     "name_zh": "先进材料科学硕士",
     "name_en": "MSc in Advanced Materials Science",
@@ -1128,7 +912,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-advanced-materials-science"
   },
   {
-    "id": 95,
+    "id": 77,
     "name": "MSc in Mathematics",
     "name_zh": "数学硕士",
     "name_en": "MSc in Mathematics",
@@ -1140,7 +924,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-mathematics"
   },
   {
-    "id": 96,
+    "id": 78,
     "name": "MSc in Physics",
     "name_zh": "物理学硕士",
     "name_en": "MSc in Physics",
@@ -1152,7 +936,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-physics"
   },
   {
-    "id": 97,
+    "id": 79,
     "name": "MSc in Risk Management Science and Data Analytics",
     "name_zh": "风险管理科学和数据分析理学硕士",
     "name_en": "MSc in Risk Management Science and Data Analytics",
@@ -1164,7 +948,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-risk-management-science-and-data-analytics"
   },
   {
-    "id": 98,
+    "id": 80,
     "name": "MSc in Artificial Intelligence for Science",
     "name_zh": "科学人工智能理学硕士",
     "name_en": "MSc in Artificial Intelligence for Science",
@@ -1176,9 +960,9 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-artificial-intelligence-for-science"
   },
   {
-    "id": 99,
+    "id": 81,
     "name": "MSc in Advanced Studies in Statistics and Data Science",
-    "name_zh": "统计与数据科学高级研究硕士",
+    "name_zh": "统计和数据科学高级研究硕士",
     "name_en": "MSc in Advanced Studies in Statistics and Data Science",
     "school": "Faculty of Science",
     "college": "理学院",
@@ -1188,7 +972,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-advanced-studies-in-statistics-and-data-science"
   },
   {
-    "id": 100,
+    "id": 82,
     "name": "MSc in Data Science and Business Statistics",
     "name_zh": "数据科学和商业统计学硕士",
     "name_en": "MSc in Data Science and Business Statistics",
@@ -1200,19 +984,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/science#msc-in-data-science-and-business-statistics"
   },
   {
-    "id": 101,
-    "name": "Master of Architecture",
-    "name_zh": "建筑学硕士",
-    "name_en": "Master of Architecture",
-    "school": "Faculty of Social Science",
-    "college": "社科学院",
-    "deadline": "2026-01-31",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "建筑学",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#master-of-architecture"
-  },
-  {
-    "id": 102,
+    "id": 83,
     "name": "MSc in Landscape Architecture",
     "name_zh": "景观设计硕士",
     "name_en": "MSc in Landscape Architecture",
@@ -1224,7 +996,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-landscape-architecture"
   },
   {
-    "id": 103,
+    "id": 84,
     "name": "MSc in Urban Design",
     "name_zh": "城市设计硕士",
     "name_en": "MSc in Urban Design",
@@ -1236,7 +1008,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-urban-design"
   },
   {
-    "id": 104,
+    "id": 85,
     "name": "MA in Global Communication",
     "name_zh": "全球传播硕士",
     "name_en": "MA in Global Communication",
@@ -1248,7 +1020,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-global-communication"
   },
   {
-    "id": 105,
+    "id": 86,
     "name": "MA in Journalism",
     "name_zh": "新闻学硕士",
     "name_en": "MA in Journalism",
@@ -1260,7 +1032,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-journalism"
   },
   {
-    "id": 106,
+    "id": 87,
     "name": "MSc in New Media",
     "name_zh": "新媒体理学硕士",
     "name_en": "MSc in New Media",
@@ -1272,7 +1044,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-new-media"
   },
   {
-    "id": 107,
+    "id": 88,
     "name": "MSSc in Advertising",
     "name_zh": "广告学理学硕士",
     "name_en": "MSSc in Advertising",
@@ -1284,7 +1056,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-advertising"
   },
   {
-    "id": 108,
+    "id": 89,
     "name": "MSSc in Corporate Communication",
     "name_zh": "企业传播理学硕士",
     "name_en": "MSSc in Corporate Communication",
@@ -1296,7 +1068,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-corporate-communication"
   },
   {
-    "id": 109,
+    "id": 90,
     "name": "Dual Degree - MSc in Applied Economics (CUHK) and MS in Social and Economic Policy (Northwestern University)",
     "name_zh": "双学位 - 应用经济学理学硕士（香港中文大学）及社会和经济政策理学硕士（西北大学）",
     "name_en": "Dual Degree - MSc in Applied Economics (CUHK) and MS in Social and Economic Policy (Northwestern University)",
@@ -1308,7 +1080,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#dual-degree-msc-in-applied-economics-cuhk-and-ms-in-social-and-economic-policy-northwestern-university"
   },
   {
-    "id": 110,
+    "id": 91,
     "name": "MSc in Economics",
     "name_zh": "经济学硕士",
     "name_en": "MSc in Economics",
@@ -1320,7 +1092,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-economics"
   },
   {
-    "id": 111,
+    "id": 92,
     "name": "MA in Gender Studies (Inter-Faculty)",
     "name_zh": "性别研究硕士（跨院系）",
     "name_en": "MA in Gender Studies (Inter-Faculty)",
@@ -1332,7 +1104,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-gender-studies-inter-faculty"
   },
   {
-    "id": 112,
+    "id": 93,
     "name": "MSc in GeoInformation Science and Smart Cities",
     "name_zh": "地理信息科学与智慧城市理学硕士",
     "name_en": "MSc in GeoInformation Science and Smart Cities",
@@ -1344,7 +1116,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-geoinformation-science-and-smart-cities"
   },
   {
-    "id": 113,
+    "id": 94,
     "name": "MSc in Sustainable Urban Planning",
     "name_zh": "可持续城市规划理学硕士",
     "name_en": "MSc in Sustainable Urban Planning",
@@ -1356,7 +1128,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-sustainable-urban-planning"
   },
   {
-    "id": 114,
+    "id": 95,
     "name": "MSSc in Sustainable Tourism",
     "name_zh": "可持续旅游理学硕士",
     "name_en": "MSSc in Sustainable Tourism",
@@ -1368,7 +1140,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-sustainable-tourism"
   },
   {
-    "id": 115,
+    "id": 96,
     "name": "MSSc in Global Political Economy",
     "name_zh": "全球政治经济学理学硕士",
     "name_en": "MSSc in Global Political Economy",
@@ -1380,7 +1152,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-global-political-economy"
   },
   {
-    "id": 116,
+    "id": 97,
     "name": "MSSc in Government and Politics (Greater China)",
     "name_zh": "政府与政治理学硕士（大中华区）",
     "name_en": "MSSc in Government and Politics (Greater China)",
@@ -1392,7 +1164,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-government-and-politics-greater-china"
   },
   {
-    "id": 117,
+    "id": 98,
     "name": "MSSc in Public Policy",
     "name_zh": "公共政策理学硕士",
     "name_en": "MSSc in Public Policy",
@@ -1404,7 +1176,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-public-policy"
   },
   {
-    "id": 118,
+    "id": 99,
     "name": "MA in Psychology",
     "name_zh": "心理学硕士",
     "name_en": "MA in Psychology",
@@ -1416,7 +1188,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-psychology"
   },
   {
-    "id": 119,
+    "id": 100,
     "name": "MSSc in Clinical Psychology",
     "name_zh": "临床心理学理学硕士",
     "name_en": "MSSc in Clinical Psychology",
@@ -1428,7 +1200,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-clinical-psychology"
   },
   {
-    "id": 120,
+    "id": 101,
     "name": "MSSc in Industrial-Organizational Psychology",
     "name_zh": "工业组织心理学理学硕士",
     "name_en": "MSSc in Industrial-Organizational Psychology",
@@ -1440,7 +1212,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-industrial-organizational-psychology"
   },
   {
-    "id": 121,
+    "id": 102,
     "name": "MSc in Environmental Information, Health and Public Management",
     "name_zh": "环境信息、健康和公共管理理学硕士",
     "name_en": "MSc in Environmental Information, Health and Public Management",
@@ -1452,7 +1224,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#msc-in-environmental-information-health-and-public-management"
   },
   {
-    "id": 122,
+    "id": 103,
     "name": "MA in Family Counselling and Family Education",
     "name_zh": "家庭咨询和家庭教育硕士",
     "name_en": "MA in Family Counselling and Family Education",
@@ -1464,7 +1236,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-family-counselling-and-family-education"
   },
   {
-    "id": 123,
+    "id": 104,
     "name": "MA in Social Policy",
     "name_zh": "社会政策硕士",
     "name_en": "MA in Social Policy",
@@ -1476,7 +1248,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-social-policy"
   },
   {
-    "id": 124,
+    "id": 105,
     "name": "MA in Social Service Management",
     "name_zh": "社会服务管理硕士",
     "name_en": "MA in Social Service Management",
@@ -1488,19 +1260,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#ma-in-social-service-management"
   },
   {
-    "id": 125,
-    "name": "Master of Social Work",
-    "name_zh": "社会工作硕士",
-    "name_en": "Master of Social Work",
-    "school": "Faculty of Social Science",
-    "college": "社科学院",
-    "deadline": "2025-10-15",
-    "language": "IELTS 6.5 / TOEFL 79",
-    "focus": "社会工作",
-    "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#master-of-social-work"
-  },
-  {
-    "id": 126,
+    "id": 106,
     "name": "MSSc in Social Work",
     "name_zh": "社会工作理学硕士",
     "name_en": "MSSc in Social Work",
@@ -1512,7 +1272,7 @@
     "link": "https://www.gs.cuhk.edu.hk/admissions/programme/social-science#mssc-in-social-work"
   },
   {
-    "id": 127,
+    "id": 107,
     "name": "MA in Sociology",
     "name_zh": "社会学硕士",
     "name_en": "MA in Sociology",

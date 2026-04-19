@@ -366,14 +366,21 @@ def is_taught_master_program(program_name):
     if not program_name:
         return False
     name_lower = program_name.lower()
+    # 排除研究型项目
     exclude_keywords = ['phd', 'doctor', 'pgd', 'postgraduate diploma', 'mphil', 'research']
     for kw in exclude_keywords:
         if kw in name_lower:
             return False
-    taught_indicators = ['master', 'msc', 'ma ', 'mba', 'mph', 'mssc', 'llm', 'march', 'mfa']
+    # 新增：排除名称中包含 "master" 关键词的项目
+    if 'master' in name_lower:
+        return False
+    # 保留其他授课型硕士缩写
+    taught_indicators = ['msc', 'ma ', 'mba', 'mph', 'mssc', 'llm', 'march', 'mfa']
     for ind in taught_indicators:
         if ind in name_lower:
             return True
+    # 如果没有任何匹配的授课型标识，但名称中不含排除词且不含master，根据实际情况可能需要保留
+    # 这里保守返回 True，可根据实际需求调整
     return True
 
 
