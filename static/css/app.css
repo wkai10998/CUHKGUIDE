@@ -270,6 +270,18 @@ code {
   background: #1a0a2a;
 }
 
+.tocu-btn--outlined-purple {
+  background: var(--tocu-surface-strong);
+  color: #210F37;
+  border: 1px solid #210F37;
+  box-shadow: none;
+}
+
+.tocu-btn--outlined-purple:hover {
+  background: #210F37;
+  color: var(--tocu-surface-strong);
+}
+
 .tocu-btn--ghost {
   background: var(--tocu-surface-strong);
   border-color: var(--tocu-border-strong);
@@ -1419,6 +1431,9 @@ body.tocu-body--assistant {
     flex-direction: row;
     align-items: center;
   }
+  .tocu-optimized-searchbar__btn {
+    width: auto;
+  }
 }
 .tocu-optimized-searchbar__input-wrap {
   position: relative;
@@ -1525,8 +1540,98 @@ body.tocu-body--assistant {
 .tocu-optimized-searchbar__btn:hover, .tocu-optimized-searchbar__btn:focus {
   background: #1a0a2a;
 }
-@media (min-width: 640px) {
-  .tocu-optimized-searchbar__btn {
-    width: auto;
+@media (max-width: 900px) {
+  .tocu-site-header__inner {
+    width: min(var(--tocu-max-width), calc(100% - 2.4rem));
+    gap: 0.95rem;
+    padding: 0.4rem 0;
+  }
+
+  .tocu-mobile-nav,
+  .tocu-site-footer__inner {
+    width: min(var(--tocu-max-width), calc(100% - 2.4rem));
+  }
+
+  .tocu-site-header__logo {
+    height: 3.25rem;
+  }
+
+  .tocu-site-nav {
+    gap: 0.25rem;
+    padding: 0.2rem;
+  }
+
+  .tocu-site-nav__link {
+    padding: 0.48rem 0.56rem;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .tocu-site-header__actions {
+    gap: 0.4rem;
+  }
+
+  .tocu-user-menu__name {
+    display: none;
+  }
+
+  .tocu-user-menu__trigger {
+    padding: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .tocu-site-shell--home {
+    width: min(1500px, calc(100% - 5.4rem));
+  }
+
+  .tocu-home-cover {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+    min-height: auto;
+    padding: 1.95rem 0.2rem 1.6rem;
+  }
+
+  .tocu-home-cover__intro {
+    order: 1;
+    width: 100%;
+    min-height: auto;
+    justify-self: stretch;
+    align-content: start;
+    gap: 0.8rem;
+    padding-inline: 0.15rem;
+  }
+
+  .tocu-home-cover__title {
+    font-size: clamp(2.8rem, 15vw, 4.4rem);
+    line-height: 0.88;
+  }
+
+  .tocu-home-cover__slogan {
+    max-width: 100%;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .tocu-home-cover__aside {
+    order: 2;
+    min-height: auto;
+  }
+
+  .tocu-home-links {
+    margin: 0;
+    width: 100%;
+  }
+
+  .tocu-home-links__card {
+    padding: 1.8rem 1.55rem;
+  }
+
+  .tocu-home-cover__bg-logo,
+  .tocu-home-cover__watermark {
+    display: none;
   }
 }

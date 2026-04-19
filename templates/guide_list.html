@@ -24,7 +24,7 @@
         </div>
         <h2 class="tocu-stage-card__title">{{ stage.title }}</h2>
         <p class="tocu-stage-card__body">{{ stage.description }}</p>
-         <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="tocu-btn tocu-btn--dark tocu-btn--small">进入阶段</a>
+         <a href="{{ url_for('guide', stage_slug=stage.slug) }}" class="tocu-btn tocu-btn--outlined-purple tocu-btn--small">进入阶段</a>
       </article>
     {% endfor %}
   </div>
