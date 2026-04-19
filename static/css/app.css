@@ -926,8 +926,9 @@ code {
   margin-top: 1.2rem;
   border-radius: var(--tocu-radius-lg);
   border: 1px solid var(--tocu-border);
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
   background: var(--tocu-border-strong);
 }
 
@@ -1303,6 +1304,32 @@ body.tocu-body--assistant {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+/* 智能助手滚动条自动隐藏，仅在滚动时显示 */
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-assistant-shell__window,
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-chat-log {
+  scrollbar-width: none;
+}
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-assistant-shell__window.is-scrolling,
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-chat-log.is-scrolling {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(20, 20, 19, 0.2) transparent;
+}
+
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-assistant-shell__window::-webkit-scrollbar,
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-chat-log::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-assistant-shell__window::-webkit-scrollbar-thumb,
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-chat-log::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+}
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-assistant-shell__window.is-scrolling::-webkit-scrollbar-thumb,
+.tocu-assistant-shell[data-assistant-stage="chat"] .tocu-chat-log.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: rgba(20, 20, 19, 0.2);
 }
 
 .tocu-faq-list {

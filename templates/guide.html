@@ -4,8 +4,11 @@
 
 {% block body %}
 <section class="tocu-page-stack">
-  <div class="tocu-breadcrumb">
-    <a href="{{ url_for('guide_list') }}">返回操作步骤</a>
+  <div class="tocu-breadcrumb" style="margin-bottom: 0;">
+    <a href="{{ url_for('guide_list') }}" class="tocu-btn tocu-btn--ghost tocu-btn--small" style="color: inherit; text-decoration: none;">
+      <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      返回操作步骤
+    </a>
   </div>
 
   <header class="tocu-page-hero tocu-page-hero--detail">

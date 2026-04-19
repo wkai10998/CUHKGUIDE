@@ -193,6 +193,25 @@
     });
   });
 
+  let scrollTimeout;
+  function handleScroll(e) {
+    const el = e.currentTarget;
+    if (!el) return;
+    el.classList.add("is-scrolling");
+    window.clearTimeout(scrollTimeout);
+    scrollTimeout = window.setTimeout(() => {
+      el.classList.remove("is-scrolling");
+    }, 800);
+  }
+
+  if (chatLog) {
+    chatLog.addEventListener("scroll", handleScroll);
+  }
+  const shellWindow = document.querySelector(".tocu-assistant-shell__window");
+  if (shellWindow) {
+    shellWindow.addEventListener("scroll", handleScroll);
+  }
+
   resizeInput();
   input.focus();
 })();
